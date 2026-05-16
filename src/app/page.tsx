@@ -93,7 +93,7 @@ export default function KapitanLandingPage() {
         </div>
       </nav>
 
-      <section id="home" className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-4 pb-24 pt-12 lg:grid-cols-12 lg:px-8">
+      <section id="home" className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-8 px-4 pb-16 pt-8 sm:gap-10 sm:pt-10 lg:grid-cols-12 lg:gap-12 lg:px-8 lg:pb-24 lg:pt-12">
         <div className="pointer-events-none absolute left-1/4 top-1/4 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#F5C542]/5 blur-[120px]" />
 
         <div className="z-10 space-y-6 lg:col-span-7">
@@ -102,7 +102,7 @@ export default function KapitanLandingPage() {
             <span>Tactical Command Center Active</span>
           </div>
 
-          <h1 className="font-heading text-5xl font-black leading-none tracking-tight lg:text-7xl">
+          <h1 className="font-heading text-4xl font-black leading-none tracking-tight sm:text-5xl lg:text-7xl">
             KAPITAN SIGNAL
           </h1>
           <h2 className="font-subheading text-2xl font-bold uppercase tracking-wider text-[#F5C542] lg:text-3xl">
@@ -131,7 +131,7 @@ export default function KapitanLandingPage() {
         </div>
 
         <div className="z-10 lg:col-span-5">
-          <div className="relative overflow-hidden rounded-xl border-2 border-[#F5C542]/40 bg-[#111827] p-6 shadow-[0_0_40px_rgba(5,7,13,0.8)]">
+          <div className="relative overflow-hidden rounded-xl border-2 border-[#F5C542]/40 bg-[#111827] p-4 shadow-[0_0_40px_rgba(5,7,13,0.8)] sm:p-6">
             <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#F5C542] via-[#FFD700] to-transparent" />
             <div className="mb-6 flex items-center justify-between">
               <span className="rounded border border-gray-800 bg-[#05070D] px-2.5 py-1 font-heading text-xs font-bold tracking-widest text-[#9CA3AF]">
@@ -195,14 +195,14 @@ export default function KapitanLandingPage() {
       </section>
 
       <section className="border-y border-gray-800 bg-[#0B0F1A] px-4 py-12 lg:px-8">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 lg:grid-cols-4">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
           {[
             { icon: Zap, title: "SCALPING SIGNAL", desc: "Every 30 Minutes" },
             { icon: BarChart3, title: "INTRADAY SIGNAL", desc: "Every 4 Hours" },
             { icon: Shield, title: "RISK ENGINE", desc: "Auto Lot Calculation" },
             { icon: KeyRound, title: "ACCESS CONTROL", desc: "One Key, One Device" },
           ].map((item) => (
-            <div key={item.title} className="gold-glow-hover flex items-center space-x-4 rounded-lg border border-gray-800 bg-[#111827] p-5 transition-all duration-300">
+            <div key={item.title} className="gold-glow-hover flex items-center space-x-4 rounded-lg border border-gray-800 bg-[#111827] p-4 transition-all duration-300 sm:p-5">
               <div className="rounded border border-gray-700 bg-[#05070D] p-3 text-[#F5C542]">
                 <item.icon className="h-6 w-6" />
               </div>

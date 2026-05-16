@@ -102,6 +102,18 @@ function formatDateTime(value: string | null) {
   });
 }
 
+function formatDateTimeCompact(value: string | null) {
+  if (!value) return "-";
+  return new Date(value).toLocaleString("en-GB", {
+    timeZone: "Asia/Kuala_Lumpur",
+    day: "2-digit",
+    month: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+}
+
 async function getFingerprint(): Promise<string> {
   const raw = [navigator.userAgent, navigator.language, screen.width, screen.height, Intl.DateTimeFormat().resolvedOptions().timeZone].join("|");
   const encoded = new TextEncoder().encode(raw);
@@ -628,7 +640,7 @@ export default function Home() {
               <ShieldCheck size={18} />
             </div>
             <h1 className="font-heading text-2xl font-black tracking-[0.08em] text-[#F5C542]">KAPITAN SIGNAL</h1>
-            <p className={`mt-2 font-subheading text-xs uppercase tracking-[0.16em] ${loginDark ? "text-[#9CA3AF]" : "text-slate-600"}`}>Every Signal Is A Mission.</p>
+            <p className={`mt-2 font-subheading text-xs uppercase tracking-[0.16em] ${loginDark ? "text-[#C9D6E8]" : "text-slate-600"}`}>Every Signal Is A Mission.</p>
           </div>
 
           <div className="mb-4 flex justify-end">
@@ -645,7 +657,7 @@ export default function Home() {
             </button>
           </div>
 
-          <label className={`mb-2 block text-xs uppercase tracking-[0.16em] ${loginDark ? "text-[#9CA3AF]" : "text-slate-700"}`}>Command Access Key</label>
+          <label className={`mb-2 block text-xs uppercase tracking-[0.16em] ${loginDark ? "text-[#C9D6E8]" : "text-slate-700"}`}>Command Access Key</label>
           <div className={`relative rounded border ${loginDark ? "border-[#1F2937] bg-[#05070D] focus-within:border-[#F5C542]" : "border-slate-300 bg-white"}`}>
             <input
               type={showAccessKey ? "text" : "password"}
@@ -657,7 +669,7 @@ export default function Home() {
             <button
               type="button"
               onClick={() => setShowAccessKey((prev) => !prev)}
-              className={`absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1 ${loginDark ? "text-[#9CA3AF] hover:bg-[#111827]" : "text-slate-600 hover:bg-slate-100"}`}
+              className={`absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1 ${loginDark ? "text-[#C9D6E8] hover:bg-[#111827]" : "text-slate-600 hover:bg-slate-100"}`}
               aria-label={showAccessKey ? "Hide access key" : "Show access key"}
               title={showAccessKey ? "Hide" : "Show"}
             >
@@ -688,7 +700,7 @@ export default function Home() {
             CLEAR SAVED KEY
           </button>
 
-          <div className={`mt-5 rounded border p-3 text-xs ${loginDark ? "border-[#1F2937] bg-[#05070D] text-[#9CA3AF]" : "border-slate-300 bg-slate-50 text-slate-700"}`}>
+          <div className={`mt-5 rounded border p-3 text-xs ${loginDark ? "border-[#1F2937] bg-[#05070D] text-[#C9D6E8]" : "border-slate-300 bg-slate-50 text-slate-700"}`}>
             One access key hanya boleh aktif pada satu device pada satu masa.
           </div>
         </section>
@@ -741,10 +753,10 @@ export default function Home() {
               </div>
               <nav className="space-y-1 font-subheading text-sm uppercase tracking-[0.08em]">
                 <a href="#dashboard" className="block rounded border border-[#F5C542]/25 bg-[#F5C542]/10 px-3 py-2 text-[#F5C542]">Dashboard</a>
-                <a href="#live-signals" className="block rounded px-3 py-2 text-[#9CA3AF] hover:bg-[#111827] hover:text-[#F9FAFB]">Live Signals</a>
-                <a href="#risk-engine" className="block rounded px-3 py-2 text-[#9CA3AF] hover:bg-[#111827] hover:text-[#F9FAFB]">Risk Engine</a>
-                <a href="#performance" className="block rounded px-3 py-2 text-[#9CA3AF] hover:bg-[#111827] hover:text-[#F9FAFB]">Performance</a>
-                <a href="#account" className="block rounded px-3 py-2 text-[#9CA3AF] hover:bg-[#111827] hover:text-[#F9FAFB]">Account</a>
+                <a href="#live-signals" className="block rounded px-3 py-2 text-[#C9D6E8] hover:bg-[#111827] hover:text-[#F9FAFB]">Live Signals</a>
+                <a href="#risk-engine" className="block rounded px-3 py-2 text-[#C9D6E8] hover:bg-[#111827] hover:text-[#F9FAFB]">Risk Engine</a>
+                <a href="#performance" className="block rounded px-3 py-2 text-[#C9D6E8] hover:bg-[#111827] hover:text-[#F9FAFB]">Performance</a>
+                <a href="#account" className="block rounded px-3 py-2 text-[#C9D6E8] hover:bg-[#111827] hover:text-[#F9FAFB]">Account</a>
               </nav>
             </div>
             <div className="border-t border-[#1F2937]/70 p-4">
@@ -759,8 +771,10 @@ export default function Home() {
           <header className="sticky top-0 z-20 border-b border-[#1F2937]/70 bg-[#05070D]/90 px-4 py-4 backdrop-blur lg:px-8">
             <div className="mx-auto flex w-full max-w-7xl items-center justify-between">
               <div>
-                <h1 className="font-heading text-lg font-black tracking-[0.06em] text-[#F9FAFB]">Welcome Back, Captain</h1>
-                <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-[#9CA3AF]">Gold Command Center Terminal Active</p>
+                <h1 className="font-heading text-lg font-black tracking-[0.06em] text-[#F9FAFB]">
+                  Welcome Back, {accountName && accountName !== "-" ? accountName : "Trader"}
+                </h1>
+                <p className="font-mono text-[12px] font-semibold uppercase tracking-[0.16em] text-[#D3DEED]">Gold Command Center Terminal Active</p>
               </div>
               <div className="hidden items-center gap-3 sm:flex">
                 <span className="rounded border border-[#F5C542]/30 bg-[#F5C542]/10 px-2 py-1 font-heading text-[10px] font-black tracking-[0.08em] text-[#F5C542]">{commandPlanLabel}</span>
@@ -1246,11 +1260,14 @@ function KapitanTerminalDashboard({
   setTheme: (value: "dark" | "light" | ((prev: "dark" | "light") => "dark" | "light")) => void;
   copyLot: () => Promise<void>;
 }) {
-  const [perfView, setPerfView] = useState<"all" | "scalping" | "intraday" | "tphit" | "slhit">("all");
+  const [perfView, setPerfView] = useState<"scalping" | "intraday">("scalping");
+  const [perfRangePreset, setPerfRangePreset] = useState<RangePreset>("week");
+  const [perfCustomFrom, setPerfCustomFrom] = useState("");
+  const [perfCustomTo, setPerfCustomTo] = useState("");
+  const [perfRowsPerPage, setPerfRowsPerPage] = useState<number | "all">(10);
+  const [perfPage, setPerfPage] = useState(1);
   const todayMy = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kuala_Lumpur" });
   const signalsToday = signals.filter((item) => new Date(item.created_at).toLocaleDateString("en-CA", { timeZone: "Asia/Kuala_Lumpur" }) === todayMy).length;
-  const wins = logs.filter((item) => item.outcome !== "sl").length;
-  const winRate = logs.length > 0 ? Math.round((wins / logs.length) * 100) : 0;
   const hasActiveSignal = Boolean(activeSignal);
   const riskModeTitle = hasActiveSignal ? "AUTO" : "WAITING";
   const riskModeSub = hasActiveSignal ? "Risk Amount Input Only" : "Waiting Active Signal";
@@ -1264,14 +1281,66 @@ function KapitanTerminalDashboard({
     return "ACTIVE PLAN";
   }, [accountPackage]);
 
-  const performanceRows = logs.filter((row) => {
-    if (perfView === "all") return true;
+  const perfStartTimeMs = useMemo(() => {
+    const now = new Date();
+    if (perfRangePreset === "day") {
+      const klDay = now.toLocaleDateString("en-CA", { timeZone: "Asia/Kuala_Lumpur" });
+      return new Date(`${klDay}T00:00:00+08:00`).getTime();
+    }
+    if (perfRangePreset === "week") return now.getTime() - 7 * 24 * 60 * 60 * 1000;
+    if (perfRangePreset === "month") return now.getTime() - 30 * 24 * 60 * 60 * 1000;
+    if (!perfCustomFrom) return 0;
+    return new Date(`${perfCustomFrom}T00:00:00+08:00`).getTime();
+  }, [perfRangePreset, perfCustomFrom]);
+
+  const perfEndTimeMs = useMemo(() => {
+    if (perfRangePreset !== "custom" || !perfCustomTo) return Infinity;
+    return new Date(`${perfCustomTo}T23:59:59+08:00`).getTime();
+  }, [perfRangePreset, perfCustomTo]);
+
+  const perfCustomRangeInvalid = useMemo(() => {
+    if (perfRangePreset !== "custom") return false;
+    if (!perfCustomFrom || !perfCustomTo) return true;
+    const from = new Date(`${perfCustomFrom}T00:00:00+08:00`).getTime();
+    const to = new Date(`${perfCustomTo}T23:59:59+08:00`).getTime();
+    if (!Number.isFinite(from) || !Number.isFinite(to)) return true;
+    return from > to;
+  }, [perfRangePreset, perfCustomFrom, perfCustomTo]);
+
+  const performanceFilteredRows = logs.filter((row) => {
+    const ts = new Date(row.created_at).getTime();
+    if (!Number.isFinite(ts)) return false;
+    if (ts < perfStartTimeMs || ts > perfEndTimeMs) return false;
     if (perfView === "scalping") return row.mode === "scalping";
     if (perfView === "intraday") return row.mode === "intraday";
-    if (perfView === "tphit") return row.outcome === "tp1" || row.outcome === "tp2" || row.outcome === "tp3";
-    if (perfView === "slhit") return row.outcome === "sl";
     return true;
-  }).slice(0, 20);
+  });
+
+  const perfTotalPages = useMemo(() => {
+    if (perfRowsPerPage === "all") return 1;
+    return Math.max(1, Math.ceil(performanceFilteredRows.length / perfRowsPerPage));
+  }, [performanceFilteredRows.length, perfRowsPerPage]);
+
+  const performanceRows = useMemo(() => {
+    if (perfRowsPerPage === "all") return performanceFilteredRows;
+    const start = (perfPage - 1) * perfRowsPerPage;
+    return performanceFilteredRows.slice(start, start + perfRowsPerPage);
+  }, [performanceFilteredRows, perfRowsPerPage, perfPage]);
+
+  useEffect(() => {
+    setPerfPage(1);
+  }, [perfView, perfRangePreset, perfCustomFrom, perfCustomTo, perfRowsPerPage]);
+
+  useEffect(() => {
+    if (perfPage > perfTotalPages) setPerfPage(perfTotalPages);
+  }, [perfPage, perfTotalPages]);
+
+  const summarySignalCount = performanceFilteredRows.length;
+  const summaryTotalPips = performanceFilteredRows.reduce((sum, row) => sum + row.net_pips, 0);
+  const summaryTotalTp = performanceFilteredRows.filter((row) => row.outcome === "tp1" || row.outcome === "tp2" || row.outcome === "tp3").length;
+  const summaryTotalBe = performanceFilteredRows.filter((row) => row.outcome === "be").length;
+  const summaryTotalSl = performanceFilteredRows.filter((row) => row.outcome === "sl").length;
+  const summaryWinRate = summarySignalCount > 0 ? Math.round(((summarySignalCount - summaryTotalSl) / summarySignalCount) * 100) : 0;
 
   const archiveRows = signals.slice(0, 6);
 
@@ -1287,33 +1356,35 @@ function KapitanTerminalDashboard({
           </div>
           <nav className="space-y-1 font-subheading text-base font-bold uppercase tracking-wider">
             <a href="#dashboard" className="flex items-center gap-3 rounded border-l-2 border-[#F5C542] bg-gradient-to-r from-[#F5C542]/10 to-transparent px-3 py-2.5 text-[#F5C542]">DASHBOARD</a>
-            <a href="#live-signals" className="flex items-center gap-3 rounded px-3 py-2.5 text-[#9CA3AF] hover:bg-[#111827] hover:text-[#F9FAFB]">LIVE SIGNALS</a>
-            <a href="#risk-engine" className="flex items-center gap-3 rounded px-3 py-2.5 text-[#9CA3AF] hover:bg-[#111827] hover:text-[#F9FAFB]">RISK ENGINE</a>
-            <a href="#performance" className="flex items-center gap-3 rounded px-3 py-2.5 text-[#9CA3AF] hover:bg-[#111827] hover:text-[#F9FAFB]">PERFORMANCE</a>
-            <a href="#archive" className="flex items-center gap-3 rounded px-3 py-2.5 text-[#9CA3AF] hover:bg-[#111827] hover:text-[#F9FAFB]">SIGNAL HISTORY</a>
-            <a href="#account" className="flex items-center gap-3 rounded px-3 py-2.5 text-[#9CA3AF] hover:bg-[#111827] hover:text-[#F9FAFB]">ACCOUNT</a>
-            <a href="#support" className="flex items-center gap-3 rounded px-3 py-2.5 text-[#9CA3AF] hover:bg-[#111827] hover:text-[#F9FAFB]">SUPPORT</a>
+            <a href="#live-signals" className="flex items-center gap-3 rounded px-3 py-2.5 text-[#C9D6E8] hover:bg-[#111827] hover:text-[#F9FAFB]">LIVE SIGNALS</a>
+            <a href="#risk-engine" className="flex items-center gap-3 rounded px-3 py-2.5 text-[#C9D6E8] hover:bg-[#111827] hover:text-[#F9FAFB]">RISK ENGINE</a>
+            <a href="#performance" className="flex items-center gap-3 rounded px-3 py-2.5 text-[#C9D6E8] hover:bg-[#111827] hover:text-[#F9FAFB]">PERFORMANCE</a>
+            <a href="#archive" className="flex items-center gap-3 rounded px-3 py-2.5 text-[#C9D6E8] hover:bg-[#111827] hover:text-[#F9FAFB]">SIGNAL HISTORY</a>
+            <a href="#account" className="flex items-center gap-3 rounded px-3 py-2.5 text-[#C9D6E8] hover:bg-[#111827] hover:text-[#F9FAFB]">ACCOUNT</a>
+            <a href="#support" className="flex items-center gap-3 rounded px-3 py-2.5 text-[#C9D6E8] hover:bg-[#111827] hover:text-[#F9FAFB]">SUPPORT</a>
           </nav>
         </div>
         <div className="border-t border-[#1F2937]/40 p-4">
-          <button onClick={logout} className="w-full rounded border border-[#1F2937] bg-[#111827] py-2 text-xs font-mono text-[#9CA3AF] hover:border-red-500/50 hover:text-red-400">
+          <button onClick={logout} className="w-full rounded border border-[#1F2937] bg-[#111827] py-2 text-xs font-mono text-[#C9D6E8] hover:border-red-500/50 hover:text-red-400">
             LOGOUT TERMINAL
           </button>
         </div>
       </aside>
 
       <div className="min-h-screen lg:pl-64">
-        <header className="sticky top-0 z-20 flex h-20 items-center justify-between border-b border-[#1F2937]/40 bg-[#05070D]/90 px-4 backdrop-blur-md lg:px-8">
+        <header className="sticky top-0 z-20 flex min-h-20 flex-wrap items-center justify-between gap-3 border-b border-[#1F2937]/40 bg-[#05070D]/90 px-4 py-3 backdrop-blur-md lg:px-8">
           <div>
-            <h1 className="font-heading text-xl font-black tracking-wide text-[#F9FAFB]">Welcome Back, Captain</h1>
-            <p className="hidden font-mono text-[11px] uppercase tracking-widest text-[#9CA3AF] sm:block">Gold Command Center Terminal Active</p>
+            <h1 className="font-heading text-lg font-black tracking-wide text-[#F9FAFB] sm:text-xl">
+              Welcome Back, {accountName && accountName !== "-" ? accountName : "Trader"}
+            </h1>
+            <p className="hidden font-mono text-[12px] font-semibold uppercase tracking-[0.16em] text-[#D3DEED] sm:block">Gold Command Center Terminal Active</p>
           </div>
-          <div className="flex items-center space-x-3">
+          <div className="flex w-full items-center justify-between gap-2 sm:w-auto sm:justify-end sm:space-x-3">
             <div className="hidden text-right font-mono text-[11px] sm:block">
               <span className="font-bold text-[#F9FAFB]">Secure Node</span>
               <span className="flex items-center justify-end text-[#10B981]"><span className="mr-1 h-1.5 w-1.5 rounded-full bg-[#10B981]" />Device Secured</span>
             </div>
-            <div className="flex h-10 items-center space-x-2 rounded-lg border border-[#1F2937] bg-[#111827] px-3">
+            <div className="flex w-full flex-wrap items-center justify-end gap-2 rounded-lg border border-[#1F2937] bg-[#111827] px-3 py-2 sm:w-auto sm:flex-nowrap sm:py-0">
               <button onClick={() => setTheme((prev) => (prev === "dark" ? "light" : "dark"))} className="rounded border border-[#F5C542]/30 px-2 py-1 text-[10px] font-heading font-black text-[#F5C542]">
                 {isDark ? "LIGHT" : "DARK"}
               </button>
@@ -1326,31 +1397,26 @@ function KapitanTerminalDashboard({
           </div>
         </header>
 
-        <main id="dashboard" className="mx-auto w-full max-w-7xl space-y-8 p-4 lg:p-8">
-          <section className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <main id="dashboard" className="mx-auto w-full max-w-7xl space-y-8 p-3 sm:p-4 lg:p-8">
+          <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
             <div className="rounded-xl border border-[#1F2937] bg-[#111827]/80 p-4">
-              <p className="font-mono text-[11px] uppercase tracking-wider text-[#C9D6E8]">Active Signal</p>
+              <p className="font-mono text-xs font-semibold uppercase tracking-wide text-[#E2E8F0]">Active Signal</p>
               <h3 className="mt-1 font-heading text-2xl font-black text-[#10B981]">{activeSignal ? "1" : "0"}</h3>
-              <span className="font-mono text-[10px] text-[#10B981]">{activeSignal ? "● Live Now" : "● Standby"}</span>
+              <span className="font-mono text-[11px] text-[#10B981]">{activeSignal ? "● Live Now" : "● Standby"}</span>
             </div>
             <div className="rounded-xl border border-[#1F2937] bg-[#111827]/80 p-4">
-              <p className="font-mono text-[11px] uppercase tracking-wider text-[#C9D6E8]">Win Rate</p>
-              <h3 className="mt-1 font-heading text-2xl font-black text-[#F5C542]">{winRate}%</h3>
-              <span className="font-mono text-[11px] text-[#B8C7DC]">Based on current logs</span>
-            </div>
-            <div className="rounded-xl border border-[#1F2937] bg-[#111827]/80 p-4">
-              <p className="font-mono text-[11px] uppercase tracking-wider text-[#C9D6E8]">Signals Today</p>
+              <p className="font-mono text-xs font-semibold uppercase tracking-wide text-[#E2E8F0]">Signals Today</p>
               <h3 className="mt-1 font-heading text-2xl font-black text-[#F9FAFB]">{signalsToday}</h3>
-              <span className="font-mono text-[11px] text-[#B8C7DC]">Scalping + Intraday</span>
+              <span className="font-mono text-xs text-[#E2E8F0]">Scalping + Intraday</span>
             </div>
             <div className="rounded-xl border border-[#1F2937] bg-[#111827]/80 p-4">
-              <p className="font-mono text-[11px] uppercase tracking-wider text-[#C9D6E8]">Risk Mode</p>
+              <p className="font-mono text-xs font-semibold uppercase tracking-wide text-[#E2E8F0]">Risk Mode</p>
               <h3 className="mt-1 font-heading text-2xl font-black text-[#F9FAFB]">{riskModeTitle}</h3>
               <span className="font-mono text-[11px] text-[#10B981]">{riskModeSub}</span>
             </div>
           </section>
 
-          <section className="grid grid-cols-1 items-start gap-6 lg:grid-cols-12">
+          <section className="grid grid-cols-1 items-start gap-4 sm:gap-6 lg:grid-cols-12">
             <div className="space-y-4 lg:col-span-4" id="countdown-anchor">
               <div className="space-y-3 rounded-xl border border-[#334155]/80 bg-[#111827]/90 p-4 shadow-[0_0_24px_rgba(15,23,42,0.35)]">
                 <div className="flex items-center justify-between">
@@ -1362,7 +1428,7 @@ function KapitanTerminalDashboard({
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     onClick={() => setMode("scalping")}
-                    className={`rounded border px-3 py-2 text-left font-mono text-xs uppercase tracking-wider transition ${
+                    className={`rounded border px-3 py-2 text-left font-mono text-sm font-semibold uppercase tracking-wide transition ${
                       mode === "scalping"
                         ? "border-[#F5C542]/70 bg-[#F5C542]/15 text-[#F5C542]"
                         : "border-[#334155]/80 bg-[#05070D] text-[#D3DEED] hover:border-[#F5C542]/50"
@@ -1372,7 +1438,7 @@ function KapitanTerminalDashboard({
                   </button>
                   <button
                     onClick={() => setMode("intraday")}
-                    className={`rounded border px-3 py-2 text-left font-mono text-xs uppercase tracking-wider transition ${
+                    className={`rounded border px-3 py-2 text-left font-mono text-sm font-semibold uppercase tracking-wide transition ${
                       mode === "intraday"
                         ? "border-[#F5C542]/70 bg-[#F5C542]/15 text-[#F5C542]"
                         : "border-[#334155]/80 bg-[#05070D] text-[#D3DEED] hover:border-[#F5C542]/50"
@@ -1386,7 +1452,7 @@ function KapitanTerminalDashboard({
                   <div className="flex items-center justify-between rounded border border-[#334155]/80 bg-[#05070D] p-3 font-mono">
                     <div>
                       <span className="block text-xs font-bold text-[#F9FAFB]">SCALPING WINDOW</span>
-                      <span className="text-[10px] text-[#C9D6E8]">Every 30 minutes</span>
+                      <span className="text-[11px] text-[#E2E8F0]">Every 30 minutes</span>
                     </div>
                     <span className="rounded border border-[#334155] bg-[#111827] px-2.5 py-1 text-base font-bold tracking-widest text-[#F5C542]">{scalpingRemain}</span>
                   </div>
@@ -1394,12 +1460,12 @@ function KapitanTerminalDashboard({
                   <div className="flex items-center justify-between rounded border border-[#334155]/80 bg-[#05070D] p-3 font-mono">
                     <div>
                       <span className="block text-xs font-bold text-[#F9FAFB]">INTRADAY WINDOW</span>
-                      <span className="text-[10px] text-[#C9D6E8]">Every 4 hours</span>
+                      <span className="text-[11px] text-[#E2E8F0]">Every 4 hours</span>
                     </div>
                     <span className="rounded border border-[#334155] bg-[#111827] px-2.5 py-1 text-base font-bold tracking-widest text-[#F9FAFB]">{intradayRemain}</span>
                   </div>
                 )}
-                <div className="flex items-center justify-center space-x-1.5 pt-1 font-mono text-[11px] text-[#C9D6E8]">
+                <div className="flex items-center justify-center space-x-1.5 pt-1 font-mono text-xs text-[#E2E8F0]">
                   <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#F5C542]" />
                   <span>Market scanning in progress...</span>
                 </div>
@@ -1407,7 +1473,7 @@ function KapitanTerminalDashboard({
             </div>
 
             <div id="live-signals" className="lg:col-span-8">
-              <div className="relative overflow-hidden rounded-xl border-2 border-[#F5C542]/40 bg-[#111827]/80 p-6 shadow-2xl">
+              <div className="relative overflow-hidden rounded-xl border-2 border-[#F5C542]/40 bg-[#111827]/80 p-4 shadow-2xl sm:p-6">
                 <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#F5C542] to-transparent" />
                 <div className="flex flex-col gap-3 border-b border-[#1F2937] pb-4 sm:flex-row sm:items-center sm:justify-between">
                   <div>
@@ -1415,14 +1481,14 @@ function KapitanTerminalDashboard({
                       <span className="rounded border border-[#10B981]/20 bg-[#10B981]/10 px-2 py-0.5 font-heading text-[10px] font-black tracking-wider text-[#10B981]">
                         {mode === "scalping" ? "SCALPING" : "INTRADAY"}
                       </span>
-                      <span className="font-mono text-xs text-[#C9D6E8]">ID: #{activeSignal?.id?.slice(0, 8).toUpperCase() ?? "XAU-0000"}</span>
+                      <span className="font-mono text-sm text-[#E2E8F0]">ID: #{activeSignal?.id?.slice(0, 8).toUpperCase() ?? "XAU-0000"}</span>
                     </div>
-                    <h3 className={`mt-1 font-heading text-3xl font-black tracking-wide ${activeSignal?.type === "sell" ? "text-[#EF4444]" : "text-[#10B981]"}`}>
+                    <h3 className={`mt-1 font-heading text-2xl font-black tracking-wide sm:text-3xl ${activeSignal?.type === "sell" ? "text-[#EF4444]" : "text-[#10B981]"}`}>
                       {(activeSignal?.type ?? "buy").toUpperCase()} XAUUSD
                     </h3>
                   </div>
                   <div className="flex items-baseline justify-between font-mono sm:flex-col sm:items-end">
-                    <span className="mr-2 text-[10px] uppercase text-[#C9D6E8] sm:mr-0">CONFIDENCE</span>
+                    <span className="mr-2 text-[11px] uppercase text-[#E2E8F0] sm:mr-0">CONFIDENCE</span>
                     <span className="font-heading text-2xl font-black text-[#F5C542]">{activeSignal ? "91%" : "0%"}</span>
                   </div>
                 </div>
@@ -1430,12 +1496,12 @@ function KapitanTerminalDashboard({
                 <div className="grid grid-cols-1 gap-6 py-6 font-mono sm:grid-cols-12">
                   <div className="space-y-3 sm:col-span-5">
                     <div className="rounded border border-[#1F2937] bg-[#05070D] p-3">
-                      <p className="text-[10px] uppercase text-[#C9D6E8]">ENTRY RANGE</p>
-                      <p className="mt-1 text-3xl font-bold text-[#F9FAFB]">{activeSignal ? fmt(activeSignal.entry_target) : "-"}</p>
+                      <p className="text-[11px] uppercase text-[#E2E8F0]">ENTRY RANGE</p>
+                      <p className="mt-1 text-2xl font-bold text-[#F9FAFB] sm:text-3xl">{activeSignal ? fmt(activeSignal.entry_target) : "-"}</p>
                     </div>
                     <div className="rounded border border-[#EF4444]/40 bg-[#05070D] p-3">
                       <p className="text-[10px] uppercase text-[#EF4444]">STOP LOSS</p>
-                      <p className="mt-1 text-3xl font-bold text-[#EF4444]">{activeSignal ? fmt(activeSignal.sl) : "-"}</p>
+                      <p className="mt-1 text-2xl font-bold text-[#EF4444] sm:text-3xl">{activeSignal ? fmt(activeSignal.sl) : "-"}</p>
                     </div>
                     <div className="flex items-center justify-between rounded border border-[#1F2937] bg-[#05070D] px-3 py-2 text-sm">
                       <span className="text-[#C9D6E8]">Risk Ratio:</span>
@@ -1445,21 +1511,21 @@ function KapitanTerminalDashboard({
 
                   <div className="space-y-2 sm:col-span-7">
                     <div className="rounded border border-[#1F2937] bg-[#05070D] p-3">
-                      <div className="flex items-center justify-between text-[10px] uppercase text-[#C9D6E8]">
+                      <div className="flex items-center justify-between text-[11px] uppercase text-[#E2E8F0]">
                         <span>TAKE PROFIT 1</span>
                         <span className="rounded bg-[#10B981]/15 px-2 py-0.5 text-[#10B981]">CORE TARGET</span>
                       </div>
-                      <p className="mt-1 text-3xl font-bold text-[#10B981]">{activeSignal ? fmt(activeSignal.tp1) : "-"}</p>
+                      <p className="mt-1 text-2xl font-bold text-[#10B981] sm:text-3xl">{activeSignal ? fmt(activeSignal.tp1) : "-"}</p>
                     </div>
                     <div className="rounded border border-[#1F2937] bg-[#05070D] p-3">
-                      <div className="flex items-center justify-between text-[10px] uppercase text-[#C9D6E8]">
+                      <div className="flex items-center justify-between text-[11px] uppercase text-[#E2E8F0]">
                         <span>TAKE PROFIT 2</span>
                         <span>Runner Target</span>
                       </div>
                       <p className="mt-1 text-2xl font-bold text-[#F9FAFB]">{activeSignal ? fmt(activeSignal.tp2) : "-"}</p>
                     </div>
                     <div className="rounded border border-[#1F2937] bg-[#05070D] p-3">
-                      <div className="flex items-center justify-between text-[10px] uppercase text-[#C9D6E8]">
+                      <div className="flex items-center justify-between text-[11px] uppercase text-[#E2E8F0]">
                         <span>TAKE PROFIT 3</span>
                         <span>Extended Target</span>
                       </div>
@@ -1469,16 +1535,16 @@ function KapitanTerminalDashboard({
                 </div>
 
                 <div className="space-y-2 border-t border-[#1F2937] pt-4 font-mono text-xs">
-                  <div className="flex items-center justify-between text-[10px] uppercase text-[#C9D6E8]">
+                  <div className="flex items-center justify-between text-[11px] uppercase text-[#E2E8F0]">
                     <span>Execution Timeline</span>
                     <span className="text-[#10B981]">Status: Processing</span>
                   </div>
                   <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
                     <div className="rounded border border-[#10B981] bg-[#10B981]/15 px-2 py-1 text-center text-[#10B981]">Released</div>
                     <div className="rounded border border-[#10B981] bg-[#10B981]/15 px-2 py-1 text-center text-[#10B981]">Active</div>
-                    <div className="rounded border border-[#1F2937] bg-[#111827] px-2 py-1 text-center text-[#C9D6E8]">TP1 Pending</div>
-                    <div className="rounded border border-[#1F2937] bg-[#111827] px-2 py-1 text-center text-[#C9D6E8]">TP2 Pending</div>
-                    <div className="rounded border border-[#1F2937] bg-[#111827] px-2 py-1 text-center text-[#C9D6E8]">TP3 Pending</div>
+                    <div className="rounded border border-[#1F2937] bg-[#111827] px-2 py-1 text-center text-[#E2E8F0]">TP1 Pending</div>
+                    <div className="rounded border border-[#1F2937] bg-[#111827] px-2 py-1 text-center text-[#E2E8F0]">TP2 Pending</div>
+                    <div className="rounded border border-[#1F2937] bg-[#111827] px-2 py-1 text-center text-[#E2E8F0]">TP3 Pending</div>
                   </div>
                 </div>
 
@@ -1491,9 +1557,11 @@ function KapitanTerminalDashboard({
             </div>
           </section>
 
-          <section id="risk-engine" className="rounded-xl border border-[#1F2937] bg-[#111827]/80 p-6">
-            <h3 className="font-heading text-4xl font-black text-[#F5C542]">GOLD RISK ENGINE™</h3>
-            <p className="mt-2 text-[#9CA3AF]">Masukkan amount risiko sahaja. Lot size dikira automatik berdasarkan Entry dan SL semasa.</p>
+          <section id="risk-engine" className="rounded-xl border border-[#1F2937] bg-[#111827]/80 p-4 sm:p-6">
+            <h3 className="font-heading text-2xl font-black text-[#F5C542] sm:text-3xl lg:text-4xl">GOLD RISK ENGINE™</h3>
+            <p className={`mt-2 font-mono text-sm font-semibold uppercase tracking-widest ${isDark ? "text-[#D3DEED]" : "text-[#334155]"}`}>
+              Masukkan amount risiko sahaja. Lot size dikira automatik berdasarkan Entry dan SL semasa.
+            </p>
             {!hasActiveSignal && (
               <div className="mt-4 rounded border border-[#F5C542]/35 bg-[#F5C542]/10 px-3 py-2 font-mono text-xs text-[#F5C542]">
                 Waiting active signal... Entry dan Stop Loss akan auto isi bila signal baru masuk.
@@ -1503,19 +1571,19 @@ function KapitanTerminalDashboard({
               <div className="space-y-4 lg:col-span-6">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div>
-                    <label className="mb-2 block font-mono text-[11px] uppercase tracking-widest text-[#9CA3AF]">Currency</label>
+                    <label className="mb-2 block font-mono text-xs font-semibold uppercase tracking-wide text-[#E2E8F0]">Currency</label>
                     <select className="w-full rounded border border-[#1F2937] bg-[#05070D] px-3 py-2 font-mono text-[#F9FAFB]">
                       <option>USD ($)</option>
                     </select>
                   </div>
                   <div>
-                    <label className="mb-2 block font-mono text-[11px] uppercase tracking-widest text-[#9CA3AF]">Risk Amount</label>
+                    <label className="mb-2 block font-mono text-xs font-semibold uppercase tracking-wide text-[#E2E8F0]">Risk Amount</label>
                     <input value={riskAmount} onChange={(e) => setRiskAmount(e.target.value)} className="w-full rounded border border-[#1F2937] bg-[#05070D] px-3 py-2 font-mono text-[#F9FAFB]" />
                   </div>
                 </div>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div>
-                    <label className="mb-2 block font-mono text-[11px] uppercase tracking-widest text-[#9CA3AF]">Entry (Auto)</label>
+                    <label className="mb-2 block font-mono text-xs font-semibold uppercase tracking-wide text-[#E2E8F0]">Entry (Auto)</label>
                     <div className="flex h-[42px] items-center rounded border border-[#1F2937] bg-[#05070D] px-3 font-mono text-[#F9FAFB]">
                       {activeSignal ? fmt(activeSignal.entry_target) : "-"}
                     </div>
@@ -1527,7 +1595,7 @@ function KapitanTerminalDashboard({
                     </div>
                   </div>
                 </div>
-                <div className="grid grid-cols-[1fr_auto] gap-3">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_auto]">
                   <button
                     onClick={() => void copyLot()}
                     disabled={!hasActiveSignal}
@@ -1539,19 +1607,19 @@ function KapitanTerminalDashboard({
                   >
                     COPY AUTO LOT
                   </button>
-                  <button onClick={() => setRiskAmount("100")} className="rounded border border-[#1F2937] bg-[#05070D] px-5 py-2 font-mono text-[#9CA3AF]">Reset</button>
+                  <button onClick={() => setRiskAmount("100")} className="rounded border border-[#1F2937] bg-[#05070D] px-5 py-2 font-mono text-[#C9D6E8]">Reset</button>
                 </div>
               </div>
               <div className="space-y-2 rounded-xl border border-[#1F2937] bg-[#05070D] p-4 lg:col-span-6">
                 <div className="flex items-center justify-between rounded border border-[#1F2937] bg-[#111827] px-3 py-2">
-                  <span className="font-mono text-[#9CA3AF]">Suggested Lot Size:</span>
+                  <span className="font-mono text-[#C9D6E8]">Suggested Lot Size:</span>
                   <span className="font-heading text-2xl font-black text-[#10B981]">{hasActiveSignal ? `${lotSize.toFixed(2)} Lot` : "-"}</span>
                 </div>
                 <div className="flex items-center justify-between rounded border border-[#1F2937] bg-[#111827] px-3 py-2">
                   <span className="font-mono text-[#EF4444]">Max Projected Loss:</span>
                   <span className="font-heading text-2xl font-black text-[#EF4444]">{hasActiveSignal ? `$${Number(riskAmount || "0").toFixed(2)}` : "-"}</span>
                 </div>
-                <div className="pt-2 text-sm text-[#9CA3AF]">
+                <div className="pt-2 text-sm text-[#C9D6E8]">
                   <div className="flex justify-between border-b border-[#1F2937] py-1"><span>TP1 Est. Profit (+1.2R):</span><span className="text-[#F9FAFB]">{hasActiveSignal ? `$${(Number(riskAmount || "0") * 1.2).toFixed(2)}` : "-"}</span></div>
                   <div className="flex justify-between border-b border-[#1F2937] py-1"><span>TP2 Est. Profit (+2.2R):</span><span className="text-[#F9FAFB]">{hasActiveSignal ? `$${(Number(riskAmount || "0") * 2.2).toFixed(2)}` : "-"}</span></div>
                   <div className="flex justify-between border-b border-[#1F2937] py-1"><span>TP3 Est. Profit (+3.8R):</span><span className="text-[#F9FAFB]">{hasActiveSignal ? `$${(Number(riskAmount || "0") * 3.8).toFixed(2)}` : "-"}</span></div>
@@ -1560,65 +1628,161 @@ function KapitanTerminalDashboard({
             </div>
           </section>
 
+          <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-6">
+            <div className="rounded-xl border border-[#1F2937] bg-[#111827]/80 p-4">
+              <p className="font-mono text-xs font-semibold uppercase tracking-wide text-[#E2E8F0]">Total Pips</p>
+              <h3 className={`mt-1 font-heading text-2xl font-black ${summaryTotalPips >= 0 ? "text-[#10B981]" : "text-[#EF4444]"}`}>
+                {summaryTotalPips >= 0 ? "+" : ""}{summaryTotalPips.toFixed(1)}
+              </h3>
+            </div>
+            <div className="rounded-xl border border-[#1F2937] bg-[#111827]/80 p-4">
+              <p className="font-mono text-xs font-semibold uppercase tracking-wide text-[#E2E8F0]">Win Rate</p>
+              <h3 className="mt-1 font-heading text-2xl font-black text-[#F5C542]">{summaryWinRate}%</h3>
+            </div>
+            <div className="rounded-xl border border-[#1F2937] bg-[#111827]/80 p-4">
+              <p className="font-mono text-xs font-semibold uppercase tracking-wide text-[#E2E8F0]">Signal Count</p>
+              <h3 className="mt-1 font-heading text-2xl font-black text-[#F9FAFB]">{summarySignalCount}</h3>
+            </div>
+            <div className="rounded-xl border border-[#1F2937] bg-[#111827]/80 p-4">
+              <p className="font-mono text-xs font-semibold uppercase tracking-wide text-[#E2E8F0]">Total TP</p>
+              <h3 className="mt-1 font-heading text-2xl font-black text-[#10B981]">{summaryTotalTp}</h3>
+            </div>
+            <div className="rounded-xl border border-[#1F2937] bg-[#111827]/80 p-4">
+              <p className="font-mono text-xs font-semibold uppercase tracking-wide text-[#E2E8F0]">Total BE</p>
+              <h3 className="mt-1 font-heading text-2xl font-black text-[#C9D6E8]">{summaryTotalBe}</h3>
+            </div>
+            <div className="rounded-xl border border-[#1F2937] bg-[#111827]/80 p-4">
+              <p className="font-mono text-xs font-semibold uppercase tracking-wide text-[#E2E8F0]">Total SL</p>
+              <h3 className="mt-1 font-heading text-2xl font-black text-[#EF4444]">{summaryTotalSl}</h3>
+            </div>
+          </section>
+
           <section id="performance" className="space-y-4">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <div>
-                <h2 className="font-heading text-4xl font-black text-[#F9FAFB]">PERFORMANCE LOG</h2>
-                <p className="font-mono text-sm uppercase tracking-widest text-[#9CA3AF]">Audited Journal Ledger Logs</p>
+                <h2 className={`font-heading text-4xl font-black ${isDark ? "text-[#F9FAFB]" : "text-[#0F172A]"}`}>PERFORMANCE LOG</h2>
+                <p className={`font-mono text-sm uppercase tracking-widest ${isDark ? "text-[#D3DEED]" : "text-[#334155]"}`}>Audited Journal Ledger Logs</p>
               </div>
-              <div className="flex flex-wrap gap-2">
-                <button onClick={() => setPerfView("all")} className={`rounded border px-3 py-1.5 text-xs font-mono ${perfView === "all" ? "border-[#F5C542] bg-[#F5C542] text-[#05070D]" : "border-[#1F2937] bg-[#111827] text-[#9CA3AF]"}`}>All</button>
-                <button onClick={() => setPerfView("scalping")} className={`rounded border px-3 py-1.5 text-xs font-mono ${perfView === "scalping" ? "border-[#F5C542] bg-[#F5C542] text-[#05070D]" : "border-[#1F2937] bg-[#111827] text-[#9CA3AF]"}`}>Scalping</button>
-                <button onClick={() => setPerfView("intraday")} className={`rounded border px-3 py-1.5 text-xs font-mono ${perfView === "intraday" ? "border-[#F5C542] bg-[#F5C542] text-[#05070D]" : "border-[#1F2937] bg-[#111827] text-[#9CA3AF]"}`}>Intraday</button>
-                <button onClick={() => setPerfView("tphit")} className={`rounded border px-3 py-1.5 text-xs font-mono ${perfView === "tphit" ? "border-[#F5C542] bg-[#F5C542] text-[#05070D]" : "border-[#1F2937] bg-[#111827] text-[#9CA3AF]"}`}>TP Hit</button>
-                <button onClick={() => setPerfView("slhit")} className={`rounded border px-3 py-1.5 text-xs font-mono ${perfView === "slhit" ? "border-[#F5C542] bg-[#F5C542] text-[#05070D]" : "border-[#1F2937] bg-[#111827] text-[#9CA3AF]"}`}>SL Hit</button>
+              <div className="grid grid-cols-2 gap-2 rounded-xl border border-[#1F2937] bg-[#111827] p-1">
+                <button
+                  onClick={() => setPerfView("scalping")}
+                  className={`rounded-lg px-5 py-2 text-sm font-mono font-semibold uppercase tracking-wide transition ${perfView === "scalping" ? "border border-[#F5C542] bg-[#F5C542] text-[#05070D]" : "border border-transparent bg-[#05070D] text-[#E2E8F0]"}`}
+                >
+                  Scalping
+                </button>
+                <button
+                  onClick={() => setPerfView("intraday")}
+                  className={`rounded-lg px-5 py-2 text-sm font-mono font-semibold uppercase tracking-wide transition ${perfView === "intraday" ? "border border-[#F5C542] bg-[#F5C542] text-[#05070D]" : "border border-transparent bg-[#05070D] text-[#E2E8F0]"}`}
+                >
+                  Intraday
+                </button>
               </div>
             </div>
+
+            <div className="flex flex-wrap items-end gap-2 rounded-xl border border-[#1F2937] bg-[#111827] p-3">
+              <button onClick={() => setPerfRangePreset("day")} className={`rounded border px-3 py-1 text-sm font-mono font-semibold ${perfRangePreset === "day" ? "border-[#F5C542] bg-[#F5C542] text-[#05070D]" : "border-[#334155] bg-[#05070D] text-[#E2E8F0]"}`}>Day</button>
+              <button onClick={() => setPerfRangePreset("week")} className={`rounded border px-3 py-1 text-sm font-mono font-semibold ${perfRangePreset === "week" ? "border-[#F5C542] bg-[#F5C542] text-[#05070D]" : "border-[#334155] bg-[#05070D] text-[#E2E8F0]"}`}>Week</button>
+              <button onClick={() => setPerfRangePreset("month")} className={`rounded border px-3 py-1 text-sm font-mono font-semibold ${perfRangePreset === "month" ? "border-[#F5C542] bg-[#F5C542] text-[#05070D]" : "border-[#334155] bg-[#05070D] text-[#E2E8F0]"}`}>Month</button>
+              <button onClick={() => setPerfRangePreset("custom")} className={`rounded border px-3 py-1 text-sm font-mono font-semibold ${perfRangePreset === "custom" ? "border-[#F5C542] bg-[#F5C542] text-[#05070D]" : "border-[#334155] bg-[#05070D] text-[#E2E8F0]"}`}>Custom</button>
+              {perfRangePreset === "custom" && (
+                <>
+                  <input type="date" value={perfCustomFrom} onChange={(e) => setPerfCustomFrom(e.target.value)} className="rounded border border-[#334155] bg-[#05070D] px-2 py-1 text-xs text-[#F9FAFB]" />
+                  <input type="date" value={perfCustomTo} onChange={(e) => setPerfCustomTo(e.target.value)} className="rounded border border-[#334155] bg-[#05070D] px-2 py-1 text-xs text-[#F9FAFB]" />
+                </>
+              )}
+            </div>
+            {perfCustomRangeInvalid && (
+              <p className="font-mono text-xs text-[#F5C542]">
+                Please select valid custom date range (From/To).
+              </p>
+            )}
+
+            <div className="rounded-xl border border-[#1F2937] bg-[#111827]/80 p-4">
+              <p className="mb-2 flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-[#C9D6E8]"><BarChart3 size={14} />Profit Loss Distribution</p>
+              <div className="space-y-2 text-xs">
+                <Dist label="TP1" count={performanceFilteredRows.filter((row) => row.outcome === "tp1").length} total={summarySignalCount} />
+                <Dist label="TP2" count={performanceFilteredRows.filter((row) => row.outcome === "tp2").length} total={summarySignalCount} />
+                <Dist label="TP3" count={performanceFilteredRows.filter((row) => row.outcome === "tp3").length} total={summarySignalCount} />
+                <Dist label="BE" count={summaryTotalBe} total={summarySignalCount} />
+                <Dist label="SL" count={summaryTotalSl} total={summarySignalCount} />
+              </div>
+            </div>
+
             <div className="overflow-x-auto rounded-xl border border-[#1F2937] bg-[#111827]/80">
-              <table className="w-full min-w-[760px] text-left">
-                <thead className="border-b border-[#1F2937] bg-[#05070D] font-mono text-xs uppercase tracking-widest text-[#9CA3AF]">
+              <table className="w-full min-w-[390px] table-fixed text-left sm:min-w-[460px]">
+                <thead className="border-b border-[#1F2937] bg-[#05070D] font-mono text-[11px] uppercase tracking-[0.1em] text-[#E2E8F0] sm:text-xs sm:tracking-wide">
                   <tr>
-                    <th className="px-4 py-3">Date</th>
-                    <th className="px-4 py-3">Type</th>
-                    <th className="px-4 py-3">Pair</th>
-                    <th className="px-4 py-3">Direction</th>
-                    <th className="px-4 py-3">Entry</th>
-                    <th className="px-4 py-3">Result</th>
-                    <th className="px-4 py-3">RR</th>
-                    <th className="px-4 py-3 text-right">Status</th>
+                    <th className="w-[44%] px-2 py-2 sm:px-4 sm:py-3">Timestamp</th>
+                    <th className="w-[18%] px-2 py-2 sm:px-4 sm:py-3">Type</th>
+                    <th className="w-[18%] px-2 py-2 sm:px-4 sm:py-3">Outcome</th>
+                    <th className="w-[20%] px-2 py-2 sm:px-4 sm:py-3">Net Pips</th>
                   </tr>
                 </thead>
-                <tbody className="font-mono text-sm">
+                <tbody className="font-mono text-xs sm:text-sm">
                   {performanceRows.map((row) => (
                     <tr key={row.id} className="border-b border-[#1F2937]/70">
-                      <td className="px-4 py-3 text-[#BFDBFE]">{formatDateTime(row.created_at).split(",")[0] === formatDateTime(new Date().toISOString()).split(",")[0] ? "Today" : "Yesterday"}</td>
-                      <td className="px-4 py-3"><span className={`${row.mode === "scalping" ? "text-[#F5C542]" : "text-[#60A5FA]"}`}>{row.mode === "scalping" ? "Scalping" : "Intraday"}</span></td>
-                      <td className="px-4 py-3 text-[#F9FAFB]">XAUUSD</td>
-                      <td className={`px-4 py-3 ${row.type === "buy" ? "text-[#10B981]" : "text-[#EF4444]"}`}>{row.type.toUpperCase()}</td>
-                      <td className="px-4 py-3 text-[#F9FAFB]">{activeSignal ? fmt(activeSignal.entry_target) : "-"}</td>
-                      <td className={`px-4 py-3 ${row.outcome === "sl" ? "text-[#EF4444]" : row.outcome === "be" ? "text-[#9CA3AF]" : "text-[#10B981]"}`}>{row.outcome.toUpperCase()}</td>
-                      <td className={`px-4 py-3 ${row.net_pips >= 0 ? "text-[#10B981]" : "text-[#EF4444]"}`}>{row.net_pips >= 0 ? `+${(row.net_pips / 100).toFixed(1)}R` : `${(row.net_pips / 100).toFixed(1)}R`}</td>
-                      <td className="px-4 py-3 text-right">
-                        <span className={`rounded px-2 py-1 text-[10px] uppercase ${row.outcome === "sl" ? "bg-[#EF4444]/20 text-[#EF4444]" : "bg-[#10B981]/20 text-[#10B981]"}`}>
-                          {row.outcome === "be" ? "LIVE" : "CLOSED"}
-                        </span>
+                      <td className="whitespace-nowrap px-2 py-2 text-[#BFDBFE] sm:px-4 sm:py-3">{formatDateTimeCompact(row.created_at)}</td>
+                      <td className={`px-2 py-2 sm:px-4 sm:py-3 ${row.type === "buy" ? "text-[#10B981]" : "text-[#EF4444]"}`}>{row.type.toUpperCase()}</td>
+                      <td className={`px-2 py-2 sm:px-4 sm:py-3 ${row.outcome === "sl" ? "text-[#EF4444]" : row.outcome === "be" ? "text-[#D3DEED]" : "text-[#10B981]"}`}>{row.outcome.toUpperCase()}</td>
+                      <td className={`whitespace-nowrap px-2 py-2 sm:px-4 sm:py-3 ${row.net_pips >= 0 ? "text-[#10B981]" : "text-[#EF4444]"}`}>
+                        {row.net_pips >= 0 ? "+" : ""}{row.net_pips.toFixed(1)}
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
+            <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-xs text-[#C9D6E8]">
+              <div className="flex items-center gap-2">
+                <span>Rows:</span>
+                <select
+                  value={String(perfRowsPerPage)}
+                  onChange={(e) => {
+                    const raw = e.target.value;
+                    setPerfRowsPerPage(raw === "all" ? "all" : Number(raw));
+                  }}
+                  className="rounded border border-[#1F2937] bg-[#05070D] px-2 py-1 text-[#F9FAFB]"
+                >
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="50">50</option>
+                  <option value="all">All</option>
+                </select>
+              </div>
+              <p>Showing {performanceRows.length} of {performanceFilteredRows.length} records</p>
+              <div className="flex items-center gap-2">
+                {perfRowsPerPage !== "all" && <span>Page {perfPage} / {perfTotalPages}</span>}
+                {perfRowsPerPage !== "all" && (
+                  <button
+                    onClick={() => setPerfPage((prev) => Math.max(1, prev - 1))}
+                    disabled={perfPage <= 1}
+                    className="rounded border border-[#1F2937] bg-[#05070D] px-3 py-1 text-[#F9FAFB] disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    Prev
+                  </button>
+                )}
+                {perfRowsPerPage !== "all" && (
+                  <button
+                    onClick={() => setPerfPage((prev) => Math.min(perfTotalPages, prev + 1))}
+                    disabled={perfPage >= perfTotalPages}
+                    className="rounded border border-[#1F2937] bg-[#05070D] px-3 py-1 text-[#F9FAFB] disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    Next
+                  </button>
+                )}
+              </div>
+            </div>
           </section>
 
           <section className="grid grid-cols-1 gap-6 lg:grid-cols-12">
             <div id="archive" className="space-y-4 rounded-xl border border-[#1F2937] bg-[#111827]/80 p-5 lg:col-span-6">
               <h4 className="font-heading text-3xl font-black uppercase tracking-[0.06em] text-[#F9FAFB]">Signal Archive</h4>
-              <p className="font-mono text-xs uppercase tracking-widest text-[#9CA3AF]">Senarai Jejak Isyarat Terdahulu</p>
+              <p className="font-mono text-sm uppercase tracking-wide text-[#E2E8F0]">Senarai Jejak Isyarat Terdahulu</p>
               {archiveRows.map((item) => (
                 <div key={item.id} className="flex items-center justify-between rounded border border-[#1F2937] bg-[#05070D] p-3">
                   <div>
-                    <p className={`font-subheading text-sm font-bold uppercase tracking-[0.06em] ${item.type === "buy" ? "text-[#10B981]" : "text-[#EF4444]"}`}>{item.type.toUpperCase()} XAUUSD ({item.mode === "scalping" ? "M30" : "H4"})</p>
-                    <p className="font-mono text-xs uppercase tracking-[0.08em] text-[#9CA3AF]">Entry: {fmt(item.entry_target)} | SL: {fmt(item.sl)}</p>
+                    <p className={`font-subheading text-sm font-bold uppercase tracking-[0.06em] ${item.type === "buy" ? "text-[#10B981]" : "text-[#EF4444]"}`}>{item.type.toUpperCase()} XAUUSD ({item.mode === "scalping" ? "SCALPING" : "INTRADAY"})</p>
+                    <p className="font-mono text-sm uppercase tracking-wide text-[#E2E8F0]">Entry: {fmt(item.entry_target)} | SL: {fmt(item.sl)}</p>
                   </div>
                   <span className="rounded border border-[#10B981]/30 bg-[#10B981]/15 px-2 py-1 font-subheading text-[10px] uppercase tracking-[0.08em] text-[#10B981]">
                     {item.status === "active" ? "LIVE" : "CLOSED"}
@@ -1629,17 +1793,17 @@ function KapitanTerminalDashboard({
 
             <div id="account" className="space-y-4 rounded-xl border border-[#1F2937] bg-[#111827]/80 p-5 lg:col-span-6">
               <h4 className="font-heading text-3xl font-black uppercase tracking-[0.06em] text-[#F9FAFB]">Command Key Status</h4>
-              <p className="font-mono text-xs uppercase tracking-widest text-[#9CA3AF]">One Key. One Trader. One Mission.</p>
+              <p className="font-mono text-sm uppercase tracking-wide text-[#E2E8F0]">One Key. One Trader. One Mission.</p>
               <div className="rounded border border-[#1F2937] bg-[#05070D] p-4 text-sm">
-                <div className="flex justify-between border-b border-[#1F2937] py-2"><span className="font-mono text-[11px] uppercase tracking-widest text-[#9CA3AF]">Command Key:</span><span className="font-subheading text-sm font-bold uppercase tracking-[0.06em] text-[#F5C542]">KPS-ELITE-X92A</span></div>
-                <div className="flex justify-between border-b border-[#1F2937] py-2"><span className="font-mono text-[11px] uppercase tracking-widest text-[#9CA3AF]">Active Plan:</span><span className="font-subheading text-sm font-bold uppercase tracking-[0.06em] text-[#F9FAFB]">{accountPackage}</span></div>
-                <div className="flex justify-between border-b border-[#1F2937] py-2"><span className="font-mono text-[11px] uppercase tracking-widest text-[#9CA3AF]">Device Integrity:</span><span className="font-subheading text-sm font-bold uppercase tracking-[0.06em] text-[#10B981]">Secured Node</span></div>
-                <div className="flex justify-between border-b border-[#1F2937] py-2"><span className="font-mono text-[11px] uppercase tracking-widest text-[#9CA3AF]">Last Authorization:</span><span className="font-subheading text-sm font-bold text-[#F9FAFB]">{lastSync ?? "-"}</span></div>
-                <div className="flex justify-between py-2"><span className="font-mono text-[11px] uppercase tracking-widest text-[#9CA3AF]">Subscription Validation:</span><span className="font-subheading text-sm font-bold text-[#F5C542]">Active until {formatDateTime(subscriptionExpiry)}</span></div>
+                <div className="flex justify-between border-b border-[#1F2937] py-2"><span className="font-mono text-xs font-semibold uppercase tracking-wide text-[#E2E8F0]">Command Key:</span><span className="font-subheading text-sm font-bold uppercase tracking-[0.06em] text-[#F5C542]">KPS-ELITE-X92A</span></div>
+                <div className="flex justify-between border-b border-[#1F2937] py-2"><span className="font-mono text-xs font-semibold uppercase tracking-wide text-[#E2E8F0]">Active Plan:</span><span className="font-subheading text-sm font-bold uppercase tracking-[0.06em] text-[#F9FAFB]">{accountPackage}</span></div>
+                <div className="flex justify-between border-b border-[#1F2937] py-2"><span className="font-mono text-xs font-semibold uppercase tracking-wide text-[#E2E8F0]">Device Integrity:</span><span className="font-subheading text-sm font-bold uppercase tracking-[0.06em] text-[#10B981]">Secured Node</span></div>
+                <div className="flex justify-between border-b border-[#1F2937] py-2"><span className="font-mono text-xs font-semibold uppercase tracking-wide text-[#E2E8F0]">Last Authorization:</span><span className="font-subheading text-sm font-bold text-[#F9FAFB]">{lastSync ?? "-"}</span></div>
+                <div className="flex justify-between py-2"><span className="font-mono text-xs font-semibold uppercase tracking-wide text-[#E2E8F0]">Subscription Validation:</span><span className="font-subheading text-sm font-bold text-[#F5C542]">Active until {formatDateTime(subscriptionExpiry)}</span></div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <button className="rounded bg-[#F5C542] py-2 font-subheading text-sm font-black uppercase tracking-[0.08em] text-[#05070D]">Renew Package</button>
-                <button onClick={logout} className="rounded border border-[#1F2937] bg-[#05070D] py-2 font-subheading text-sm font-bold uppercase tracking-[0.08em] text-[#9CA3AF]">Logout Device</button>
+                <button onClick={logout} className="rounded border border-[#1F2937] bg-[#05070D] py-2 font-subheading text-sm font-bold uppercase tracking-[0.08em] text-[#C9D6E8]">Logout Device</button>
               </div>
             </div>
           </section>
@@ -1647,7 +1811,7 @@ function KapitanTerminalDashboard({
           <section id="support" className="flex flex-col items-start justify-between gap-4 rounded-xl border border-[#1F2937] bg-gradient-to-r from-[#111827] via-[#111827] to-[#F5C542]/5 p-5 sm:flex-row sm:items-center">
             <div>
               <h4 className="font-heading text-3xl font-black uppercase tracking-[0.06em] text-[#F9FAFB]">Need Help, Captain?</h4>
-              <p className="font-mono text-xs uppercase tracking-widest text-[#9CA3AF]">Talian Bantuan Sistem Sokongan Teknikal Beroperasi 24/7.</p>
+              <p className="font-mono text-sm uppercase tracking-wide text-[#E2E8F0]">Talian Bantuan Sistem Sokongan Teknikal Beroperasi 24/7.</p>
             </div>
             <div className="flex gap-2">
               <button className="rounded border border-[#1F2937] bg-[#05070D] px-4 py-2 font-subheading text-sm font-bold uppercase tracking-[0.08em] text-[#F9FAFB]">Contact Admin</button>
@@ -1655,12 +1819,12 @@ function KapitanTerminalDashboard({
             </div>
           </section>
 
-          <section className="rounded-lg border border-[#EF4444]/30 bg-[#2b0f18]/40 p-4 font-mono text-xs text-[#FCA5A5]">
+          <section className="rounded-lg border border-[#EF4444]/40 bg-[#2b0f18]/50 p-4 font-mono text-sm text-[#FECACA]">
             Tactical Operation Risk Protocol Reminder: Trading XAUUSD mempunyai risiko tinggi. Signal bukan jaminan keuntungan.
             Gunakan risk management yang sesuai di setiap kemasukan order.
           </section>
 
-          <footer className="pb-8 text-center font-mono text-[11px] text-[#64748B]">
+          <footer className="pb-8 text-center font-mono text-xs text-[#C9D6E8]">
             © 2026 KAPITAN SIGNAL. Operational Control Matrix Terminal. Command The Gold Market.
           </footer>
         </main>
