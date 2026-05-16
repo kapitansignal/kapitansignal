@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ms" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Access Portal — Kapitan Signal</title>
+    
+    <!-- Google Fonts: Orbitron & Rajdhani (Futuristic), Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        subheading: ['Rajdhani', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        darkMain: '#05070D',
+                        darkCard: '#111827',
+                        borderDark: '#1F2937',
+                        goldPrimary: '#F5C542',
+                        goldGlow: '#FFD700',
+                        textMain: '#F9FAFB',
+                        textSec: '#9CA3AF',
+                        buySuccess: '#10B981',
+                        sellDanger: '#EF4444',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        .gold-glow-focus:focus-within {
+            box-shadow: 0 0 15px rgba(245, 197, 66, 0.3);
+            border-color: #F5C542;
+        }
+        .text-gradient {
+            background: linear-gradient(to right, #F9FAFB, #F5C542, #F9FAFB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Lock Pulse Animation */
+        @keyframes lockGlow {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(245,197,66,0.2)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 12px rgba(245,197,66,0.6)); }
+        }
+        .animated-lock {
+            animation: lockGlow 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-darkMain text-textMain font-sans antialiased selection:bg-goldPrimary selection:text-darkMain min-h-screen relative overflow-x-hidden flex flex-col justify-between">
+
+    <!-- Cyber Background Grid + Ambient Gold Glows -->
+    <div class="absolute inset-0 bg-[linear-gradient(to_right,#111827_1px,transparent_1px),linear-gradient(to_bottom,#111827_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20 pointer-events-none"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-goldPrimary/5 blur-[150px] rounded-full pointer-events-none"></div>
+
+    <!-- MAIN CENTERED CONTAINER -->
+    <main class="flex-grow flex items-center justify-center p-4 relative z-10">
+        <div class="w-full max-w-md bg-darkCard border border-borderDark rounded-xl p-6 md:p-8 shadow-[0_0_50px_rgba(5,7,13,0.9)] relative overflow-hidden group">
+            
+            <!-- Thin Top Gold Border -->
+            <div class="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-goldPrimary to-transparent"></div>
+
+            <!-- HEADER SECTION -->
+            <div class="text-center space-y-2 mb-8">
+                <div class="inline-block bg-darkMain p-3 rounded-full border border-borderDark/80 mb-2 animated-lock">
+                    <i data-lucide="shield-alert" class="w-6 h-6 text-goldPrimary"></i>
+                </div>
+                <h1 class="text-2xl font-heading font-black tracking-wider text-gradient">KAPITAN SIGNAL</h1>
+                <p class="text-xs font-subheading font-bold text-textSec uppercase tracking-widest">“Member Access Portal”</p>
+            </div>
+
+            <!-- DYNAMIC PRESET ERROR MESSAGES (Hidden by default, used for developer testing/UI display) -->
+            <div id="errorBox" class="hidden mb-6 p-3.5 bg-sellDanger/10 border border-sellDanger/30 rounded flex items-start space-x-2.5 font-mono text-xs text-sellDanger">
+                <i data-lucide="alert-octagon" class="w-4 h-4 shrink-0 mt-0.5"></i>
+                <span id="errorText">Error message location.</span>
+            </div>
+
+            <!-- TEST PRESETS CONTROLLER (Sila padam bahagian ini apabila sedia untuk production) -->
+            <div class="mb-6 p-2.5 bg-darkMain rounded border border-borderDark text-[10px] font-mono text-textSec space-y-1">
+                <p class="text-goldPrimary font-bold uppercase tracking-wider text-[9px]">UI Test Presets (Sila Cuba Input):</p>
+                <p>• Taip <span class="text-textMain font-bold">"SALAH"</span> untuk ralat Invalid Key.</p>
+                <p>• Taip <span class="text-textMain font-bold">"KONGSI"</span> untuk ralat Active on another device.</p>
+                <p>• Taip <span class="text-textMain font-bold">"TAMAT"</span> untuk ralat Subscription Expired.</p>
+                <p>• Taip sebarang key lain untuk simulasi <span class="text-buySuccess font-bold">Success Access</span>.</p>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-6">
+                
+                <!-- Access Key Input Field -->
+                <div class="space-y-1.5">
+                    <label for="accessKey" class="text-xs font-subheading uppercase tracking-wider text-textSec block">Command Access Key</label>
+                    <div class="relative rounded border border-borderDark bg-darkMain gold-glow-focus transition-all flex items-center">
+                        <div class="pl-3.5 text-textSec shrink-0">
+                            <i data-lucide="key" class="w-4 h-4"></i>
+                        </div>
+                        <input 
+                            type="text" 
+                            id="accessKey" 
+                            class="w-full bg-transparent px-3 py-3.5 text-sm text-textMain tracking-widest font-mono uppercase placeholder-gray-700 focus:outline-none" 
+                            placeholder="KPS-XXXX-XXXX" 
+                            required
+                        >
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div>
+                    <button type="submit" class="w-full bg-gradient-to-r from-goldPrimary to-[#FFD700] text-darkMain font-heading font-bold text-xs py-4 rounded shadow-[0_0_20px_rgba(245,197,66,0.2)] hover:shadow-[0_0_30px_rgba(245,197,66,0.4)] transition-all tracking-widest uppercase">
+                        Enter Dashboard
+                    </button>
+                </div>
+            </form>
+
+            <!-- SECONDARY LINKS -->
+            <div class="mt-6 flex justify-between items-center font-subheading text-sm tracking-wide border-b border-borderDark/40 pb-5">
+                <a href="#forgot" class="text-textSec hover:text-goldPrimary transition-colors">Forgot Access Key?</a>
+                <a href="/website" class="text-goldPrimary hover:text-goldGlow flex items-center space-x-1 transition-colors">
+                    <span>Back to Website</span>
+                    <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+                </a>
+            </div>
+
+            <!-- DEVICE STATUS CARD -->
+            <div class="mt-5 bg-darkMain border border-borderDark/80 p-3.5 rounded flex items-start space-x-3">
+                <div class="text-goldPrimary mt-0.5 shrink-0">
+                    <i data-lucide="monitor" class="w-4 h-4"></i>
+                </div>
+                <div class="space-y-0.5">
+                    <h4 class="text-xs font-subheading font-bold uppercase tracking-wider text-textMain">Device Protected Access</h4>
+                    <p class="text-[11px] text-textSec font-mono leading-relaxed">Satu Access Key hanya boleh aktif pada satu device pada satu masa.</p>
+                </div>
+            </div>
+
+            <!-- UNAUTHORIZED DISCLAIMER -->
+            <p class="mt-5 text-center font-mono text-[9px] text-sellDanger/70 tracking-wider uppercase">
+                ⚠️ Unauthorized access is monitored & strictly prohibited.
+            </p>
+
+        </div>
+    </main>
+
+    <!-- SMALL TECH FOOTER -->
+    <footer class="p-4 border-t border-borderDark/40 text-center font-mono text-[10px] text-gray-600 relative z-10">
+        &copy; 2026 KAPITAN SIGNAL. Security Gate Terminal. Encryption System Active.
+    </footer>
+
+    <!-- Logic Script -->
+    <script>
+        // Inisialisasi ikon Lucide SVG
+        lucide.createIcons();
+
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const accessKeyVal = document.getElementById('accessKey').value.trim().toUpperCase();
+            const errorBox = document.getElementById('errorBox');
+            const errorText = document.getElementById('errorText');
+            
+            // Sembunyi error box terlebih dahulu
+            errorBox.classList.add('hidden');
+
+            // Simulasi Logik Mesej Ralat mengikut input spesifik
+            if (accessKeyVal === 'SALAH') {
+                errorText.textContent = "Invalid Access Key. Please check your access details.";
+                errorBox.classList.remove('hidden');
+                return;
+            } 
+            
+            if (accessKeyVal === 'KONGSI') {
+                errorText.textContent = "Access Key already active on another device.";
+                errorBox.classList.remove('hidden');
+                return;
+            } 
+            
+            if (accessKeyVal === 'TAMAT') {
+                errorText.textContent = "Your access has expired. Please renew your package.";
+                errorBox.classList.remove('hidden');
+                return;
+            }
+
+            // SUCCESS REDIRECT STATE
+            // Sekiranya melepasi semua validation, lencongkan pengguna ke `/access`
+            alert("Akses Disahkan! Sistem melencongkan pengoperasian anda ke route: /access");
+            window.location.href = "/access";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,836 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #05070d;
+  --primary: #10b981;
+  --danger: #ef4444;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-rajdhani);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at 10% 10%, #0b1220 0%, #05070d 45%, #02040a 100%);
+  color: var(--primary);
+  font-family: var(--font-inter), sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-orbitron), sans-serif;
+}
+
+.font-heading {
+  font-family: var(--font-orbitron), sans-serif !important;
+}
+
+.font-subheading {
+  font-family: var(--font-rajdhani), sans-serif !important;
+}
+
+.scanlines {
+  position: relative;
+  overflow: hidden;
+}
+
+.scanlines > * {
+  position: relative;
+  z-index: 1;
+}
+
+.scanlines::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(to bottom, rgba(16, 185, 129, 0.06) 0, rgba(16, 185, 129, 0.06) 1px, transparent 1px, transparent 3px);
+  mix-blend-mode: screen;
+}
+
+/* Tactical vertical sweep (downward, repeating) */
+.scanlines::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -18%;
+  height: 14%;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(16, 185, 129, 0) 0%,
+    rgba(16, 185, 129, 0.04) 28%,
+    rgba(16, 185, 129, 0.13) 52%,
+    rgba(16, 185, 129, 0.04) 74%,
+    rgba(16, 185, 129, 0) 100%
+  );
+  mix-blend-mode: screen;
+  animation: tacticalSweepDown 4.1s linear infinite;
+}
+
+.glitch {
+  position: relative;
+  text-shadow: 0 0 8px rgba(16, 185, 129, 0.8);
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0.5;
+}
+
+.glitch::before {
+  transform: translateX(1px);
+  color: #34d399;
+}
+
+.glitch::after {
+  transform: translateX(-1px);
+  color: #6ee7b7;
+}
+
+.pulse {
+  animation: pulseGlow 1.6s ease-in-out infinite;
+}
+
+.light-theme .scanlines::before {
+  opacity: 0.2;
+}
+
+.light-theme .scanlines::after {
+  opacity: 0.25;
+}
+
+.light-theme [class*="text-emerald-"] {
+  color: #0f766e !important;
+}
+
+.light-theme [class*="border-emerald-"] {
+  border-color: rgba(15, 118, 110, 0.55) !important;
+}
+
+.light-theme [class*="rounded"][class*="border-emerald-"] {
+  border-width: 1.5px !important;
+}
+
+.light-theme [class*="bg-emerald-500/10"],
+.light-theme [class*="bg-emerald-500/20"],
+.light-theme [class*="bg-emerald-500/5"] {
+  background-color: rgba(15, 118, 110, 0.1) !important;
+}
+
+.design-executive {
+  background: linear-gradient(180deg, #020617 0%, #010b2a 100%) !important;
+  color: #e2e8f0 !important;
+  font-family: var(--font-inter), sans-serif !important;
+}
+
+.design-executive * {
+  font-family: var(--font-inter), sans-serif !important;
+}
+
+.design-executive .scanlines::before {
+  background: none;
+}
+
+.design-executive .scanlines::after {
+  display: none;
+}
+
+.design-executive .scanlines {
+  backdrop-filter: none;
+}
+
+.design-executive .scanlines {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.design-executive [class*="text-emerald-"] {
+  color: #bfdbfe !important;
+}
+
+.design-executive [class*="border-emerald-"] {
+  border-color: rgba(96, 165, 250, 0.46) !important;
+  border-width: 1.6px !important;
+}
+
+.design-executive [class*="border-b"][class*="border-emerald-"] {
+  border-top-width: 0 !important;
+  border-left-width: 0 !important;
+  border-right-width: 0 !important;
+  border-bottom-width: 1px !important;
+}
+
+.design-executive [class*="bg-emerald-500/10"],
+.design-executive [class*="bg-emerald-500/20"],
+.design-executive [class*="bg-emerald-500/5"] {
+  background-color: rgba(37, 99, 235, 0.18) !important;
+}
+
+.design-executive [class*="shadow-[0_0_60px"] {
+  box-shadow: 0 0 50px rgba(59, 130, 246, 0.12) !important;
+}
+
+.design-executive [class*="rounded-2xl"],
+.design-executive [class*="rounded-xl"],
+.design-executive [class*="rounded"] {
+  border-radius: 1rem !important;
+}
+
+.design-executive [class*="bg-black/80"] {
+  background: rgba(2, 10, 36, 0.92) !important;
+  border-color: rgba(59, 130, 246, 0.34) !important;
+  box-shadow: 0 14px 34px rgba(2, 6, 23, 0.42), inset 0 0 0 1px rgba(148, 163, 184, 0.08) !important;
+  position: relative;
+}
+
+.design-executive [class*="bg-black/80"]::after {
+  content: "";
+  position: absolute;
+  left: 0.7rem;
+  right: 0.7rem;
+  top: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(59, 130, 246, 0.75), rgba(16, 185, 129, 0.55), rgba(59, 130, 246, 0.75));
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.design-executive .pulse {
+  animation: none !important;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.36) !important;
+}
+
+.design-executive button {
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  border-radius: 0.6rem !important;
+}
+
+.design-executive button[class*="bg-emerald-500/20"] {
+  background: #2563eb !important;
+  border-color: #1d4ed8 !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.28) !important;
+}
+
+.design-executive article.rounded,
+.design-executive div.rounded-2xl,
+.design-executive div.rounded-xl {
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.28);
+}
+
+.design-executive .exec-signal-panel,
+.design-executive .exec-planner-panel {
+  border-radius: 1.45rem !important;
+  background: rgba(30, 41, 59, 0.46) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(71, 85, 105, 0.38) !important;
+}
+
+.design-executive .exec-signal-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.design-executive .exec-signal-panel::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1.1rem;
+  bottom: 1.1rem;
+  width: 4px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #10b981 0%, #14b8a6 55%, rgba(20, 184, 166, 0.35) 100%);
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.55);
+  z-index: 2;
+}
+
+.design-executive .exec-card {
+  border-radius: 1.1rem !important;
+  background: rgba(15, 23, 42, 0.72) !important;
+  border: 1px solid rgba(51, 65, 85, 0.65) !important;
+}
+
+.design-executive .exec-card-tp {
+  background: rgba(11, 60, 72, 0.36) !important;
+  border-color: rgba(45, 212, 191, 0.35) !important;
+}
+
+.design-executive .exec-card-sl {
+  background: rgba(72, 19, 46, 0.26) !important;
+  border-color: rgba(244, 63, 94, 0.35) !important;
+}
+
+.design-executive .exec-card p:first-child {
+  letter-spacing: 0.16em !important;
+  opacity: 0.8;
+}
+
+.design-executive .exec-card p:nth-child(2) {
+  font-size: 1.02rem;
+  line-height: 1.18;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.design-executive .exec-card p:nth-child(2) .inline-flex {
+  align-items: baseline !important;
+  gap: 0.32rem !important;
+  flex-wrap: wrap;
+}
+
+.design-executive .exec-card p:nth-child(2) .text-lg {
+  font-size: 0.82rem !important;
+  line-height: 1.1 !important;
+}
+
+.design-executive .exec-planner-panel h3,
+.design-executive .exec-planner-panel p.text-4xl {
+  font-family: var(--font-plus-jakarta), sans-serif !important;
+}
+
+.design-executive .exec-top-brand {
+  font-size: 2.15rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.design-executive .exec-top-sub {
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  font-style: italic;
+  color: rgba(148, 163, 184, 0.85);
+}
+
+.design-executive .exec-pill-group {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(51, 65, 85, 0.72);
+  border-radius: 1rem;
+  padding: 0.3rem;
+}
+
+.design-executive .exec-primary {
+  background: #2563eb !important;
+  border-color: #3b82f6 !important;
+  color: #fff !important;
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4) !important;
+}
+
+.design-executive .exec-muted {
+  color: rgba(148, 163, 184, 0.88) !important;
+}
+
+.design-executive .exec-last-sync {
+  letter-spacing: 0.14em !important;
+  font-weight: 600 !important;
+}
+
+.design-executive .exec-action-group {
+  background: rgba(15, 23, 42, 0.35);
+  border: 1px solid rgba(71, 85, 105, 0.35);
+  border-radius: 1rem;
+  padding: 0.35rem 0.45rem 0.35rem 0.6rem;
+  font-family: var(--font-plus-jakarta), sans-serif !important;
+}
+
+.design-executive .exec-head-btn {
+  min-height: 2rem;
+  padding: 0.35rem 0.85rem !important;
+  border-radius: 999px !important;
+  border-color: rgba(100, 116, 139, 0.55) !important;
+  background: rgba(15, 23, 42, 0.92) !important;
+  color: #e2e8f0 !important;
+  font-family: var(--font-plus-jakarta), sans-serif !important;
+  font-size: 0.82rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.005em !important;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.35);
+}
+
+.design-executive .exec-head-btn:hover {
+  background: rgba(30, 41, 59, 0.96) !important;
+}
+
+.design-executive .exec-head-btn-danger {
+  border-color: rgba(244, 63, 94, 0.55) !important;
+  color: #fb7185 !important;
+}
+
+.design-executive .border-red-400\/40,
+.design-executive .text-red-400 {
+  border-color: rgba(244, 63, 94, 0.55) !important;
+  color: #fb7185 !important;
+}
+
+.design-executive button[class*="border-emerald-400/40"],
+.design-executive button[class*="border-emerald-300/50"],
+.design-executive button[class*="border-emerald-400/30"] {
+  background: rgba(15, 23, 42, 0.72) !important;
+  border-color: rgba(148, 163, 184, 0.45) !important;
+  color: #dbeafe !important;
+}
+
+.design-executive table thead {
+  background: rgba(30, 41, 59, 0.82) !important;
+}
+
+.design-executive table tbody tr:hover {
+  background: rgba(51, 65, 85, 0.35) !important;
+}
+
+.design-executive .glitch {
+  text-shadow: none !important;
+}
+
+/* Executive + Light mode contrast tuning */
+.design-executive.light-theme {
+  background: linear-gradient(180deg, #e2e8f0 0%, #dbeafe 100%) !important;
+  color: #0f172a !important;
+}
+
+.design-executive.light-theme [class*="bg-black/80"] {
+  background: #f8fafc !important;
+  border-color: rgba(100, 116, 139, 0.35) !important;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12) !important;
+}
+
+.design-executive.light-theme [class*="text-emerald-"] {
+  color: #1e3a8a !important;
+}
+
+.design-executive.light-theme [class*="text-emerald-300/70"],
+.design-executive.light-theme [class*="text-emerald-300/75"],
+.design-executive.light-theme [class*="text-emerald-300/65"],
+.design-executive.light-theme [class*="text-emerald-400/70"] {
+  color: #334155 !important;
+}
+
+.design-executive.light-theme [class*="border-emerald-"] {
+  border-color: rgba(71, 85, 105, 0.55) !important;
+}
+
+.design-executive.light-theme [class*="bg-emerald-500/10"],
+.design-executive.light-theme [class*="bg-emerald-500/20"],
+.design-executive.light-theme [class*="bg-emerald-500/5"] {
+  background-color: rgba(59, 130, 246, 0.1) !important;
+}
+
+.design-executive.light-theme button[class*="bg-emerald-500/20"] {
+  background: #2563eb !important;
+  color: #ffffff !important;
+}
+
+.design-executive.light-theme input {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border-color: rgba(100, 116, 139, 0.55) !important;
+}
+
+.design-executive.light-theme button {
+  border-radius: 0.75rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.01em;
+  border-width: 1px !important;
+}
+
+.design-executive.light-theme button[class*="text-[10px]"] {
+  padding: 0.34rem 0.7rem !important;
+}
+
+.design-executive.light-theme button[class*="bg-emerald-500/20"] {
+  background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%) !important;
+  border-color: #1d4ed8 !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.22) !important;
+}
+
+.design-executive.light-theme button[class*="border-emerald-400/40"],
+.design-executive.light-theme button[class*="border-emerald-300/50"],
+.design-executive.light-theme button[class*="border-emerald-400/30"] {
+  background: #ffffff !important;
+  border-color: rgba(71, 85, 105, 0.5) !important;
+  color: #1e293b !important;
+}
+
+.design-executive.light-theme button[class*="border-red-400/40"] {
+  background: #ffffff !important;
+  border-color: rgba(239, 68, 68, 0.55) !important;
+  color: #dc2626 !important;
+}
+
+.design-executive.light-theme .exec-head-btn {
+  background: #ffffff !important;
+  border-color: rgba(100, 116, 139, 0.5) !important;
+  color: #0f172a !important;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12) !important;
+}
+
+.design-executive.light-theme .exec-head-btn:hover {
+  background: #f8fafc !important;
+}
+
+.design-executive.light-theme .exec-signal-panel,
+.design-executive.light-theme .exec-planner-panel {
+  background: #f1f5f9 !important;
+  border-color: rgba(100, 116, 139, 0.35) !important;
+  box-shadow:
+    0 0 0 6px rgba(51, 65, 85, 0.95),
+    0 10px 22px rgba(15, 23, 42, 0.14) !important;
+}
+
+.design-executive.light-theme .exec-signal-panel::before {
+  display: none !important;
+}
+
+.design-executive.light-theme .exec-card {
+  background: #e2e8f0 !important;
+  border-color: rgba(100, 116, 139, 0.35) !important;
+}
+
+.design-executive.light-theme .exec-card-tp {
+  background: #dbeafe !important;
+  border-color: rgba(45, 212, 191, 0.45) !important;
+}
+
+.design-executive.light-theme .exec-card-sl {
+  background: #ffe4e6 !important;
+  border-color: rgba(244, 63, 94, 0.45) !important;
+}
+
+.design-executive.light-theme .exec-card p,
+.design-executive.light-theme .exec-planner-panel p,
+.design-executive.light-theme .exec-signal-panel p {
+  color: #1e3a8a !important;
+}
+
+.design-executive.light-theme .exec-card p:first-child,
+.design-executive.light-theme .exec-planner-panel label,
+.design-executive.light-theme .exec-top-sub,
+.design-executive.light-theme .exec-muted {
+  color: #475569 !important;
+}
+
+.design-executive.light-theme .exec-top-brand {
+  color: #1d4ed8 !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.02em !important;
+  text-shadow: none !important;
+}
+
+.design-executive.light-theme .exec-top-sub {
+  color: #334155 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em !important;
+}
+
+.design-executive.light-theme .exec-action-group p {
+  color: #334155 !important;
+  font-weight: 700 !important;
+  line-height: 1.1 !important;
+}
+
+.design-executive.light-theme .exec-action-group p:first-child {
+  color: #334155 !important;
+  font-size: 0.62rem !important;
+  letter-spacing: 0.13em !important;
+}
+
+.design-executive.light-theme .exec-action-group p:last-child {
+  color: #1e40af !important;
+  font-size: 0.82rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em !important;
+  animation: liveStatusBlink 1.35s ease-in-out infinite;
+}
+
+.design-executive .exec-action-group p:last-child {
+  animation: liveStatusBlink 1.35s ease-in-out infinite;
+}
+
+.design-executive.light-theme .exec-last-sync {
+  color: #475569 !important;
+  font-weight: 700 !important;
+}
+
+.design-executive.light-theme .exec-action-group {
+  background: #94a3b8 !important;
+  border-color: rgba(71, 85, 105, 0.55) !important;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12) !important;
+}
+
+.design-executive.light-theme header .text-\[10px\],
+.design-executive.light-theme header .text-\[11px\],
+.design-executive.light-theme header .text-xs {
+  color: #334155 !important;
+  font-weight: 600 !important;
+}
+
+.design-executive.light-theme .exec-card-sl p:nth-child(2),
+.design-executive.light-theme .text-red-400 {
+  color: #e11d48 !important;
+}
+
+.design-executive.light-theme input {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border-color: rgba(100, 116, 139, 0.45) !important;
+}
+
+.design-executive.light-theme button:hover {
+  transform: translateY(-1px);
+  transition: all 180ms ease;
+}
+
+.design-executive.light-theme button:active {
+  transform: translateY(0);
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 rgba(16, 185, 129, 0.2); }
+  50% { box-shadow: 0 0 18px rgba(16, 185, 129, 0.45); }
+}
+
+@keyframes tacticalSweepDown {
+  0% { top: -18%; opacity: 0.7; }
+  100% { top: 112%; opacity: 0.15; }
+}
+
+@keyframes liveStatusBlink {
+  0%, 100% { opacity: 1; filter: brightness(1); }
+  50% { opacity: 0.45; filter: brightness(1.2); }
+}
+
+.sarjan-reveal {
+  opacity: 0;
+  transform: translateY(16px) scale(0.99);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.sarjan-reveal.is-visible {
+  animation: sarjanStaggerIn 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes sarjanStaggerIn {
+  0% {
+    opacity: 0;
+    transform: translateY(16px) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Kapitan dashboard skin override (aligned to HTML reference) */
+.design-executive {
+  background: linear-gradient(180deg, #05070d 0%, #070b16 100%) !important;
+  color: #f9fafb !important;
+}
+
+.design-executive .exec-top-brand {
+  color: #f5c542 !important;
+  letter-spacing: 0.01em !important;
+  text-transform: uppercase;
+}
+
+.design-executive .exec-top-sub {
+  color: #9ca3af !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase;
+}
+
+.design-executive .exec-action-group {
+  background: rgba(17, 24, 39, 0.92) !important;
+  border: 1px solid rgba(245, 197, 66, 0.32) !important;
+  box-shadow: 0 10px 28px rgba(245, 197, 66, 0.09) !important;
+}
+
+.design-executive .exec-head-btn {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: rgba(245, 197, 66, 0.36) !important;
+  color: #f9fafb !important;
+}
+
+.design-executive .exec-head-btn:hover {
+  background: rgba(245, 197, 66, 0.12) !important;
+}
+
+.design-executive .exec-head-btn-danger {
+  border-color: rgba(239, 68, 68, 0.5) !important;
+  color: #fca5a5 !important;
+}
+
+.design-executive .exec-pill-group {
+  background: rgba(17, 24, 39, 0.92) !important;
+  border: 1px solid rgba(245, 197, 66, 0.28) !important;
+}
+
+.design-executive .exec-primary {
+  background: linear-gradient(180deg, #f5c542 0%, #ffd700 100%) !important;
+  border-color: #f5c542 !important;
+  color: #05070d !important;
+  box-shadow: 0 10px 24px rgba(245, 197, 66, 0.35) !important;
+}
+
+.design-executive .exec-muted {
+  color: #9ca3af !important;
+}
+
+.design-executive .exec-signal-panel,
+.design-executive .exec-planner-panel {
+  background: rgba(17, 24, 39, 0.88) !important;
+  border: 1px solid rgba(245, 197, 66, 0.28) !important;
+  box-shadow: 0 0 0 1px rgba(255, 215, 0, 0.08), 0 14px 28px rgba(2, 6, 23, 0.42) !important;
+}
+
+.design-executive .exec-signal-panel::before {
+  background: linear-gradient(180deg, #10b981 0%, #10b981 55%, rgba(16, 185, 129, 0.2) 100%) !important;
+}
+
+.design-executive .exec-card {
+  background: rgba(5, 7, 13, 0.82) !important;
+  border: 1px solid rgba(31, 41, 55, 0.95) !important;
+}
+
+.design-executive .exec-card-tp {
+  border-color: rgba(16, 185, 129, 0.42) !important;
+}
+
+.design-executive .exec-card-sl {
+  border-color: rgba(239, 68, 68, 0.45) !important;
+}
+
+.design-executive .exec-card p:first-child,
+.design-executive .exec-last-sync {
+  color: #9ca3af !important;
+}
+
+.design-executive .exec-card p:nth-child(2),
+.design-executive .exec-planner-panel p {
+  color: #f9fafb !important;
+}
+
+.design-executive .exec-planner-panel p.text-4xl {
+  color: #f9fafb !important;
+}
+
+/* Kapitan access dashboard final skin (HTML parity pass) */
+.kapitan-dashboard.design-executive {
+  background:
+    radial-gradient(circle at 12% -10%, rgba(245, 197, 66, 0.08) 0%, rgba(245, 197, 66, 0) 36%),
+    linear-gradient(180deg, #05070d 0%, #060a14 100%) !important;
+}
+
+.kapitan-dashboard.design-executive .scanlines {
+  border: 1px solid rgba(245, 197, 66, 0.18) !important;
+  background:
+    linear-gradient(180deg, rgba(17, 24, 39, 0.76) 0%, rgba(9, 13, 22, 0.9) 100%) !important;
+  box-shadow:
+    0 0 0 1px rgba(245, 197, 66, 0.1),
+    0 16px 40px rgba(2, 6, 23, 0.55) !important;
+}
+
+.kapitan-dashboard.design-executive .exec-top-brand {
+  font-size: 2rem;
+  color: #f5c542 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.01em !important;
+}
+
+.kapitan-dashboard.design-executive .exec-top-sub {
+  color: #9ca3af !important;
+}
+
+.kapitan-dashboard.design-executive .exec-last-sync {
+  color: #9ca3af !important;
+  letter-spacing: 0.16em !important;
+}
+
+.kapitan-dashboard.design-executive .exec-action-group {
+  border-color: rgba(245, 197, 66, 0.3) !important;
+}
+
+.kapitan-dashboard.design-executive .exec-head-btn {
+  border-color: rgba(245, 197, 66, 0.34) !important;
+  color: #f9fafb !important;
+}
+
+.kapitan-dashboard.design-executive .exec-pill-group {
+  border-color: rgba(245, 197, 66, 0.26) !important;
+}
+
+.kapitan-dashboard.design-executive .exec-primary {
+  background: linear-gradient(180deg, #f5c542 0%, #ffd700 100%) !important;
+  border-color: #f5c542 !important;
+  color: #05070d !important;
+}
+
+.kapitan-dashboard.design-executive .exec-signal-panel,
+.kapitan-dashboard.design-executive .exec-planner-panel {
+  border-color: rgba(245, 197, 66, 0.28) !important;
+  background: rgba(17, 24, 39, 0.82) !important;
+}
+
+.kapitan-dashboard.design-executive .exec-card {
+  border-color: rgba(31, 41, 55, 0.94) !important;
+  background: rgba(3, 7, 14, 0.88) !important;
+}
+
+.kapitan-dashboard.design-executive .exec-card-tp {
+  background: rgba(15, 44, 49, 0.6) !important;
+  border-color: rgba(16, 185, 129, 0.45) !important;
+}
+
+.kapitan-dashboard.design-executive .exec-card-sl {
+  background: rgba(70, 19, 39, 0.52) !important;
+  border-color: rgba(239, 68, 68, 0.5) !important;
+}
+
+.kapitan-dashboard.design-executive .exec-planner-panel input {
+  border-color: rgba(245, 197, 66, 0.32) !important;
+  background: rgba(2, 6, 23, 0.84) !important;
+  color: #f9fafb !important;
+}
+
+.kapitan-dashboard.design-executive .exec-planner-panel .rounded-xl.border {
+  border-color: rgba(245, 197, 66, 0.35) !important;
+  background: linear-gradient(180deg, rgba(245, 197, 66, 0.1) 0%, rgba(245, 197, 66, 0.03) 100%) !important;
+}
+
+.kapitan-dashboard.design-executive .exec-planner-panel .rounded-xl.border p {
+  color: #f9fafb !important;
+}
+
+.kapitan-dashboard.design-executive .exec-planner-panel button {
+  border-color: rgba(245, 197, 66, 0.36) !important;
+}
+
+.kapitan-dashboard.design-executive table thead {
+  background: rgba(245, 197, 66, 0.08) !important;
+}
+
+.kapitan-dashboard.design-executive .rounded.border {
+  border-radius: 0.9rem !important;
+}

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ms" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Account — Kapitan Signal</title>
+    
+    <!-- Google Fonts: Orbitron & Rajdhani (Futuristic), Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        subheading: ['Rajdhani', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        darkMain: '#05070D',
+                        darkCard: '#111827',
+                        borderDark: '#1F2937',
+                        goldPrimary: '#F5C542',
+                        goldGlow: '#FFD700',
+                        textMain: '#F9FAFB',
+                        textSec: '#9CA3AF',
+                        buySuccess: '#10B981',
+                        sellDanger: '#EF4444',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        .gold-glow-focus:focus-within {
+            box-shadow: 0 0 15px rgba(245, 197, 66, 0.3);
+            border-color: #F5C542;
+        }
+        .text-gradient {
+            background: linear-gradient(to right, #F9FAFB, #F5C542, #F9FAFB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Tactical Radar Scan Animation Overlay */
+        .radar-line {
+            animation: scan 6s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: -10%; opacity: 0; }
+            10% { opacity: 0.4; }
+            90% { opacity: 0.4; }
+            100% { top: 110%; opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-darkMain text-textMain font-sans antialiased selection:bg-goldPrimary selection:text-darkMain min-h-screen relative overflow-x-hidden flex flex-col justify-between">
+
+    <!-- Cyber Background + Animated Radar Scan -->
+    <div class="absolute inset-0 bg-[linear-gradient(to_right,#111827_1px,transparent_1px),linear-gradient(to_bottom,#111827_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20 pointer-events-none"></div>
+    <div class="absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-goldPrimary/30 to-transparent radar-line pointer-events-none"></div>
+    <div class="absolute bottom-0 right-0 w-96 h-96 bg-goldPrimary/5 blur-[150px] rounded-full pointer-events-none"></div>
+
+    <!-- MAIN CONTAINER -->
+    <main class="flex-grow flex items-center justify-center p-4 md:p-8 relative z-10">
+        <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 bg-darkMain rounded-2xl overflow-hidden min-h-[600px]">
+            
+            <!-- LEFT SIDE: BRANDING & BENEFITS -->
+            <div class="lg:col-span-5 flex flex-col justify-center space-y-8 p-4 md:p-8 border-b lg:border-b-0 lg:border-r border-borderDark/60">
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 rounded bg-gradient-to-br from-goldPrimary to-goldGlow flex items-center justify-center text-darkMain font-black shadow-[0_0_15px_rgba(245,197,66,0.4)]">
+                        <i data-lucide="zap" class="w-4 h-4 fill-darkMain"></i>
+                    </div>
+                    <span class="font-heading tracking-wider text-xl font-black text-gradient">
+                        KAPITAN SIGNAL
+                    </span>
+                </div>
+
+                <div class="space-y-3">
+                    <h1 class="text-3xl lg:text-4xl font-heading font-black uppercase tracking-tight leading-none text-textMain">
+                        Join The Gold<br><span class="text-goldPrimary">Command Center</span>
+                    </h1>
+                    <p class="text-textSec text-sm md:text-base leading-relaxed">
+                        Daftar akaun anda untuk mendapatkan akses ke dashboard signal XAUUSD premium, risk calculator dan performance log Kapitan Signal.
+                    </p>
+                </div>
+
+                <!-- Benefit Bullets -->
+                <div class="space-y-3.5 font-subheading text-base md:text-lg font-medium tracking-wide text-textMain">
+                    <div class="flex items-center space-x-3 group">
+                        <div class="w-7 h-7 rounded bg-[#111827] border border-gray-800 flex items-center justify-center text-goldPrimary shrink-0">
+                            <i data-lucide="zap" class="w-4 h-4"></i>
+                        </div>
+                        <span>Scalping signal setiap 30 minit</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-7 h-7 rounded bg-[#111827] border border-gray-800 flex items-center justify-center text-goldPrimary shrink-0">
+                            <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+                        </div>
+                        <span>Intraday signal setiap 4 jam</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-7 h-7 rounded bg-[#111827] border border-gray-800 flex items-center justify-center text-goldPrimary shrink-0">
+                            <i data-lucide="target" class="w-4 h-4"></i>
+                        </div>
+                        <span>Entry, SL, TP1, TP2, TP3 yang jelas</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-7 h-7 rounded bg-[#111827] border border-gray-800 flex items-center justify-center text-goldPrimary shrink-0">
+                            <i data-lucide="cpu" class="w-4 h-4"></i>
+                        </div>
+                        <span>Gold Risk Engine untuk kiraan risiko</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-7 h-7 rounded bg-[#111827] border border-gray-800 flex items-center justify-center text-goldPrimary shrink-0">
+                            <i data-lucide="layers" class="w-4 h-4"></i>
+                        </div>
+                        <span>Performance log transparent</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-7 h-7 rounded bg-[#111827] border border-gray-800 flex items-center justify-center text-goldPrimary shrink-0">
+                            <i data-lucide="key" class="w-4 h-4"></i>
+                        </div>
+                        <span>One access key, one device</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE: REGISTRATION FORM CARD -->
+            <div class="lg:col-span-7 flex flex-col justify-center p-4 md:p-8">
+                <div class="bg-darkCard border border-borderDark rounded-xl p-6 md:p-8 shadow-[0_0_40px_rgba(5,7,13,0.8)] relative overflow-hidden group hover:border-goldPrimary/30 transition-all duration-500">
+                    <!-- Top Subtle Decorative Bar -->
+                    <div class="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-goldPrimary to-transparent"></div>
+
+                    <div class="mb-6">
+                        <h2 class="text-2xl font-heading font-black uppercase text-textMain tracking-wide">Create Your Account</h2>
+                        <p class="text-xs text-textSec font-mono mt-1 uppercase tracking-widest">Secured Operator Registration</p>
+                    </div>
+
+                    <!-- Registration Form -->
+                    <form id="regForm" onsubmit="handleRegister(event)" class="space-y-5">
+                        
+                        <!-- Full Name -->
+                        <div class="space-y-1.5">
+                            <label for="fullName" class="text-xs font-subheading uppercase tracking-wider text-textSec block">Full Name</label>
+                            <div class="relative rounded border border-borderDark bg-darkMain gold-glow-focus transition-all flex items-center">
+                                <div class="pl-3.5 text-textSec shrink-0">
+                                    <i data-lucide="user" class="w-4 h-4"></i>
+                                </div>
+                                <input type="text" id="fullName" class="w-full bg-transparent px-3 py-3 text-sm text-textMain placeholder-gray-600 focus:outline-none" placeholder="Masukkan nama penuh anda" required>
+                            </div>
+                        </div>
+
+                        <!-- Email Address -->
+                        <div class="space-y-1.5">
+                            <label for="email" class="text-xs font-subheading uppercase tracking-wider text-textSec block">Email Address</label>
+                            <div class="relative rounded border border-borderDark bg-darkMain gold-glow-focus transition-all flex items-center">
+                                <div class="pl-3.5 text-textSec shrink-0">
+                                    <i data-lucide="mail" class="w-4 h-4"></i>
+                                </div>
+                                <input type="email" id="email" class="w-full bg-transparent px-3 py-3 text-sm text-textMain placeholder-gray-600 focus:outline-none" placeholder="alamat@email.com" required>
+                            </div>
+                            <p id="emailError" class="text-[11px] text-sellDanger font-mono hidden">Format alamat email tidak sah.</p>
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div class="space-y-1.5">
+                            <label for="phone" class="text-xs font-subheading uppercase tracking-wider text-textSec block">Phone Number</label>
+                            <div class="relative rounded border border-borderDark bg-darkMain gold-glow-focus transition-all flex items-center">
+                                <div class="pl-3.5 text-textSec shrink-0">
+                                    <i data-lucide="phone" class="w-4 h-4"></i>
+                                </div>
+                                <input type="tel" id="phone" class="w-full bg-transparent px-3 py-3 text-sm text-textMain placeholder-gray-600 focus:outline-none" placeholder="+60123456789" required>
+                            </div>
+                        </div>
+
+                        <!-- Risk Checkbox -->
+                        <div class="pt-2">
+                            <label class="flex items-start space-x-3 cursor-pointer group select-none">
+                                <input type="checkbox" id="riskCheck" class="sr-only peer" required>
+                                <div class="w-5 h-5 rounded border border-borderDark bg-darkMain flex items-center justify-center text-darkMain peer-checked:bg-goldPrimary peer-checked:border-goldPrimary transition-all shrink-0 mt-0.5">
+                                    <i data-lucide="check" class="w-3.5 h-3.5 stroke-[3]"></i>
+                                </div>
+                                <span class="text-xs text-textSec leading-relaxed group-hover:text-textMain transition-colors font-mono">
+                                    Saya faham trading mempunyai risiko dan tiada jaminan keuntungan.
+                                </span>
+                            </label>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="pt-3">
+                            <button type="submit" class="w-full bg-gradient-to-r from-goldPrimary to-[#FFD700] text-darkMain font-heading font-bold text-sm py-3.5 rounded shadow-[0_0_20px_rgba(245,197,66,0.2)] hover:shadow-[0_0_30px_rgba(245,197,66,0.4)] transition-all tracking-wider uppercase">
+                                Continue Registration
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Login Link -->
+                    <div class="mt-6 text-center text-xs font-mono">
+                        <span class="text-textSec">Already have an account?</span>
+                        <a href="#login" class="text-goldPrimary hover:text-goldGlow ml-1 transition-colors underline decoration-dotted">Login</a>
+                    </div>
+
+                    <!-- Security Notes -->
+                    <div class="mt-6 border-t border-borderDark/50 pt-4 flex items-start space-x-2.5 text-[11px] text-textSec font-mono">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-buySuccess shrink-0"></i>
+                        <span>Your information is protected. Access key hanya aktif untuk satu device sahaja demi integriti data terminal.</span>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- SUCCESS MODAL / STATE OVERLAY -->
+    <div id="successModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-darkMain/90 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="w-full max-w-sm bg-darkCard border border-goldPrimary/40 rounded-xl p-6 text-center space-y-5 shadow-[0_0_50px_rgba(245,197,66,0.15)] transform scale-95 transition-transform duration-300" id="modalCard">
+            <div class="w-12 h-12 bg-buySuccess/10 text-buySuccess rounded-full flex items-center justify-center mx-auto border border-buySuccess/30">
+                <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+            </div>
+            <div class="space-y-1">
+                <h3 class="text-xl font-heading font-black uppercase text-textMain tracking-wide">Registration Submitted</h3>
+                <p class="text-xs text-textSec">Maklumat anda telah berjaya disimpan. Command Key akan dihantar ke e-mel anda.</p>
+            </div>
+            <button onclick="closeModal()" class="w-full bg-gradient-to-r from-goldPrimary to-[#FFD700] text-darkMain font-heading font-bold text-xs py-3 rounded uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(245,197,66,0.2)]">
+                Go To Login
+            </button>
+        </div>
+    </div>
+
+    <!-- SMALL TECH FOOTER -->
+    <footer class="p-4 border-t border-borderDark/40 text-center font-mono text-[10px] text-gray-600 relative z-10">
+        &copy; 2026 KAPITAN SIGNAL. Tactical Registration Module. All Security Protocols Active.
+    </footer>
+
+    <!-- Logic Script -->
+    <script>
+        // Inisialisasi ikon Lucide SVG
+        lucide.createIcons();
+
+        function handleRegister(event) {
+            event.preventDefault();
+
+            const emailInput = document.getElementById('email').value;
+            const emailError = document.getElementById('emailError');
+            
+            // Validasi Format E-mel Asas
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(emailInput)) {
+                emailError.classList.remove('hidden');
+                return;
+            } else {
+                emailError.classList.add('hidden');
+            }
+
+            // Papar Success Modal / State
+            const modal = document.getElementById('successModal');
+            const card = document.getElementById('modalCard');
+            
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            card.classList.remove('scale-95');
+            card.classList.add('scale-100');
+        }
+
+        function closeModal() {
+            // Simulasi lencongan ke halaman login setelah modal ditekan
+            const modal = document.getElementById('successModal');
+            const card = document.getElementById('modalCard');
+            
+            card.classList.remove('scale-100');
+            card.classList.add('scale-95');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            
+            // Set semula form pendaftaran
+            document.getElementById('regForm').reset();
+            
+            // Di sini anda boleh letak lencongan sebenar: window.location.href = '/login';
+            alert("Simulasi: Sistem melencongkan pengguna ke skrin Login dashboard.");
+        }
+    </script>
+</body>
+</html>

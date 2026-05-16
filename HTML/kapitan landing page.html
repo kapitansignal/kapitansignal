@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="ms" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kapitan Signal — Command The Gold Market</title>
+    
+    <!-- Google Fonts: Orbitron & Rajdhani (Futuristic), Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        subheading: ['Rajdhani', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Lucide Icons Development Script -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Custom Styles for Glow Effects & Aesthetics */
+        .gold-glow {
+            box-shadow: 0 0 25px rgba(245, 197, 66, 0.2);
+        }
+        .gold-glow-hover:hover {
+            box-shadow: 0 0 35px rgba(245, 197, 66, 0.45);
+            border-color: #F5C542;
+        }
+        .text-gradient {
+            background: linear-gradient(to right, #F9FAFB, #F5C542, #F9FAFB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Hide default accordion icon */
+        details summary::-webkit-details-marker { display: none; }
+    </style>
+</head>
+<body class="bg-[#05070D] text-[#F9FAFB] font-sans antialiased selection:bg-[#F5C542] selection:text-[#05070D] min-h-screen relative overflow-x-hidden">
+
+    <!-- Cyber Grid Background -->
+    <div class="absolute inset-0 bg-[linear-gradient(to_right,#111827_1px,transparent_1px),linear-gradient(to_bottom,#111827_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-25 pointer-events-none"></div>
+
+    <!-- 1. NAVBAR -->
+    <nav class="sticky top-0 z-50 bg-[#05070D]/80 backdrop-blur-md border-b border-[#F5C542]/20 px-4 lg:px-8 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 rounded bg-gradient-to-br from-[#F5C542] to-[#FFD700] flex items-center justify-center text-[#05070D] font-black shadow-[0_0_15px_rgba(245,197,66,0.4)]">
+                    <i data-lucide="zap" class="w-4 h-4 fill-[#05070D]"></i>
+                </div>
+                <span class="font-heading tracking-wider text-xl font-black text-gradient">
+                    KAPITAN SIGNAL
+                </span>
+            </div>
+
+            <div class="hidden md:flex items-center space-x-8 font-subheading text-lg font-medium tracking-wide">
+                <a href="#home" class="text-[#F9FAFB] hover:text-[#F5C542] transition-colors">Home</a>
+                <a href="#features" class="text-[#9CA3AF] hover:text-[#F5C542] transition-colors">Features</a>
+                <a href="#performance" class="text-[#9CA3AF] hover:text-[#F5C542] transition-colors">Performance</a>
+                <a href="#packages" class="text-[#9CA3AF] hover:text-[#F5C542] transition-colors">Packages</a>
+                <a href="#faq" class="text-[#9CA3AF] hover:text-[#F5C542] transition-colors">FAQ</a>
+            </div>
+
+            <a href="#packages" class="bg-gradient-to-r from-[#F5C542] to-[#FFD700] text-[#05070D] font-heading text-xs font-bold px-5 py-2.5 rounded border border-[#FFD700] hover:shadow-[0_0_20px_rgba(245,197,66,0.6)] transition-all duration-300 tracking-wider">
+                GET ACCESS
+            </a>
+        </div>
+    </nav>
+
+    <!-- 2. HERO SECTION -->
+    <section id="home" class="relative pt-12 pb-24 px-4 lg:px-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <!-- Radial Glow Background -->
+        <div class="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#F5C542]/5 blur-[120px] rounded-full pointer-events-none"></div>
+        
+        <div class="lg:col-span-7 space-y-6 z-10">
+            <div class="inline-flex items-center space-x-2 bg-[#111827] border border-[#F5C542]/30 px-3 py-1 rounded-full text-xs font-heading text-[#F5C542] tracking-widest uppercase">
+                <span class="w-2 h-2 rounded-full bg-[#10B981] animate-pulse"></span>
+                <span>Tactical Command Center Active</span>
+            </div>
+            <h1 class="text-5xl lg:text-7xl font-heading font-black tracking-tight leading-none">
+                KAPITAN SIGNAL
+            </h1>
+            <h2 class="text-2xl lg:text-3xl font-subheading font-bold uppercase text-[#F5C542] tracking-wider">
+                “Command The Gold Market”
+            </h2>
+            <p class="text-[#9CA3AF] max-w-xl leading-relaxed text-base lg:text-lg">
+                Elite XAUUSD signal platform untuk trader yang mahukan entry pantas, risk terkawal dan performance yang transparent. Platform signal XAUUSD premium dengan signal scalping setiap 30 minit, intraday setiap 4 jam, risk calculator automatik dan performance log yang transparent.
+            </p>
+            <div class="flex flex-wrap gap-4 pt-4">
+                <a href="#packages" class="bg-gradient-to-r from-[#F5C542] to-[#FFD700] text-[#05070D] font-heading font-bold text-sm px-8 py-4 rounded shadow-[0_0_25px_rgba(245,197,66,0.3)] hover:shadow-[0_0_35px_rgba(245,197,66,0.5)] transition-all transform hover:-translate-y-0.5 tracking-wider">
+                    JOIN VIP NOW
+                </a>
+                <a href="#performance" class="bg-[#111827] text-[#F9FAFB] border border-[#9CA3AF]/30 font-heading font-bold text-sm px-8 py-4 rounded hover:border-[#F5C542] hover:bg-[#111827]/80 transition-all transform hover:-translate-y-0.5 tracking-wider">
+                    VIEW PERFORMANCE
+                </a>
+            </div>
+        </div>
+
+        <!-- Right Side: Live Signal Card Mockup -->
+        <div class="lg:col-span-5 z-10">
+            <div class="bg-[#111827] border-2 border-[#F5C542]/40 rounded-xl p-6 shadow-[0_0_40px_rgba(5,7,13,0.8)] relative overflow-hidden">
+                <div class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[#F5C542] via-[#FFD700] to-transparent"></div>
+                
+                <div class="flex justify-between items-center mb-6">
+                    <span class="font-heading text-xs font-bold text-[#9CA3AF] tracking-widest uppercase bg-[#05070D] px-2.5 py-1 rounded border border-gray-800">
+                        LIVE MONITOR
+                    </span>
+                    <div class="flex items-center space-x-1.5 bg-[#10B981]/10 px-2.5 py-1 rounded text-[#10B981] text-xs font-mono font-bold uppercase tracking-wider">
+                        <span class="w-1.5 h-1.5 bg-[#10B981] rounded-full animate-ping"></span>
+                        <span>Active</span>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="flex justify-between items-end border-b border-gray-800 pb-4">
+                        <div>
+                          <h3 class="text-3xl font-heading font-black text-[#10B981] tracking-wide">BUY XAUUSD</h3>
+                          <p class="text-xs text-[#9CA3AF] font-mono mt-0.5">TYPE: SCALPING | M30</p>
+                        </div>
+                        <div class="text-right">
+                          <span class="text-xs text-[#9CA3AF] block font-mono">CONFIDENCE</span>
+                          <span class="text-xl font-heading font-bold text-[#F5C542]">91%</span>
+                        </div>
+                    </div>
+
+                    <!-- Matrix Grid Data -->
+                    <div class="grid grid-cols-2 gap-3 font-mono text-sm pt-2">
+                        <div class="bg-[#05070D] p-3 rounded border border-gray-800/60">
+                          <span class="text-[#9CA3AF] text-xs block mb-0.5">ENTRY</span>
+                          <span class="text-[#F9FAFB] font-bold text-base">4348.50</span>
+                        </div>
+                        <div class="bg-[#05070D] p-3 rounded border border-gray-800/60">
+                          <span class="text-[#EF4444] text-xs block mb-0.5">STOP LOSS</span>
+                          <span class="text-[#EF4444] font-bold text-base">4345.00</span>
+                        </div>
+                        <div class="bg-[#05070D] p-3 rounded border border-gray-800/60 col-span-2 flex justify-between items-center">
+                          <div>
+                            <span class="text-[#10B981] text-xs block mb-0.5">TAKE PROFIT 1</span>
+                            <span class="text-[#F9FAFB] font-bold">4352.00</span>
+                          </div>
+                          <span class="text-[10px] bg-[#10B981]/20 text-[#10B981] px-1.5 py-0.5 rounded font-bold">🎯 CORE</span>
+                        </div>
+                        <div class="bg-[#05070D] p-3 rounded border border-gray-800/60">
+                          <span class="text-[#9CA3AF] text-xs block mb-0.5">TAKE PROFIT 2</span>
+                          <span class="text-[#F9FAFB] font-bold">4355.00</span>
+                        </div>
+                        <div class="bg-[#05070D] p-3 rounded border border-gray-800/60">
+                          <span class="text-[#9CA3AF] text-xs block mb-0.5">TAKE PROFIT 3</span>
+                          <span class="text-[#F9FAFB] font-bold">4360.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Next Signal Countdown UI -->
+                    <div class="mt-4 bg-[#F5C542]/5 border border-[#F5C542]/20 rounded p-3 flex justify-between items-center">
+                        <span class="font-subheading font-bold tracking-wider uppercase text-xs text-[#9CA3AF]">Next Scalping Signal:</span>
+                        <span id="countdown-timer" class="font-mono font-bold text-[#F5C542] text-sm tracking-widest bg-[#05070D] px-2 py-0.5 rounded border border-[#F5C542]/30">00:18:42</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. TRUST / STATS SECTION -->
+    <section class="bg-[#0B0F1A] border-y border-gray-800 py-12 px-4 lg:px-8">
+        <div class="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-[#111827] border border-gray-800 p-5 rounded-lg flex items-center space-x-4 gold-glow-hover transition-all duration-300">
+                <div class="p-3 bg-[#05070D] rounded border border-gray-700 text-[#F5C542]">
+                    <i data-lucide="zap" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-[#9CA3AF] font-mono tracking-wider uppercase">SCALPING SIGNAL</p>
+                    <h4 class="text-lg font-subheading font-bold text-[#F9FAFB] mt-0.5">Every 30 Minutes</h4>
+                </div>
+            </div>
+            <div class="bg-[#111827] border border-gray-800 p-5 rounded-lg flex items-center space-x-4 gold-glow-hover transition-all duration-300">
+                <div class="p-3 bg-[#05070D] rounded border border-gray-700 text-[#F5C542]">
+                    <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-[#9CA3AF] font-mono tracking-wider uppercase">INTRADAY SIGNAL</p>
+                    <h4 class="text-lg font-subheading font-bold text-[#F9FAFB] mt-0.5">Every 4 Hours</h4>
+                </div>
+            </div>
+            <div class="bg-[#111827] border border-gray-800 p-5 rounded-lg flex items-center space-x-4 gold-glow-hover transition-all duration-300">
+                <div class="p-3 bg-[#05070D] rounded border border-gray-700 text-[#F5C542]">
+                    <i data-lucide="shield" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-[#9CA3AF] font-mono tracking-wider uppercase">RISK ENGINE</p>
+                    <h4 class="text-lg font-subheading font-bold text-[#F9FAFB] mt-0.5">Auto Lot Calculation</h4>
+                </div>
+            </div>
+            <div class="bg-[#111827] border border-gray-800 p-5 rounded-lg flex items-center space-x-4 gold-glow-hover transition-all duration-300">
+                <div class="p-3 bg-[#05070D] rounded border border-gray-700 text-[#F5C542]">
+                    <i data-lucide="key" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-[#9CA3AF] font-mono tracking-wider uppercase">ACCESS CONTROL</p>
+                    <h4 class="text-lg font-subheading font-bold text-[#F9FAFB] mt-0.5">One Key, One Device</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. FEATURES SECTION -->
+    <section id="features" class="py-24 px-4 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center space-y-3 mb-16">
+            <p class="font-heading text-xs font-bold text-[#F5C542] tracking-widest uppercase">TACTICAL ADVANTAGES</p>
+            <h2 class="text-3xl lg:text-5xl font-heading font-black tracking-tight">Built For Serious Gold Traders</h2>
+            <div class="w-16 h-1 bg-[#F5C542] mx-auto mt-4"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Feature 1 -->
+            <div class="bg-[#111827] border border-gray-800 p-6 rounded-xl gold-glow-hover transition-all duration-300">
+                <div class="w-12 h-12 rounded bg-[#05070D] border border-gray-700 flex items-center justify-center text-[#F5C542] mb-5">
+                    <i data-lucide="target" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-xl font-subheading font-bold tracking-wide uppercase text-[#F9FAFB] mb-2">Precision XAUUSD Signals</h3>
+                <p class="text-[#9CA3AF] text-sm leading-relaxed">Dapatkan setup Entry, SL, TP1, TP2 dan TP3 yang jelas untuk scalping dan intraday.</p>
+            </div>
+            <!-- Feature 2 -->
+            <div class="bg-[#111827] border border-gray-800 p-6 rounded-xl gold-glow-hover transition-all duration-300">
+                <div class="w-12 h-12 rounded bg-[#05070D] border border-gray-700 flex items-center justify-center text-[#F5C542] mb-5">
+                    <i data-lucide="cpu" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-xl font-subheading font-bold tracking-wide uppercase text-[#F9FAFB] mb-2">Gold Risk Engine</h3>
+                <p class="text-[#9CA3AF] text-sm leading-relaxed">Masukkan amount risiko sahaja dan sistem bantu kira lot size yang sesuai secara dinamik.</p>
+            </div>
+            <!-- Feature 3 -->
+            <div class="bg-[#111827] border border-gray-800 p-6 rounded-xl gold-glow-hover transition-all duration-300">
+                <div class="w-12 h-12 rounded bg-[#05070D] border border-gray-700 flex items-center justify-center text-[#F5C542] mb-5">
+                    <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-xl font-subheading font-bold tracking-wide uppercase text-[#F9FAFB] mb-2">Transparent Performance Log</h3>
+                <p class="text-[#9CA3AF] text-sm leading-relaxed">Setiap signal direkod dengan status TP hit, SL hit dan result untuk semakan ahli harian.</p>
+            </div>
+            <!-- Feature 4 -->
+            <div class="bg-[#111827] border border-gray-800 p-6 rounded-xl gold-glow-hover transition-all duration-300">
+                <div class="w-12 h-12 rounded bg-[#05070D] border border-gray-700 flex items-center justify-center text-[#F5C542] mb-5">
+                    <i data-lucide="key" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-xl font-subheading font-bold tracking-wide uppercase text-[#F9FAFB] mb-2">Device Protected Access</h3>
+                <p class="text-[#9CA3AF] text-sm leading-relaxed">Satu access key hanya boleh aktif pada satu device sahaja pada satu-satu masa.</p>
+            </div>
+            <!-- Feature 5 -->
+            <div class="bg-[#111827] border border-gray-800 p-6 rounded-xl gold-glow-hover transition-all duration-300">
+                <div class="w-12 h-12 rounded bg-[#05070D] border border-gray-700 flex items-center justify-center text-[#F5C542] mb-5">
+                    <i data-lucide="layers" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-xl font-subheading font-bold tracking-wide uppercase text-[#F9FAFB] mb-2">Live Signal Dashboard</h3>
+                <p class="text-[#9CA3AF] text-sm leading-relaxed">Semua signal dipaparkan dalam dashboard eksklusif, bukan sekadar group chat biasa.</p>
+            </div>
+            <!-- Feature 6 -->
+            <div class="bg-[#111827] border border-gray-800 p-6 rounded-xl gold-glow-hover transition-all duration-300">
+                <div class="w-12 h-12 rounded bg-[#05070D] border border-gray-700 flex items-center justify-center text-[#F5C542] mb-5">
+                    <i data-lucide="sliders" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-xl font-subheading font-bold tracking-wide uppercase text-[#F9FAFB] mb-2">Market Discipline</h3>
+                <p class="text-[#9CA3AF] text-sm leading-relaxed">Fokus kepada entry berkualiti, risk control menyeluruh dan execution yang tersusun.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. HOW IT WORKS SECTION -->
+    <section class="bg-[#0B0F1A] border-y border-gray-800 py-24 px-4 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center space-y-3 mb-16">
+                <p class="font-heading text-xs font-bold text-[#F5C542] tracking-widest uppercase">DEPLOYMENT PROCESS</p>
+                <h2 class="text-3xl lg:text-5xl font-heading font-black tracking-tight">Cara Untuk Dapat Access</h2>
+                <div class="w-16 h-1 bg-[#F5C542] mx-auto mt-4"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="bg-[#111827] p-6 rounded-lg border border-gray-800 relative space-y-2">
+                    <div class="absolute top-4 right-4 text-4xl font-heading font-black text-gray-800/70">01</div>
+                    <h3 class="text-xl font-subheading font-bold text-[#F5C542] uppercase tracking-wide mt-4">Pilih Pakej</h3>
+                    <p class="text-sm text-[#9CA3AF] leading-relaxed">Pilih plan yang sesuai dengan style trading anda.</p>
+                </div>
+                <div class="bg-[#111827] p-6 rounded-lg border border-gray-800 relative space-y-2">
+                    <div class="absolute top-4 right-4 text-4xl font-heading font-black text-gray-800/70">02</div>
+                    <h3 class="text-xl font-subheading font-bold text-[#F5C542] uppercase tracking-wide mt-4">Register Account</h3>
+                    <p class="text-sm text-[#9CA3AF] leading-relaxed">Daftar menggunakan nama, email dan maklumat yang diperlukan.</p>
+                </div>
+                <div class="bg-[#111827] p-6 rounded-lg border border-gray-800 relative space-y-2">
+                    <div class="absolute top-4 right-4 text-4xl font-heading font-black text-gray-800/70">03</div>
+                    <h3 class="text-xl font-subheading font-bold text-[#F5C542] uppercase tracking-wide mt-4">Receive Access Key</h3>
+                    <p class="text-sm text-[#9CA3AF] leading-relaxed">Selepas pendaftaran berjaya, anda akan menerima Command Key eksklusif.</p>
+                </div>
+                <div class="bg-[#111827] p-6 rounded-lg border border-gray-800 relative space-y-2">
+                    <div class="absolute top-4 right-4 text-4xl font-heading font-black text-gray-800/70">04</div>
+                    <h3 class="text-xl font-subheading font-bold text-[#F5C542] uppercase tracking-wide mt-4">Login Dashboard</h3>
+                    <p class="text-sm text-[#9CA3AF] leading-relaxed">Gunakan access key untuk masuk ke dashboard Kapitan Signal.</p>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <a href="#packages" class="inline-flex items-center space-x-2 text-sm font-heading uppercase font-bold tracking-widest text-[#F5C542] hover:text-[#FFD700] transition-colors group">
+                    <span>START YOUR MISSION</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition-transform"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. SIGNAL PREVIEW SECTION -->
+    <section class="py-24 px-4 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center space-y-3 mb-16">
+            <p class="font-heading text-xs font-bold text-[#F5C542] tracking-widest uppercase">TERMINAL STREAM</p>
+            <h2 class="text-3xl lg:text-5xl font-heading font-black tracking-tight">Live Signal Experience</h2>
+            <p class="text-xs text-[#9CA3AF] font-mono mt-1">*Nombor di bawah hanya contoh UI mockup, bukan real-time performance log.</p>
+            <div class="w-16 h-1 bg-[#F5C542] mx-auto mt-4"></div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Mockup Card 1 -->
+            <div class="bg-[#111827] border border-gray-800 p-5 rounded-lg font-mono text-xs space-y-4">
+                <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                    <span class="text-[#9CA3AF] font-heading font-bold">SCALPING SIGNAL</span>
+                    <span class="bg-[#10B981]/20 text-[#10B981] px-2 py-0.5 rounded font-bold">TP1 HIT</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-base font-bold text-[#10B981]">BUY XAUUSD</span>
+                    <span class="text-gray-500">ENTRY: 4348.50</span>
+                </div>
+                <div class="space-y-1 text-gray-400 bg-[#05070D] p-3 rounded border border-gray-800">
+                    <div class="flex justify-between"><span>SL:</span> <span class="text-[#EF4444]">4345.00</span></div>
+                    <div class="flex justify-between text-[#10B981] font-bold"><span>TP1:</span> <span>4352.00 ✔</span></div>
+                    <div class="flex justify-between"><span>TP2:</span> <span>4355.00</span></div>
+                    <div class="flex justify-between"><span>TP3:</span> <span>4360.00</span></div>
+                </div>
+            </div>
+
+            <!-- Mockup Card 2 -->
+            <div class="bg-[#111827] border border-gray-800 p-5 rounded-lg font-mono text-xs space-y-4">
+                <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                    <span class="text-[#9CA3AF] font-heading font-bold">INTRADAY SIGNAL</span>
+                    <span class="bg-[#F5C542]/20 text-[#F5C542] px-2 py-0.5 rounded font-bold">ACTIVE</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-base font-bold text-[#EF4444]">SELL XAUUSD</span>
+                    <span class="text-gray-500">ENTRY: 4362.00</span>
+                </div>
+                <div class="space-y-1 text-gray-400 bg-[#05070D] p-3 rounded border border-gray-800">
+                    <div class="flex justify-between"><span>SL:</span> <span class="text-[#EF4444]">4368.00</span></div>
+                    <div class="flex justify-between"><span>TP1:</span> <span>4356.00</span></div>
+                    <div class="flex justify-between"><span>TP2:</span> <span>4350.00</span></div>
+                    <div class="flex justify-between"><span>TP3:</span> <span>4342.00</span></div>
+                </div>
+            </div>
+
+            <!-- Mockup Card 3 -->
+            <div class="bg-[#111827] border-2 border-dashed border-[#F5C542]/40 p-5 rounded-lg space-y-4">
+                <div class="border-b border-gray-800 pb-3 flex items-center justify-between">
+                    <span class="font-heading text-xs font-bold text-[#F5C542] tracking-wider uppercase">RISK CALCULATOR</span>
+                    <i data-lucide="sliders" class="w-4 h-4 text-[#F5C542]"></i>
+                </div>
+                <div class="space-y-2 font-mono text-xs">
+                    <div class="flex justify-between bg-[#05070D] p-2.5 rounded border border-gray-800">
+                        <span class="text-[#9CA3AF]">Risk Amount:</span>
+                        <span class="text-[#F9FAFB] font-bold">50</span>
+                    </div>
+                    <div class="flex justify-between bg-[#05070D] p-2.5 rounded border border-gray-800">
+                        <span class="text-[#9CA3AF]">Suggested Lot:</span>
+                        <span class="text-[#10B981] font-bold">0.03</span>
+                    </div>
+                    <div class="flex justify-between bg-[#05070D] p-2.5 rounded border border-gray-800">
+                        <span class="text-[#EF4444]">Max Loss:</span>
+                        <span class="text-[#EF4444] font-bold">50</span>
+                    </div>
+                    <div class="flex justify-between bg-[#05070D] p-2.5 rounded border border-gray-800">
+                        <span class="text-[#10B981]">Potential TP3:</span>
+                        <span class="text-[#10B981] font-bold">150+</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. PERFORMANCE SECTION -->
+    <section id="performance" class="bg-[#0B0F1A] border-y border-gray-800 py-24 px-4 lg:px-8">
+        <div class="max-w-7xl mx-auto space-y-12">
+            <div class="text-center space-y-3">
+                <p class="font-heading text-xs font-bold text-[#F5C542] tracking-widest uppercase">AUDITED JOURNAL</p>
+                <h2 class="text-3xl lg:text-5xl font-heading font-black tracking-tight">Performance Log Yang Transparent</h2>
+                <p class="text-[#9CA3AF] max-w-xl mx-auto text-sm">Setiap signal direkod supaya ahli boleh review result dengan jelas.</p>
+                <div class="w-16 h-1 bg-[#F5C542] mx-auto mt-4"></div>
+            </div>
+
+            <div class="overflow-x-auto bg-[#111827] border border-gray-800 rounded-xl">
+                <table class="w-full text-left font-mono text-xs lg:text-sm border-collapse min-w-[600px]">
+                    <thead>
+                        <tr class="border-b border-gray-800 bg-[#05070D] text-[#9CA3AF] font-heading tracking-wider">
+                            <th class="p-4 text-[11px] font-bold uppercase">Date</th>
+                            <th class="p-4 text-[11px] font-bold uppercase">Type</th>
+                            <th class="p-4 text-[11px] font-bold uppercase">Pair</th>
+                            <th class="p-4 text-[11px] font-bold uppercase">Entry</th>
+                            <th class="p-4 text-[11px] font-bold uppercase">Result</th>
+                            <th class="p-4 text-[11px] font-bold uppercase text-right">RR</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-800/60">
+                        <tr class="hover:bg-gray-800/30 transition-colors">
+                            <td class="p-4 text-gray-400">Today</td>
+                            <td class="p-4"><span class="text-[#F5C542] bg-[#F5C542]/10 px-2 py-0.5 rounded border border-[#F5C542]/20 font-bold text-[11px]">SCALPING</span></td>
+                            <td class="p-4 font-bold text-[#10B981]">XAUUSD BUY</td>
+                            <td class="p-4">4348.50</td>
+                            <td class="p-4"><span class="text-[#10B981] font-bold">TP2 Hit</span></td>
+                            <td class="p-4 text-right text-[#10B981] font-bold">+2.1R</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800/30 transition-colors">
+                            <td class="p-4 text-gray-400">Today</td>
+                            <td class="p-4"><span class="text-blue-400 bg-blue-400/10 px-2 py-0.5 rounded border border-blue-400/20 font-bold text-[11px]">INTRADAY</span></td>
+                            <td class="p-4 font-bold text-[#EF4444]">XAUUSD SELL</td>
+                            <td class="p-4">4362.00</td>
+                            <td class="p-4 text-gray-500">Active</td>
+                            <td class="p-4 text-right text-gray-500">-</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800/30 transition-colors">
+                            <td class="p-4 text-gray-400">Yesterday</td>
+                            <td class="p-4"><span class="text-[#F5C542] bg-[#F5C542]/10 px-2 py-0.5 rounded border border-[#F5C542]/20 font-bold text-[11px]">SCALPING</span></td>
+                            <td class="p-4 font-bold text-[#10B981]">XAUUSD BUY</td>
+                            <td class="p-4">4335.20</td>
+                            <td class="p-4"><span class="text-[#EF4444] font-bold">SL</span></td>
+                            <td class="p-4 text-right text-[#EF4444] font-bold">-1R</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800/30 transition-colors">
+                            <td class="p-4 text-gray-400">Yesterday</td>
+                            <td class="p-4"><span class="text-blue-400 bg-blue-400/10 px-2 py-0.5 rounded border border-blue-400/20 font-bold text-[11px]">INTRADAY</span></td>
+                            <td class="p-4 font-bold text-[#EF4444]">XAUUSD SELL</td>
+                            <td class="p-4">4350.00</td>
+                            <td class="p-4"><span class="text-[#10B981] font-bold">TP3 Hit</span></td>
+                            <td class="p-4 text-right text-[#10B981] font-bold">+3R</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="bg-[#111827] border-l-4 border-[#F5C542] p-4 rounded-r-lg max-w-4xl mx-auto flex items-start space-x-3">
+                <i data-lucide="alert-triangle" class="text-[#F5C542] shrink-0 mt-0.5 w-5 h-5"></i>
+                <p class="text-xs text-[#9CA3AF] leading-relaxed">
+                    Performance log adalah untuk tujuan transparency. Trading tetap mempunyai risiko pasaran yang nyata.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. PACKAGES SECTION -->
+    <section id="packages" class="py-24 px-4 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center space-y-3 mb-16">
+            <p class="font-heading text-xs font-bold text-[#F5C542] tracking-widest uppercase">PRICING TIERS</p>
+            <h2 class="text-3xl lg:text-5xl font-heading font-black tracking-tight">Choose Your Command Plan</h2>
+            <div class="w-16 h-1 bg-[#F5C542] mx-auto mt-4"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+            <!-- Plan A -->
+            <div class="bg-[#111827] border border-gray-800 rounded-xl p-6 space-y-6 gold-glow-hover transition-all duration-300">
+                <div>
+                    <h3 class="text-xl font-heading font-bold text-[#F9FAFB]">Scout</h3>
+                    <p class="text-xs text-[#9CA3AF] mt-1">Untuk beginner trader</p>
+                </div>
+                <div class="font-heading text-2xl font-black text-[#F5C542]">RMXX / month</div>
+                <div class="w-full h-[1px] bg-gray-800"></div>
+                <ul class="space-y-3 text-sm text-[#9CA3AF]">
+                    <li class="flex items-center space-x-2.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-[#F5C542]"></i> <span>Access dashboard</span></li>
+                    <li class="flex items-center space-x-2.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-[#F5C542]"></i> <span>Scalping signal</span></li>
+                    <li class="flex items-center space-x-2.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-[#F5C542]"></i> <span>Basic performance log</span></li>
+                    <li class="flex items-center space-x-2.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-[#F5C542]"></i> <span>One device access</span></li>
+                </ul>
+                <button class="w-full bg-[#05070D] border border-gray-700 text-[#F9FAFB] hover:border-[#F5C542] hover:text-[#F5C542] font-heading text-xs font-bold py-3 rounded uppercase tracking-wider transition-all">
+                    Get Scout
+                </button>
+            </div>
+
+            <!-- Plan B - Popular -->
+            <div class="bg-[#111827] border-2 border-[#F5C542] rounded-xl p-6 space-y-6 relative shadow-[0_0_30px_rgba(245,197,66,0.15)] transform md:-translate-y-4">
+                <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#F5C542] to-[#FFD700] text-[#05070D] text-[10px] font-heading font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-md">
+                    POPULAR
+                </div>
+                <div>
+                    <h3 class="text-xl font-heading font-bold text-[#F5C542]">Captain</h3>
+                    <p class="text-xs text-[#9CA3AF] mt-1">Sistem lengkap pilihan ramai</p>
+                </div>
+                <div class="font-heading text-2xl font-black text-[#F5C542]">RMXX / month</div>
+                <div class="w-full h-[1px] bg-gray-800"></div>
+                <ul class="space-y-3 text-sm text-[#F9FAFB]">
+                    <li class="flex items-center space-x-2.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-[#F5C542]"></i> <span>Scalping signal</span></li>
+                    <li class="flex items-center space-x-2.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-[#F5C542]"></i> <span>Intraday signal</span></li>
+                    <li class="flex items-center space-x-2.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-[#F5C542]"></i> <span>Risk calculator</span></li>
+                    <li class="flex items-center space-x-2.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-[#F5C542]"></i> <span>Full performance log</span></li>
+                    <li class="flex items-center space-x-2.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-[#F5C542]"></i> <span>One device access</span></li>
+                    <li class="flex items-center space-x-2.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-[#F5C542]"></i> <span class="text-[#F5C542]">Priority updates</span></li>
+                </ul>
+                <button class="w-full bg-gradient-to-r from-[#F5C542] to-[#FFD700] text-[#05070D] shadow-[0_0_20px_rgba(245,197,66,0.3)] font-heading text-xs font-bold py-3.5 rounded uppercase tracking-wider transition-all hover:shadow-[0_0_30px_rgba(245,197,66,0.5)]">
+                    Get Captain
+                </button>
+            </div>
+
+            <!-- Plan C -->
+            <div class="bg-[#111827] border border-gray-800 rounded-xl p-6 space-y-6 gold-glow-hover transition-all duration-300">
+                <div>
+                    <h3 class="text-xl font-heading font-bold text-gray-300">Commander Elite</h3>
+                    <p class="text-xs text-[#9CA3AF] mt-1">Premium & tactical tier</p>
+                </div>
+                <div class="font-heading text-2xl font-black text-[#F5C542]">RMXX / month</div>
+                <div class="w-full h-[1px] bg-gray-800"></div>
+                <ul class="space-y-3 text-sm text-[#9CA3AF]">
+                    <li class="flex items-center space-x-2.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-[#F5C542]"></i> <span>Semua dalam Captain</span></li>
+                    <li class="flex items-center space-x-2.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-[#F5C542]"></i> <span>Advanced dashboard</span></li>
+                    <li class="flex items-center space-x-2.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-[#F5C542]"></i> <span>Market status alert</span></li>
+                    <li class="flex items-center space-x-2.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-[#F5C542]"></i> <span>Premium support</span></li>
+                    <li class="flex items-center space-x-2.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-[#F5C542]"></i> <span>Exclusive signal insights</span></li>
+                </ul>
+                <button class="w-full bg-[#05070D] border border-gray-700 text-[#F9FAFB] hover:border-[#F5C542] hover:text-[#F5C542] font-heading text-xs font-bold py-3 rounded uppercase tracking-wider transition-all">
+                    Get Elite
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. ACCESS KEY SECTION -->
+    <section class="bg-[#0B0F1A] border-y border-gray-800 py-24 px-4 lg:px-8 relative overflow-hidden">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#F5C542]/5 blur-[150px] rounded-full pointer-events-none"></div>
+
+        <div class="max-w-4xl mx-auto text-center space-y-8 relative z-10">
+            <div class="space-y-3">
+                <p class="font-heading text-xs font-bold text-[#F5C542] tracking-widest uppercase">SECURITY PROTOCOL</p>
+                <h2 class="text-3xl lg:text-4xl font-heading font-black tracking-tight">One Key. One Trader. One Mission.</h2>
+                <p class="text-[#9CA3AF] max-w-xl mx-auto text-sm lg:text-base">
+                    Sistem Command Key Kapitan Signal direka untuk melindungi akses ahli. Setiap key hanya boleh aktif pada satu device sahaja pada satu masa.
+                </p>
+            </div>
+
+            <!-- Access Card UI Grid -->
+            <div class="max-w-md mx-auto bg-[#111827] border-2 border-gray-800 rounded-xl p-6 text-left font-mono relative shadow-2xl">
+                <div class="space-y-4">
+                    <div class="border-b border-gray-800 pb-2 flex justify-between items-center">
+                        <span class="text-xs font-heading font-bold text-[#F9FAFB] tracking-widest">COMMAND KEY</span>
+                        <div class="flex space-x-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-yellow-500"></span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                        </div>
+                    </div>
+                  
+                    <div class="bg-[#05070D] px-4 py-3 rounded border border-gray-800 flex items-center justify-between">
+                        <span class="text-[#F5C542] text-base font-bold tracking-widest">KPS-ELITE-X92A</span>
+                        <i data-lucide="monitor" class="w-4 h-4 text-[#9CA3AF]"></i>
+                    </div>
+
+                    <div class="flex justify-between items-center text-[11px] pt-1 text-gray-400">
+                        <div class="flex items-center space-x-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-[#10B981]"></span>
+                            <span>Status: <span class="text-[#10B981] font-bold">Active</span></span>
+                        </div>
+                        <div>Device: <span class="text-[#F9FAFB] font-bold">Secured</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. FAQ SECTION -->
+    <section id="faq" class="py-24 px-4 lg:px-8 max-w-4xl mx-auto">
+        <div class="text-center space-y-3 mb-16">
+            <p class="font-heading text-xs font-bold text-[#F5C542] tracking-widest uppercase">INTEL DATABASE</p>
+            <h2 class="text-3xl lg:text-5xl font-heading font-black tracking-tight">Frequently Asked Questions</h2>
+            <div class="w-16 h-1 bg-[#F5C542] mx-auto mt-4"></div>
+        </div>
+
+        <div class="space-y-4">
+            <!-- FAQ 1 -->
+            <details class="bg-[#111827] border border-gray-800 rounded-lg group overflow-hidden">
+                <summary class="p-5 flex justify-between items-center font-subheading text-lg font-bold uppercase tracking-wide cursor-pointer list-none select-none text-[#F9FAFB] hover:text-[#F5C542] transition-colors">
+                    <span>Apa itu Kapitan Signal?</span>
+                    <i data-lucide="chevron-down" class="w-5 h-5 text-gray-500 group-open:rotate-180 group-open:text-[#F5C542] transition-transform"></i>
+                </summary>
+                <div class="p-5 pt-0 text-sm text-[#9CA3AF] border-t border-gray-800/40 bg-[#05070D]/40 leading-relaxed">
+                    Kapitan Signal ialah platform premium yang menyediakan isyarat pasaran (signal) komoditi XAUUSD berpandukan ketepatan masa scalping dan pelan kedudukan intraday.
+                </div>
+            </details>
+
+            <!-- FAQ 2 -->
+            <details class="bg-[#111827] border border-gray-800 rounded-lg group overflow-hidden">
+                <summary class="p-5 flex justify-between items-center font-subheading text-lg font-bold uppercase tracking-wide cursor-pointer list-none select-none text-[#F9FAFB] hover:text-[#F5C542] transition-colors">
+                    <span>Adakah signal ini sesuai untuk beginner?</span>
+                    <i data-lucide="chevron-down" class="w-5 h-5 text-gray-500 group-open:rotate-180 group-open:text-[#F5C542] transition-transform"></i>
+                </summary>
+                <div class="p-5 pt-0 text-sm text-[#9CA3AF] border-t border-gray-800/40 bg-[#05070D]/40 leading-relaxed">
+                    Ya, kerana platform ini dilengkapi peranti kalkulator lot bersepadu untuk mengekalkan amalan pengurusan risiko komprehensif bagi pelan dagangan harian anda.
+                </div>
+            </details>
+
+            <!-- FAQ 3 -->
+            <details class="bg-[#111827] border border-gray-800 rounded-lg group overflow-hidden">
+                <summary class="p-5 flex justify-between items-center font-subheading text-lg font-bold uppercase tracking-wide cursor-pointer list-none select-none text-[#F9FAFB] hover:text-[#F5C542] transition-colors">
+                    <span>Bagaimana access key berfungsi?</span>
+                    <i data-lucide="chevron-down" class="w-5 h-5 text-gray-500 group-open:rotate-180 group-open:text-[#F5C542] transition-transform"></i>
+                </summary>
+                <div class="p-5 pt-0 text-sm text-[#9CA3AF] border-t border-gray-800/40 bg-[#05070D]/40 leading-relaxed">
+                    Setiap pelanggan menerima token unik (Command Key) setelah pengesahan pakej berjaya untuk memasuki portal pemantauan dashboard eksklusif.
+                </div>
+            </details>
+
+            <!-- FAQ 4 -->
+            <details class="bg-[#111827] border border-gray-800 rounded-lg group overflow-hidden">
+                <summary class="p-5 flex justify-between items-center font-subheading text-lg font-bold uppercase tracking-wide cursor-pointer list-none select-none text-[#F9FAFB] hover:text-[#F5C542] transition-colors">
+                    <span>Boleh login lebih dari satu device?</span>
+                    <i data-lucide="chevron-down" class="w-5 h-5 text-gray-500 group-open:rotate-180 group-open:text-[#F5C542] transition-transform"></i>
+                </summary>
+                <div class="p-5 pt-0 text-sm text-[#9CA3AF] border-t border-gray-800/40 bg-[#05070D]/40 leading-relaxed">
+                    Tidak boleh. Bagi memelihara hak eksklusif komuniti, satu kekunci sistem hanya dibenarkan aktif untuk satu jenis perkakasan sahaja pada sesuatu masa.
+                </div>
+            </details>
+
+            <!-- FAQ 5 (Kritikal) -->
+            <details class="bg-[#111827] border-2 border-dashed border-[#EF4444]/40 rounded-lg group overflow-hidden">
+                <summary class="p-5 flex justify-between items-center font-subheading text-lg font-bold uppercase tracking-wide cursor-pointer list-none select-none text-[#F9FAFB] hover:text-[#EF4444] transition-colors">
+                    <span>Adakah profit dijamin?</span>
+                    <i data-lucide="chevron-down" class="w-5 h-5 text-gray-500 group-open:rotate-180 group-open:text-[#EF4444] transition-transform"></i>
+                </summary>
+                <div class="p-5 pt-0 text-sm text-[#9CA3AF] border-t border-gray-800/40 bg-[#05070D]/40 leading-relaxed">
+                    “Tidak. Trading mempunyai risiko. Kapitan Signal menyediakan setup, analysis dan tools untuk bantu execution, tetapi keputusan trade tetap bergantung kepada risk management masing-masing.”
+                </div>
+            </details>
+
+            <!-- FAQ 6 -->
+            <details class="bg-[#111827] border border-gray-800 rounded-lg group overflow-hidden">
+                <summary class="p-5 flex justify-between items-center font-subheading text-lg font-bold uppercase tracking-wide cursor-pointer list-none select-none text-[#F9FAFB] hover:text-[#F5C542] transition-colors">
+                    <span>Apa beza scalping dan intraday signal?</span>
+                    <i data-lucide="chevron-down" class="w-5 h-5 text-gray-500 group-open:rotate-180 group-open:text-[#F5C542] transition-transform"></i>
+                </summary>
+                <div class="p-5 pt-0 text-sm text-[#9CA3AF] border-t border-gray-800/40 bg-[#05070D]/40 leading-relaxed">
+                    Isyarat scalping dihantar sekurang-kurangnya setiap 30 minit untuk unjuran pergerakan jangka mikro, manakala analisa intraday disegarkan setiap 4 jam.
+                </div>
+            </details>
+
+            <!-- FAQ 7 -->
+            <details class="bg-[#111827] border border-gray-800 rounded-lg group overflow-hidden">
+                <summary class="p-5 flex justify-between items-center font-subheading text-lg font-bold uppercase tracking-wide cursor-pointer list-none select-none text-[#F9FAFB] hover:text-[#F5C542] transition-colors">
+                    <span>Apa itu risk calculator?</span>
+                    <i data-lucide="chevron-down" class="w-5 h-5 text-gray-500 group-open:rotate-180 group-open:text-[#F5C542] transition-transform"></i>
+                </summary>
+                <div class="p-5 pt-0 text-sm text-[#9CA3AF] border-t border-gray-800/40 bg-[#05070D]/40 leading-relaxed">
+                    Sistem pemproses matematik dalaman yang membantu menterjemah jumlah risiko dolar anda menjadi nilai saiz lot fizikal secara automatik.
+                </div>
+            </details>
+
+            <!-- FAQ 8 -->
+            <details class="bg-[#111827] border border-gray-800 rounded-lg group overflow-hidden">
+                <summary class="p-5 flex justify-between items-center font-subheading text-lg font-bold uppercase tracking-wide cursor-pointer list-none select-none text-[#F9FAFB] hover:text-[#F5C542] transition-colors">
+                    <span>Bagaimana saya dapat link pendaftaran?</span>
+                    <i data-lucide="chevron-down" class="w-5 h-5 text-gray-500 group-open:rotate-180 group-open:text-[#F5C542] transition-transform"></i>
+                </summary>
+                <div class="p-5 pt-0 text-sm text-[#9CA3AF] border-t border-gray-800/40 bg-[#05070D]/40 leading-relaxed">
+                    Sila pilih pelan di bahagian pricing tier utama, sistem gerbang pembayaran automatik kami akan melunaskan pautan pendaftaran sejurus selepas urusan selesai.
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <!-- 11. FINAL CTA SECTION -->
+    <section class="py-16 px-4 lg:px-8 max-w-5xl mx-auto mb-24">
+        <div class="bg-gradient-to-br from-[#111827] via-[#111827] to-[#F5C542]/10 border-2 border-[#F5C542]/50 rounded-2xl p-8 lg:p-12 text-center space-y-6 relative overflow-hidden shadow-[0_0_50px_rgba(245,197,66,0.1)]">
+            <h2 class="text-3xl lg:text-5xl font-heading font-black tracking-tight uppercase">Ready To Trade Like A Captain?</h2>
+            <p class="text-sm lg:text-base text-[#9CA3AF] max-w-xl mx-auto leading-relaxed">
+                Masuk ke command center Kapitan Signal dan dapatkan pengalaman signal XAUUSD yang lebih tersusun, pantas dan transparent.
+            </p>
+            <div class="pt-4">
+                <a href="#packages" class="inline-block bg-gradient-to-r from-[#F5C542] to-[#FFD700] text-[#05070D] font-heading font-bold text-sm px-10 py-4 rounded shadow-[0_0_30px_rgba(245,197,66,0.4)] hover:shadow-[0_0_40px_rgba(245,197,66,0.6)] transition-all transform hover:-translate-y-0.5 tracking-widest uppercase">
+                    Get Access Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 12. FOOTER -->
+    <footer class="bg-[#05070D] border-t border-gray-800 pt-16 pb-8 px-4 lg:px-8">
+        <div class="max-w-7xl mx-auto space-y-12">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-8 border-b border-gray-800/60">
+                <div>
+                    <span class="font-heading tracking-widest text-lg font-black text-gradient">KAPITAN SIGNAL</span>
+                    <p class="text-xs font-subheading font-bold tracking-widest uppercase text-[#9CA3AF] mt-1">“Command The Gold Market”</p>
+                </div>
+                <div class="flex flex-wrap gap-6 font-subheading text-sm font-semibold tracking-wider text-gray-400">
+                    <a href="#home" class="hover:text-[#F5C542] transition-colors">Terms</a>
+                    <a href="#home" class="hover:text-[#F5C542] transition-colors">Privacy</a>
+                    <a href="#home" class="hover:text-[#F5C542] transition-colors">Risk Disclaimer</a>
+                    <a href="#home" class="hover:text-[#F5C542] transition-colors">Contact</a>
+                </div>
+            </div>
+
+            <div class="text-[10px] lg:text-xs text-gray-500 space-y-3 leading-relaxed max-w-5xl">
+                <p><strong>Risk Warning:</strong> Trading CFD melibatkan risiko tinggi. Signal yang diberikan bukan jaminan keuntungan. Pastikan anda memahami risiko sebelum trade.</p>
+                <p class="pt-4 text-center font-mono text-[10px] text-gray-600">&copy; 2026 KAPITAN SIGNAL. All Terminal Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Countdown Logic & Icon Initialization Script -->
+    <script>
+        // Initialize Lucide Icons for production SVG rendering
+        lucide.createIcons();
+
+        // Simple real-time ticking script for the tactical signal card countdown
+        let mins = 18;
+        let secs = 42;
+        const display = document.getElementById('countdown-timer');
+
+        setInterval(() => {
+            if (secs > 0) {
+                secs--;
+            } else if (mins > 0) {
+                mins--;
+                secs = 59;
+            } else {
+                mins = 29;
+                secs = 59;
+            }
+            display.textContent = `00:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }, 1000);
+    </script>
+</body>
+</html>
