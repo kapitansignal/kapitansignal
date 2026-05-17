@@ -636,8 +636,15 @@ export default function Home() {
           </div>
 
           <div className="mb-8 text-center">
-            <div className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full border border-[#1F2937] bg-[#05070D] text-[#F5C542]">
-              <ShieldCheck size={18} />
+            <div className="relative mx-auto mb-3 h-20 w-20">
+              <Image
+                src="/kapitan-logo.png"
+                alt="Kapitan Signal"
+                fill
+                priority
+                sizes="80px"
+                className="object-contain drop-shadow-[0_0_18px_rgba(245,197,66,0.34)]"
+              />
             </div>
             <h1 className="font-heading text-2xl font-black tracking-[0.08em] text-[#F5C542]">KAPITAN SIGNAL</h1>
             <p className={`mt-2 font-subheading text-xs uppercase tracking-[0.16em] ${loginDark ? "text-[#C9D6E8]" : "text-slate-600"}`}>Every Signal Is A Mission.</p>
@@ -746,9 +753,13 @@ export default function Home() {
           <aside className="hidden lg:flex w-64 shrink-0 flex-col justify-between border-r border-[#1F2937]/70 bg-[#05070D]">
             <div className="p-6">
               <div className="mb-8 flex items-center gap-2 border-b border-[#1F2937]/70 pb-4">
-                <div className="grid h-7 w-7 place-items-center rounded bg-gradient-to-br from-[#F5C542] to-[#FFD700] text-[#05070D]">
-                  <Signal size={14} />
-                </div>
+                <Image
+                  src="/kapitan-logo.png"
+                  alt="Kapitan Signal"
+                  width={34}
+                  height={34}
+                  className="h-8 w-8 rounded object-contain drop-shadow-[0_0_12px_rgba(245,197,66,0.35)]"
+                />
                 <span className="font-heading text-sm font-black tracking-[0.08em] text-[#F5C542]">KAPITAN SIGNAL</span>
               </div>
               <nav className="space-y-1 font-subheading text-sm uppercase tracking-[0.08em]">
@@ -1349,9 +1360,13 @@ function KapitanTerminalDashboard({
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 shrink-0 border-r border-[#1F2937]/70 bg-[#05070D] lg:flex lg:flex-col lg:justify-between">
         <div className="space-y-8 p-6">
           <div className="flex items-center space-x-2 border-b border-[#1F2937]/40 pb-4">
-            <div className="grid h-7 w-7 place-items-center rounded bg-gradient-to-br from-[#F5C542] to-[#FFD700] text-[#05070D]">
-              <Signal size={14} />
-            </div>
+            <Image
+              src="/kapitan-logo.png"
+              alt="Kapitan Signal"
+              width={34}
+              height={34}
+              className="h-8 w-8 rounded object-contain drop-shadow-[0_0_12px_rgba(245,197,66,0.35)]"
+            />
             <span className="font-heading text-sm font-black tracking-wider text-[#F5C542]">KAPITAN SIGNAL</span>
           </div>
           <nav className="space-y-1 font-subheading text-base font-bold uppercase tracking-wider">

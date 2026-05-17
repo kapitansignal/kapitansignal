@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import {
   AlertTriangle,
   BarChart3,
@@ -17,20 +18,83 @@ import {
 } from "lucide-react";
 
 type PerformanceRow = {
-  date: string;
+  timestamp: string;
   type: string;
-  pair: string;
-  entry: string;
-  result: string;
-  rr: string;
+  outcome: string;
+  netPips: string;
 };
 
 const PERFORMANCE_ROWS: PerformanceRow[] = [
-  { date: "Today", type: "Scalping", pair: "XAUUSD BUY", entry: "4348.50", result: "TP2 Hit", rr: "+2.1R" },
-  { date: "Today", type: "Intraday", pair: "XAUUSD SELL", entry: "4362.00", result: "Active", rr: "-" },
-  { date: "Yesterday", type: "Scalping", pair: "XAUUSD BUY", entry: "4335.20", result: "SL", rr: "-1R" },
-  { date: "Yesterday", type: "Intraday", pair: "XAUUSD SELL", entry: "4350.00", result: "TP3 Hit", rr: "+3R" },
+  { timestamp: "16/05/26, 04:30", type: "SELL", outcome: "TP1", netPips: "116.5" },
+  { timestamp: "16/05/26, 04:00", type: "SELL", outcome: "TP1", netPips: "51.2" },
+  { timestamp: "16/05/26, 03:30", type: "SELL", outcome: "TP1", netPips: "102.0" },
+  { timestamp: "16/05/26, 03:00", type: "SELL", outcome: "BE", netPips: "43.6" },
+  { timestamp: "16/05/26, 02:30", type: "SELL", outcome: "TP1", netPips: "45.5" },
+  { timestamp: "16/05/26, 02:00", type: "SELL", outcome: "BE", netPips: "1.1" },
 ];
+
+const PERFORMANCE_DISTRIBUTION = [
+  { label: "TP1", value: "48.7", width: "49%" },
+  { label: "TP2", value: "1.0", width: "1%" },
+  { label: "TP3", value: "3.1", width: "3%" },
+  { label: "BE", value: "46.2", width: "46%" },
+  { label: "SL", value: "1.0", width: "1%" },
+];
+
+const HERO_STATS = [
+  { label: "WIN RATE", value: 99, suffix: "%", decimals: 0, valueClass: "text-[#F5C542]" },
+  { label: "TOTAL PIPS", value: 14744.9, prefix: "+", decimals: 1, valueClass: "text-[#10B981]" },
+  { label: "SIGNAL COUNT", value: 210, decimals: 0, valueClass: "text-[#F9FAFB]" },
+  { label: "TOTAL TP", value: 119, decimals: 0, valueClass: "text-[#10B981]" },
+  { label: "TOTAL BE", value: 91, decimals: 0, valueClass: "text-[#C7D2FE]" },
+  { label: "TOTAL SL", value: 2, decimals: 0, valueClass: "text-[#EF4444]" },
+];
+
+const KAPITAN_TELEGRAM_URL = "https://t.me/kapitansignal";
+
+function CountUpStat({
+  value,
+  prefix = "",
+  suffix = "",
+  decimals = 0,
+}: {
+  value: number;
+  prefix?: string;
+  suffix?: string;
+  decimals?: number;
+}) {
+  const [displayValue, setDisplayValue] = useState(0);
+
+  useEffect(() => {
+    let frameId = 0;
+    const duration = 1200;
+    const startTime = performance.now();
+
+    const tick = (time: number) => {
+      const progress = Math.min((time - startTime) / duration, 1);
+      const easedProgress = 1 - Math.pow(1 - progress, 3);
+      setDisplayValue(value * easedProgress);
+
+      if (progress < 1) {
+        frameId = requestAnimationFrame(tick);
+      }
+    };
+
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
+  }, [value]);
+
+  return (
+    <>
+      {prefix}
+      {displayValue.toLocaleString("en-US", {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals,
+      })}
+      {suffix}
+    </>
+  );
+}
 
 function SectionTitle({ overline, title }: { overline: string; title: string }) {
   return (
@@ -49,10 +113,15 @@ export default function KapitanLandingPage() {
 
       <nav className="sticky top-0 z-50 border-b border-[#F5C542]/20 bg-[#05070D]/80 px-4 py-4 backdrop-blur-md lg:px-8">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded bg-gradient-to-br from-[#F5C542] to-[#FFD700] text-[#05070D] shadow-[0_0_15px_rgba(245,197,66,0.4)]">
-              <Zap className="h-4 w-4 fill-[#05070D]" />
-            </div>
+          <div className="flex items-center space-x-3">
+            <Image
+              src="/kapitan-logo.png"
+              alt="Kapitan Signal"
+              width={44}
+              height={44}
+              priority
+              className="h-11 w-11 rounded object-contain drop-shadow-[0_0_14px_rgba(245,197,66,0.42)]"
+            />
             <span className="font-heading text-xl font-black tracking-wider text-gradient">KAPITAN SIGNAL</span>
           </div>
 
@@ -65,10 +134,10 @@ export default function KapitanLandingPage() {
           </div>
 
           <a
-            href="#packages"
+            href="/access"
             className="rounded border border-[#FFD700] bg-gradient-to-r from-[#F5C542] to-[#FFD700] px-5 py-2.5 font-heading text-xs font-bold tracking-wider text-[#05070D] transition-all duration-300 hover:shadow-[0_0_20px_rgba(245,197,66,0.6)]"
           >
-            GET ACCESS
+            ACCESS DASHBOARD
           </a>
         </div>
       </nav>
@@ -121,6 +190,29 @@ export default function KapitanLandingPage() {
           </div>
         </div>
 
+      </section>
+
+      <section className="px-4 pb-12 lg:px-8">
+        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+          {HERO_STATS.map((stat) => (
+            <div
+              key={stat.label}
+              className="group rounded-xl border border-[#243044] bg-[#111827]/90 p-4 shadow-[0_0_24px_rgba(0,0,0,0.22)] transition-all duration-300 hover:-translate-y-1 hover:border-[#F5C542]/60 hover:shadow-[0_0_28px_rgba(245,197,66,0.18)]"
+            >
+              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-[#C9D6E8]">
+                {stat.label}
+              </p>
+              <p className={`mt-3 font-heading text-2xl font-black leading-none tracking-wide sm:text-3xl ${stat.valueClass}`}>
+                <CountUpStat
+                  value={stat.value}
+                  prefix={stat.prefix}
+                  suffix={stat.suffix}
+                  decimals={stat.decimals}
+                />
+              </p>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section className="border-y border-gray-800 bg-[#0B0F1A] px-4 py-12 lg:px-8">
@@ -272,36 +364,48 @@ export default function KapitanLandingPage() {
 
       <section id="performance" className="border-y border-gray-800 bg-[#0B0F1A] px-4 py-24 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <SectionTitle overline="AUDITED JOURNAL" title="Performance Log Yang Transparent" />
-          <p className="-mt-10 mb-14 text-center text-lg text-[#9CA3AF]">Setiap signal direkod supaya ahli boleh review result dengan jelas.</p>
+          <SectionTitle overline="AUDITED JOURNAL" title="PERFORMANCE LOG" />
+          <p className="-mt-10 mb-10 text-center font-mono text-sm uppercase tracking-widest text-[#C9D6E8]">
+            Audited Journal Ledger Logs
+          </p>
 
-          <div className="overflow-x-auto rounded-xl border border-gray-800 bg-[#111827]">
-            <table className="w-full min-w-[960px] text-left text-lg">
-              <thead>
-                <tr className="border-b border-gray-800 bg-[#05070D]">
-                  <th className="p-4 font-subheading font-bold uppercase tracking-widest text-[#9CA3AF]">Date</th>
-                  <th className="p-4 font-subheading font-bold uppercase tracking-widest text-[#9CA3AF]">Type</th>
-                  <th className="p-4 font-subheading font-bold uppercase tracking-widest text-[#9CA3AF]">Pair</th>
-                  <th className="p-4 font-subheading font-bold uppercase tracking-widest text-[#9CA3AF]">Entry</th>
-                  <th className="p-4 font-subheading font-bold uppercase tracking-widest text-[#9CA3AF]">Result</th>
-                  <th className="p-4 font-subheading font-bold uppercase tracking-widest text-[#9CA3AF]">RR</th>
+          <div className="mx-auto mb-8 max-w-3xl rounded-xl border border-[#1F2937] bg-[#111827]/80 p-5">
+            <p className="mb-3 flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-[#C9D6E8]">
+              <BarChart3 size={14} />
+              Profit Loss Distribution
+            </p>
+            <div className="space-y-2 text-sm">
+              {PERFORMANCE_DISTRIBUTION.map((item) => (
+                <div key={item.label}>
+                  <div className="mb-1 flex items-center justify-between text-[#D3DEED]">
+                    <span>{item.label}</span>
+                    <span>{item.value}%</span>
+                  </div>
+                  <div className="h-2 rounded-full bg-[#064E3B]">
+                    <div className="h-2 rounded-full bg-[#10B981]" style={{ width: item.width }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mx-auto max-w-4xl overflow-x-auto rounded-xl border border-[#1F2937] bg-[#111827]/80">
+            <table className="w-full min-w-[520px] table-fixed text-left">
+              <thead className="border-b border-[#1F2937] bg-[#05070D] font-mono text-xs uppercase tracking-wide text-[#E2E8F0]">
+                <tr>
+                  <th className="w-[42%] px-4 py-3">Timestamp</th>
+                  <th className="w-[18%] px-4 py-3">Type</th>
+                  <th className="w-[20%] px-4 py-3">Outcome</th>
+                  <th className="w-[20%] px-4 py-3">Net Pips</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="font-mono text-sm">
                 {PERFORMANCE_ROWS.map((row) => (
-                  <tr key={`${row.date}-${row.type}-${row.entry}`} className="border-b border-gray-800/60">
-                    <td className="p-4 text-[#F9FAFB]">{row.date}</td>
-                    <td className="p-4">
-                      <span className={`rounded px-2 py-0.5 font-subheading text-xs font-bold uppercase tracking-widest ${
-                        row.type === "Scalping" ? "border border-[#F5C542]/40 bg-[#F5C542]/10 text-[#F5C542]" : "border border-[#3B82F6]/40 bg-[#3B82F6]/10 text-[#60A5FA]"
-                      }`}>
-                        {row.type.toUpperCase()}
-                      </span>
-                    </td>
-                    <td className={`p-4 font-subheading font-bold uppercase ${row.pair.includes("BUY") ? "text-[#10B981]" : "text-[#EF4444]"}`}>{row.pair}</td>
-                    <td className="p-4 font-mono text-[#F9FAFB]">{row.entry}</td>
-                    <td className={`p-4 font-subheading font-bold ${row.result.includes("TP") ? "text-[#10B981]" : row.result === "SL" ? "text-[#EF4444]" : "text-[#9CA3AF]"}`}>{row.result}</td>
-                    <td className={`p-4 font-subheading font-bold ${row.rr.startsWith("+") ? "text-[#10B981]" : row.rr.startsWith("-") ? "text-[#EF4444]" : "text-[#9CA3AF]"}`}>{row.rr}</td>
+                  <tr key={`${row.timestamp}-${row.outcome}-${row.netPips}`} className="border-b border-[#1F2937]/70">
+                    <td className="whitespace-nowrap px-4 py-3 text-[#BFDBFE]">{row.timestamp}</td>
+                    <td className={`px-4 py-3 ${row.type === "BUY" ? "text-[#10B981]" : "text-[#EF4444]"}`}>{row.type}</td>
+                    <td className={`px-4 py-3 ${row.outcome === "SL" ? "text-[#EF4444]" : row.outcome === "BE" ? "text-[#D3DEED]" : "text-[#10B981]"}`}>{row.outcome}</td>
+                    <td className="whitespace-nowrap px-4 py-3 text-[#10B981]">+{row.netPips}</td>
                   </tr>
                 ))}
               </tbody>
@@ -336,9 +440,14 @@ export default function KapitanLandingPage() {
                 <li key={item} className="flex items-center space-x-2.5"><CheckCircle2 className="h-4 w-4 text-[#F5C542]" /><span>{item}</span></li>
               ))}
             </ul>
-            <button className="w-full rounded border border-gray-700 bg-[#05070D] py-3 font-heading text-xs font-bold uppercase tracking-wider text-[#F9FAFB] transition-all hover:border-[#F5C542] hover:text-[#F5C542]">
+            <a
+              href={KAPITAN_TELEGRAM_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="block w-full rounded border border-gray-700 bg-[#05070D] py-3 text-center font-heading text-xs font-bold uppercase tracking-wider text-[#F9FAFB] transition-all hover:border-[#F5C542] hover:text-[#F5C542]"
+            >
               Get 7 Days
-            </button>
+            </a>
           </div>
 
           <div className="relative space-y-6 rounded-xl border-2 border-[#F5C542] bg-[#111827] p-6 shadow-[0_0_30px_rgba(245,197,66,0.15)] md:-translate-y-4">
@@ -360,9 +469,14 @@ export default function KapitanLandingPage() {
                 <li key={item} className="flex items-center space-x-2.5"><CheckCircle2 className="h-4 w-4 text-[#F5C542]" /><span>{item}</span></li>
               ))}
             </ul>
-            <button className="w-full rounded bg-gradient-to-r from-[#F5C542] to-[#FFD700] py-3.5 font-heading text-xs font-bold uppercase tracking-wider text-[#05070D] shadow-[0_0_20px_rgba(245,197,66,0.3)] transition-all hover:shadow-[0_0_30px_rgba(245,197,66,0.5)]">
+            <a
+              href={KAPITAN_TELEGRAM_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="block w-full rounded bg-gradient-to-r from-[#F5C542] to-[#FFD700] py-3.5 text-center font-heading text-xs font-bold uppercase tracking-wider text-[#05070D] shadow-[0_0_20px_rgba(245,197,66,0.3)] transition-all hover:shadow-[0_0_30px_rgba(245,197,66,0.5)]"
+            >
               Get 15 Days
-            </button>
+            </a>
           </div>
 
           <div className="gold-glow-hover space-y-6 rounded-xl border border-gray-800 bg-[#111827] p-6 transition-all duration-300">
@@ -381,9 +495,14 @@ export default function KapitanLandingPage() {
                 <li key={item} className="flex items-center space-x-2.5"><CheckCircle2 className="h-4 w-4 text-[#F5C542]" /><span>{item}</span></li>
               ))}
             </ul>
-            <button className="w-full rounded border border-gray-700 bg-[#05070D] py-3 font-heading text-xs font-bold uppercase tracking-wider text-[#F9FAFB] transition-all hover:border-[#F5C542] hover:text-[#F5C542]">
+            <a
+              href={KAPITAN_TELEGRAM_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="block w-full rounded border border-gray-700 bg-[#05070D] py-3 text-center font-heading text-xs font-bold uppercase tracking-wider text-[#F9FAFB] transition-all hover:border-[#F5C542] hover:text-[#F5C542]"
+            >
               Get 30 Days
-            </button>
+            </a>
           </div>
         </div>
       </section>
@@ -486,7 +605,9 @@ export default function KapitanLandingPage() {
           </p>
           <div className="pt-4">
             <a
-              href="#packages"
+              href={KAPITAN_TELEGRAM_URL}
+              target="_blank"
+              rel="noreferrer"
               className="inline-block rounded bg-gradient-to-r from-[#F5C542] to-[#FFD700] px-10 py-4 font-heading text-sm font-bold uppercase tracking-widest text-[#05070D] shadow-[0_0_30px_rgba(245,197,66,0.4)] transition-all hover:-translate-y-0.5 hover:shadow-[0_0_40px_rgba(245,197,66,0.6)]"
             >
               Get Access Now
