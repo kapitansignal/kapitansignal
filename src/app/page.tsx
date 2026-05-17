@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
 import {
   AlertTriangle,
   BarChart3,
@@ -33,10 +32,6 @@ const PERFORMANCE_ROWS: PerformanceRow[] = [
   { date: "Yesterday", type: "Intraday", pair: "XAUUSD SELL", entry: "4350.00", result: "TP3 Hit", rr: "+3R" },
 ];
 
-function zeroPad(value: number) {
-  return String(value).padStart(2, "0");
-}
-
 function SectionTitle({ overline, title }: { overline: string; title: string }) {
   return (
     <div className="space-y-3 text-center mb-16">
@@ -48,21 +43,6 @@ function SectionTitle({ overline, title }: { overline: string; title: string }) 
 }
 
 export default function KapitanLandingPage() {
-  const [countdownSeconds, setCountdownSeconds] = useState(18 * 60 + 42);
-
-  useEffect(() => {
-    const id = window.setInterval(() => {
-      setCountdownSeconds((prev) => (prev <= 0 ? 29 * 60 + 59 : prev - 1));
-    }, 1000);
-    return () => window.clearInterval(id);
-  }, []);
-
-  const countdown = useMemo(() => {
-    const mins = Math.floor(countdownSeconds / 60);
-    const secs = countdownSeconds % 60;
-    return `00:${zeroPad(mins)}:${zeroPad(secs)}`;
-  }, [countdownSeconds]);
-
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-[#05070D] text-[#F9FAFB] antialiased selection:bg-[#F5C542] selection:text-[#05070D]">
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#111827_1px,transparent_1px),linear-gradient(to_bottom,#111827_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-25" />
@@ -93,28 +73,39 @@ export default function KapitanLandingPage() {
         </div>
       </nav>
 
-      <section id="home" className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-8 px-4 pb-16 pt-8 sm:gap-10 sm:pt-10 lg:grid-cols-12 lg:gap-12 lg:px-8 lg:pb-24 lg:pt-12">
-        <div className="pointer-events-none absolute left-1/4 top-1/4 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#F5C542]/5 blur-[120px]" />
+      <section id="home" className="relative mx-auto flex max-w-7xl flex-col items-center px-4 pb-16 pt-8 text-center sm:pt-10 lg:px-8 lg:pb-24 lg:pt-12">
+        <div className="pointer-events-none absolute left-1/2 top-1/3 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#F5C542]/8 blur-[120px]" />
 
-        <div className="z-10 space-y-6 lg:col-span-7">
+        <div className="relative z-10 mb-2 h-44 w-44 sm:h-56 sm:w-56 lg:h-64 lg:w-64">
+          <Image
+            src="/kapitan-logo.png"
+            alt="Kapitan Signal official logo"
+            fill
+            priority
+            sizes="(max-width: 640px) 176px, (max-width: 1024px) 224px, 256px"
+            className="object-contain drop-shadow-[0_0_36px_rgba(245,197,66,0.36)]"
+          />
+        </div>
+
+        <div className="z-10 mx-auto flex max-w-4xl flex-col items-center space-y-6">
           <div className="inline-flex items-center space-x-2 rounded-full border border-[#F5C542]/30 bg-[#111827] px-3 py-1 text-xs font-heading uppercase tracking-widest text-[#F5C542]">
             <span className="h-2 w-2 rounded-full bg-[#10B981] animate-pulse" />
             <span>Tactical Command Center Active</span>
           </div>
 
-          <h1 className="font-heading text-4xl font-black leading-none tracking-tight sm:text-5xl lg:text-7xl">
+          <h1 className="font-heading text-4xl font-black leading-none tracking-tight sm:text-6xl lg:text-7xl">
             KAPITAN SIGNAL
           </h1>
           <h2 className="font-subheading text-2xl font-bold uppercase tracking-wider text-[#F5C542] lg:text-3xl">
             “COMMAND THE GOLD MARKET”
           </h2>
-          <p className="max-w-xl text-base leading-relaxed text-[#9CA3AF] lg:text-lg">
+          <p className="max-w-3xl text-base leading-relaxed text-[#9CA3AF] lg:text-lg">
             Elite XAUUSD signal platform untuk trader yang mahukan entry pantas, risk terkawal dan performance yang transparent.
             Platform signal XAUUSD premium dengan signal scalping setiap 30 minit, intraday setiap 4 jam, risk calculator automatik
             dan performance log yang transparent.
           </p>
 
-          <div className="flex flex-wrap gap-4 pt-4">
+          <div className="flex flex-wrap justify-center gap-4 pt-4">
             <a
               href="#packages"
               className="rounded bg-gradient-to-r from-[#F5C542] to-[#FFD700] px-8 py-4 font-heading text-sm font-bold tracking-wider text-[#05070D] shadow-[0_0_25px_rgba(245,197,66,0.3)] transition-all hover:-translate-y-0.5 hover:shadow-[0_0_35px_rgba(245,197,66,0.5)]"
@@ -130,68 +121,6 @@ export default function KapitanLandingPage() {
           </div>
         </div>
 
-        <div className="z-10 lg:col-span-5">
-          <div className="relative overflow-hidden rounded-xl border-2 border-[#F5C542]/40 bg-[#111827] p-4 shadow-[0_0_40px_rgba(5,7,13,0.8)] sm:p-6">
-            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#F5C542] via-[#FFD700] to-transparent" />
-            <div className="mb-6 flex items-center justify-between">
-              <span className="rounded border border-gray-800 bg-[#05070D] px-2.5 py-1 font-heading text-xs font-bold tracking-widest text-[#9CA3AF]">
-                LIVE MONITOR
-              </span>
-              <div className="flex items-center space-x-1.5 rounded bg-[#10B981]/10 px-2.5 py-1 font-mono text-xs font-bold uppercase tracking-wider text-[#10B981]">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#10B981] animate-ping" />
-                <span>Active</span>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <div className="flex items-end justify-between border-b border-gray-800 pb-4">
-                <div>
-                  <h3 className="font-heading text-3xl font-black tracking-wide text-[#10B981]">BUY XAUUSD</h3>
-                  <p className="mt-0.5 font-mono text-xs text-[#9CA3AF]">TYPE: SCALPING | M30</p>
-                </div>
-                <div className="text-right">
-                  <span className="block font-mono text-xs text-[#9CA3AF]">CONFIDENCE</span>
-                  <span className="font-heading text-xl font-bold text-[#F5C542]">91%</span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3 pt-2 font-mono text-sm">
-                <div className="rounded border border-gray-800/60 bg-[#05070D] p-3">
-                  <span className="mb-0.5 block text-xs text-[#9CA3AF]">ENTRY</span>
-                  <span className="text-base font-bold text-[#F9FAFB]">4348.50</span>
-                </div>
-                <div className="rounded border border-gray-800/60 bg-[#05070D] p-3">
-                  <span className="mb-0.5 block text-xs text-[#EF4444]">STOP LOSS</span>
-                  <span className="text-base font-bold text-[#EF4444]">4345.00</span>
-                </div>
-
-                <div className="col-span-2 flex items-center justify-between rounded border border-gray-800/60 bg-[#05070D] p-3">
-                  <div>
-                    <span className="mb-0.5 block text-xs text-[#10B981]">TAKE PROFIT 1</span>
-                    <span className="font-bold text-[#F9FAFB]">4352.00</span>
-                  </div>
-                  <span className="rounded bg-[#10B981]/20 px-1.5 py-0.5 text-[10px] font-bold text-[#10B981]">CORE</span>
-                </div>
-
-                <div className="rounded border border-gray-800/60 bg-[#05070D] p-3">
-                  <span className="mb-0.5 block text-xs text-[#9CA3AF]">TAKE PROFIT 2</span>
-                  <span className="font-bold text-[#F9FAFB]">4355.00</span>
-                </div>
-                <div className="rounded border border-gray-800/60 bg-[#05070D] p-3">
-                  <span className="mb-0.5 block text-xs text-[#9CA3AF]">TAKE PROFIT 3</span>
-                  <span className="font-bold text-[#F9FAFB]">4360.00</span>
-                </div>
-              </div>
-
-              <div className="mt-4 flex items-center justify-between rounded border border-[#F5C542]/20 bg-[#F5C542]/5 p-3">
-                <span className="font-subheading text-xs font-bold uppercase tracking-wider text-[#9CA3AF]">Next Scalping Signal:</span>
-                <span className="rounded border border-[#F5C542]/30 bg-[#05070D] px-2 py-0.5 font-mono text-sm font-bold tracking-widest text-[#F5C542]">
-                  {countdown}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
       </section>
 
       <section className="border-y border-gray-800 bg-[#0B0F1A] px-4 py-12 lg:px-8">
@@ -393,18 +322,22 @@ export default function KapitanLandingPage() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           <div className="gold-glow-hover space-y-6 rounded-xl border border-gray-800 bg-[#111827] p-6 transition-all duration-300">
             <div>
-              <h3 className="font-heading text-xl font-bold text-gray-300">Scout</h3>
-              <p className="mt-1 text-xs text-[#9CA3AF]">Untuk beginner trader</p>
+              <h3 className="font-heading text-xl font-bold text-gray-300">7 Hari</h3>
+              <p className="mt-1 text-xs text-[#9CA3AF]">Akses misi ringkas untuk mula trade.</p>
             </div>
-            <div className="font-heading text-2xl font-black text-[#F5C542]">RMXX / month</div>
+            <div>
+              <p className="font-mono text-sm text-[#9CA3AF] line-through">RM149</p>
+              <div className="font-heading text-3xl font-black text-[#F5C542]">RM49</div>
+              <p className="mt-1 font-heading text-[10px] font-bold uppercase tracking-[0.25em] text-[#10B981]">Promo Active</p>
+            </div>
             <div className="h-[1px] w-full bg-gray-800" />
             <ul className="space-y-3 text-sm text-[#9CA3AF]">
-              {["Access dashboard", "Scalping signal", "Basic performance log", "One device access"].map((item) => (
+              {["Access dashboard", "Scalping signal", "Intraday signal", "Risk calculator", "Performance log", "One device access"].map((item) => (
                 <li key={item} className="flex items-center space-x-2.5"><CheckCircle2 className="h-4 w-4 text-[#F5C542]" /><span>{item}</span></li>
               ))}
             </ul>
             <button className="w-full rounded border border-gray-700 bg-[#05070D] py-3 font-heading text-xs font-bold uppercase tracking-wider text-[#F9FAFB] transition-all hover:border-[#F5C542] hover:text-[#F5C542]">
-              Get Scout
+              Get 7 Days
             </button>
           </div>
 
@@ -413,35 +346,43 @@ export default function KapitanLandingPage() {
               POPULAR
             </div>
             <div>
-              <h3 className="font-heading text-xl font-bold text-[#F5C542]">Captain</h3>
-              <p className="mt-1 text-xs text-[#9CA3AF]">Sistem lengkap pilihan ramai</p>
+              <h3 className="font-heading text-xl font-bold text-[#F5C542]">15 Hari</h3>
+              <p className="mt-1 text-xs text-[#9CA3AF]">Tempoh seimbang untuk misi konsisten.</p>
             </div>
-            <div className="font-heading text-2xl font-black text-[#F5C542]">RMXX / month</div>
+            <div>
+              <p className="font-mono text-sm text-[#9CA3AF] line-through">RM249</p>
+              <div className="font-heading text-3xl font-black text-[#F5C542]">RM129</div>
+              <p className="mt-1 font-heading text-[10px] font-bold uppercase tracking-[0.25em] text-[#10B981]">Promo Active</p>
+            </div>
             <div className="h-[1px] w-full bg-gray-800" />
             <ul className="space-y-3 text-sm text-[#F9FAFB]">
-              {["Scalping signal", "Intraday signal", "Risk calculator", "Full performance log", "One device access", "Priority updates"].map((item) => (
-                <li key={item} className="flex items-center space-x-2.5"><CheckCircle2 className="h-4 w-4 text-[#F5C542]" /><span className={item === "Priority updates" ? "text-[#F5C542]" : ""}>{item}</span></li>
+              {["Access dashboard", "Scalping signal", "Intraday signal", "Risk calculator", "Full performance log", "One device access"].map((item) => (
+                <li key={item} className="flex items-center space-x-2.5"><CheckCircle2 className="h-4 w-4 text-[#F5C542]" /><span>{item}</span></li>
               ))}
             </ul>
             <button className="w-full rounded bg-gradient-to-r from-[#F5C542] to-[#FFD700] py-3.5 font-heading text-xs font-bold uppercase tracking-wider text-[#05070D] shadow-[0_0_20px_rgba(245,197,66,0.3)] transition-all hover:shadow-[0_0_30px_rgba(245,197,66,0.5)]">
-              Get Captain
+              Get 15 Days
             </button>
           </div>
 
           <div className="gold-glow-hover space-y-6 rounded-xl border border-gray-800 bg-[#111827] p-6 transition-all duration-300">
             <div>
-              <h3 className="font-heading text-xl font-bold text-gray-300">Commander Elite</h3>
-              <p className="mt-1 text-xs text-[#9CA3AF]">Premium & tactical tier</p>
+              <h3 className="font-heading text-xl font-bold text-gray-300">30 Hari</h3>
+              <p className="mt-1 text-xs text-[#9CA3AF]">Tempoh penuh untuk trading cycle bulanan.</p>
             </div>
-            <div className="font-heading text-2xl font-black text-[#F5C542]">RMXX / month</div>
+            <div>
+              <p className="font-mono text-sm text-[#9CA3AF] line-through">RM399</p>
+              <div className="font-heading text-3xl font-black text-[#F5C542]">RM199</div>
+              <p className="mt-1 font-heading text-[10px] font-bold uppercase tracking-[0.25em] text-[#10B981]">Promo Active</p>
+            </div>
             <div className="h-[1px] w-full bg-gray-800" />
             <ul className="space-y-3 text-sm text-[#9CA3AF]">
-              {["Semua dalam Captain", "Advanced dashboard", "Market status alert", "Premium support", "Exclusive signal insights"].map((item) => (
+              {["Access dashboard", "Scalping signal", "Intraday signal", "Risk calculator", "Full performance log", "One device access"].map((item) => (
                 <li key={item} className="flex items-center space-x-2.5"><CheckCircle2 className="h-4 w-4 text-[#F5C542]" /><span>{item}</span></li>
               ))}
             </ul>
             <button className="w-full rounded border border-gray-700 bg-[#05070D] py-3 font-heading text-xs font-bold uppercase tracking-wider text-[#F9FAFB] transition-all hover:border-[#F5C542] hover:text-[#F5C542]">
-              Get Elite
+              Get 30 Days
             </button>
           </div>
         </div>
