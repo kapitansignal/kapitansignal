@@ -778,7 +778,7 @@ export default function AdminPage() {
                         {editingSubId === s.id ? (
                           <select value={editSubDraft.status} onChange={(e) => setEditSubDraft((d) => ({ ...d, status: e.target.value }))} className="w-24 rounded border border-slate-600 bg-slate-950 px-2 py-1">
                             <option value="active">active</option>
-                            <option value="inactive">inactive</option>
+                            <option value="expired">expired</option>
                           </select>
                         ) : s.status}
                       </td>

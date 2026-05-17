@@ -33,6 +33,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     introducer?: string | null;
     key_expired_at?: string | null;
   };
+  const requestedStatus = body.status === "inactive" ? "expired" : body.status;
 
   const patch: { name?: string; email?: string; phone?: string | null; package_name?: string; status?: string; introducer?: string | null } = {};
   if (body.name !== undefined) patch.name = body.name.trim();
@@ -40,7 +41,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   if (body.phone !== undefined) patch.phone = body.phone?.trim() || null;
   if (body.introducer !== undefined) patch.introducer = body.introducer?.trim() || null;
   if (body.package_name !== undefined) patch.package_name = normalizePackageName(body.package_name);
-  if (body.status !== undefined) patch.status = body.status;
+  if (requestedStatus !== undefined) patch.status = requestedStatus;
 
   const { data, error } = await admin
     .from("subscribers")
@@ -54,7 +55,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   const keyLabel = `${data.name} | ${data.package_name}`;
   const manualExpiry = body.key_expired_at === undefined ? undefined : (body.key_expired_at ? new Date(body.key_expired_at).toISOString() : null);
 
-  if (body.status === "inactive") {
+  if (requestedStatus === "expired") {
     const { error: keyError } = await admin
       .from("access_keys")
       .update({
@@ -68,7 +69,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     if (keyError) return NextResponse.json({ error: keyError.message }, { status: 500 });
   }
 
-  if (body.status === "active") {
+  if (requestedStatus === "active") {
     const { data: keyRow } = await admin
       .from("access_keys")
       .select("id,expired_at")
