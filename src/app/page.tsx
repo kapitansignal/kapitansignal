@@ -455,12 +455,12 @@ export default function KapitanLandingPage() {
               POPULAR
             </div>
             <div>
-              <h3 className="font-heading text-xl font-bold text-[#F5C542]">15 Hari</h3>
-              <p className="mt-1 text-xs text-[#9CA3AF]">Tempoh seimbang untuk misi konsisten.</p>
+              <h3 className="font-heading text-xl font-bold text-[#F5C542]">30 Hari</h3>
+              <p className="mt-1 text-xs text-[#9CA3AF]">Tempoh penuh untuk trading cycle bulanan.</p>
             </div>
             <div>
-              <p className="font-mono text-sm text-[#9CA3AF] line-through">RM249</p>
-              <div className="font-heading text-3xl font-black text-[#F5C542]">RM129</div>
+              <p className="font-mono text-sm text-[#9CA3AF] line-through">RM399</p>
+              <div className="font-heading text-3xl font-black text-[#F5C542]">RM199</div>
               <p className="mt-1 font-heading text-[10px] font-bold uppercase tracking-[0.25em] text-[#10B981]">Promo Active</p>
             </div>
             <div className="h-[1px] w-full bg-gray-800" />
@@ -475,18 +475,18 @@ export default function KapitanLandingPage() {
               rel="noreferrer"
               className="block w-full rounded bg-gradient-to-r from-[#F5C542] to-[#FFD700] py-3.5 text-center font-heading text-xs font-bold uppercase tracking-wider text-[#05070D] shadow-[0_0_20px_rgba(245,197,66,0.3)] transition-all hover:shadow-[0_0_30px_rgba(245,197,66,0.5)]"
             >
-              Get 15 Days
+              Get 30 Days
             </a>
           </div>
 
           <div className="gold-glow-hover space-y-6 rounded-xl border border-gray-800 bg-[#111827] p-6 transition-all duration-300">
             <div>
-              <h3 className="font-heading text-xl font-bold text-gray-300">30 Hari</h3>
-              <p className="mt-1 text-xs text-[#9CA3AF]">Tempoh penuh untuk trading cycle bulanan.</p>
+              <h3 className="font-heading text-xl font-bold text-gray-300">15 Hari</h3>
+              <p className="mt-1 text-xs text-[#9CA3AF]">Tempoh seimbang untuk misi konsisten.</p>
             </div>
             <div>
-              <p className="font-mono text-sm text-[#9CA3AF] line-through">RM399</p>
-              <div className="font-heading text-3xl font-black text-[#F5C542]">RM199</div>
+              <p className="font-mono text-sm text-[#9CA3AF] line-through">RM249</p>
+              <div className="font-heading text-3xl font-black text-[#F5C542]">RM129</div>
               <p className="mt-1 font-heading text-[10px] font-bold uppercase tracking-[0.25em] text-[#10B981]">Promo Active</p>
             </div>
             <div className="h-[1px] w-full bg-gray-800" />
@@ -501,7 +501,7 @@ export default function KapitanLandingPage() {
               rel="noreferrer"
               className="block w-full rounded border border-gray-700 bg-[#05070D] py-3 text-center font-heading text-xs font-bold uppercase tracking-wider text-[#F9FAFB] transition-all hover:border-[#F5C542] hover:text-[#F5C542]"
             >
-              Get 30 Days
+              Get 15 Days
             </a>
           </div>
         </div>
