@@ -429,8 +429,11 @@ export default function KapitanLandingPage() {
               <h3 className="font-heading text-xl font-bold text-gray-300">Scout 7 Hari</h3>
             </div>
             <div>
-              <p className="font-mono text-sm text-[#9CA3AF] line-through">RM149</p>
-              <div className="font-heading text-3xl font-black text-[#F5C542]">RM49</div>
+              <p className="mb-1 inline-flex rounded border border-[#F5C542]/40 bg-[#F5C542]/10 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-[#F5C542]">
+                Harga Normal
+              </p>
+              <p className="font-mono text-sm font-bold text-[#E2E8F0] line-through">RM149</p>
+              <div className="font-heading text-3xl font-black text-[#F5C542]">RM99</div>
               <p className="mt-1 font-heading text-[10px] font-bold uppercase tracking-[0.25em] text-[#10B981]">Promo Active</p>
             </div>
             <div className="h-[1px] w-full bg-gray-800" />
@@ -457,7 +460,10 @@ export default function KapitanLandingPage() {
               <h3 className="font-heading text-xl font-bold text-[#F5C542]">Captain 30 Hari</h3>
             </div>
             <div>
-              <p className="font-mono text-sm text-[#9CA3AF] line-through">RM399</p>
+              <p className="mb-1 inline-flex rounded border border-[#F5C542]/40 bg-[#F5C542]/10 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-[#F5C542]">
+                Harga Normal
+              </p>
+              <p className="font-mono text-sm font-bold text-[#E2E8F0] line-through">RM249</p>
               <div className="font-heading text-3xl font-black text-[#F5C542]">RM199</div>
               <p className="mt-1 font-heading text-[10px] font-bold uppercase tracking-[0.25em] text-[#10B981]">Promo Active</p>
             </div>
@@ -482,7 +488,10 @@ export default function KapitanLandingPage() {
               <h3 className="font-heading text-xl font-bold text-gray-300">Commander 15 Hari</h3>
             </div>
             <div>
-              <p className="font-mono text-sm text-[#9CA3AF] line-through">RM249</p>
+              <p className="mb-1 inline-flex rounded border border-[#F5C542]/40 bg-[#F5C542]/10 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-[#F5C542]">
+                Harga Normal
+              </p>
+              <p className="font-mono text-sm font-bold text-[#E2E8F0] line-through">RM199</p>
               <div className="font-heading text-3xl font-black text-[#F5C542]">RM129</div>
               <p className="mt-1 font-heading text-[10px] font-bold uppercase tracking-[0.25em] text-[#10B981]">Promo Active</p>
             </div>
