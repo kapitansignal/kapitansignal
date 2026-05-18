@@ -426,8 +426,7 @@ export default function KapitanLandingPage() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           <div className="gold-glow-hover space-y-6 rounded-xl border border-gray-800 bg-[#111827] p-6 transition-all duration-300">
             <div>
-              <h3 className="font-heading text-xl font-bold text-gray-300">7 Hari</h3>
-              <p className="mt-1 text-xs text-[#9CA3AF]">Akses misi ringkas untuk mula trade.</p>
+              <h3 className="font-heading text-xl font-bold text-gray-300">Scout 7 Hari</h3>
             </div>
             <div>
               <p className="font-mono text-sm text-[#9CA3AF] line-through">RM149</p>
@@ -455,8 +454,7 @@ export default function KapitanLandingPage() {
               POPULAR
             </div>
             <div>
-              <h3 className="font-heading text-xl font-bold text-[#F5C542]">30 Hari</h3>
-              <p className="mt-1 text-xs text-[#9CA3AF]">Tempoh penuh untuk trading cycle bulanan.</p>
+              <h3 className="font-heading text-xl font-bold text-[#F5C542]">Captain 30 Hari</h3>
             </div>
             <div>
               <p className="font-mono text-sm text-[#9CA3AF] line-through">RM399</p>
@@ -481,8 +479,7 @@ export default function KapitanLandingPage() {
 
           <div className="gold-glow-hover space-y-6 rounded-xl border border-gray-800 bg-[#111827] p-6 transition-all duration-300">
             <div>
-              <h3 className="font-heading text-xl font-bold text-gray-300">15 Hari</h3>
-              <p className="mt-1 text-xs text-[#9CA3AF]">Tempoh seimbang untuk misi konsisten.</p>
+              <h3 className="font-heading text-xl font-bold text-gray-300">Commander 15 Hari</h3>
             </div>
             <div>
               <p className="font-mono text-sm text-[#9CA3AF] line-through">RM249</p>
