@@ -1271,12 +1271,11 @@ function KapitanTerminalDashboard({
   setTheme: (value: "dark" | "light" | ((prev: "dark" | "light") => "dark" | "light")) => void;
   copyLot: () => Promise<void>;
 }) {
-  const [perfView, setPerfView] = useState<"scalping" | "intraday">("scalping");
-  const [perfRangePreset, setPerfRangePreset] = useState<RangePreset>("week");
-  const [perfCustomFrom, setPerfCustomFrom] = useState("");
-  const [perfCustomTo, setPerfCustomTo] = useState("");
-  const [perfRowsPerPage, setPerfRowsPerPage] = useState<number | "all">(10);
-  const [perfPage, setPerfPage] = useState(1);
+  const [rangePreset, setRangePreset] = useState<RangePreset>("week");
+  const [customFrom, setCustomFrom] = useState("");
+  const [customTo, setCustomTo] = useState("");
+  const [performancePageSize, setPerformancePageSize] = useState<number | "all">(10);
+  const [performancePage, setPerformancePage] = useState(1);
   const todayMy = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kuala_Lumpur" });
   const signalsToday = signals.filter((item) => new Date(item.created_at).toLocaleDateString("en-CA", { timeZone: "Asia/Kuala_Lumpur" }) === todayMy).length;
   const hasActiveSignal = Boolean(activeSignal);
@@ -1292,65 +1291,65 @@ function KapitanTerminalDashboard({
     return "ACTIVE PLAN";
   }, [accountPackage]);
 
-  const perfStartTimeMs = useMemo(() => {
+  const performanceStartTimeMs = useMemo(() => {
     const now = new Date();
-    if (perfRangePreset === "day") {
+    if (rangePreset === "day") {
       const klDay = now.toLocaleDateString("en-CA", { timeZone: "Asia/Kuala_Lumpur" });
       return new Date(`${klDay}T00:00:00+08:00`).getTime();
     }
-    if (perfRangePreset === "week") return now.getTime() - 7 * 24 * 60 * 60 * 1000;
-    if (perfRangePreset === "month") return now.getTime() - 30 * 24 * 60 * 60 * 1000;
-    if (!perfCustomFrom) return 0;
-    return new Date(`${perfCustomFrom}T00:00:00+08:00`).getTime();
-  }, [perfRangePreset, perfCustomFrom]);
+    if (rangePreset === "week") return now.getTime() - 7 * 24 * 60 * 60 * 1000;
+    if (rangePreset === "month") return now.getTime() - 30 * 24 * 60 * 60 * 1000;
+    if (!customFrom) return 0;
+    return new Date(`${customFrom}T00:00:00+08:00`).getTime();
+  }, [rangePreset, customFrom]);
 
-  const perfEndTimeMs = useMemo(() => {
-    if (perfRangePreset !== "custom" || !perfCustomTo) return Infinity;
-    return new Date(`${perfCustomTo}T23:59:59+08:00`).getTime();
-  }, [perfRangePreset, perfCustomTo]);
+  const performanceEndTimeMs = useMemo(() => {
+    if (rangePreset !== "custom" || !customTo) return Infinity;
+    return new Date(`${customTo}T23:59:59+08:00`).getTime();
+  }, [rangePreset, customTo]);
 
-  const perfCustomRangeInvalid = useMemo(() => {
-    if (perfRangePreset !== "custom") return false;
-    if (!perfCustomFrom || !perfCustomTo) return true;
-    const from = new Date(`${perfCustomFrom}T00:00:00+08:00`).getTime();
-    const to = new Date(`${perfCustomTo}T23:59:59+08:00`).getTime();
+  const customRangeInvalid = useMemo(() => {
+    if (rangePreset !== "custom") return false;
+    if (!customFrom || !customTo) return true;
+    const from = new Date(`${customFrom}T00:00:00+08:00`).getTime();
+    const to = new Date(`${customTo}T23:59:59+08:00`).getTime();
     if (!Number.isFinite(from) || !Number.isFinite(to)) return true;
     return from > to;
-  }, [perfRangePreset, perfCustomFrom, perfCustomTo]);
+  }, [rangePreset, customFrom, customTo]);
 
-  const performanceFilteredRows = logs.filter((row) => {
+  const filteredLogs = logs.filter((row) => {
     const ts = new Date(row.created_at).getTime();
     if (!Number.isFinite(ts)) return false;
-    if (ts < perfStartTimeMs || ts > perfEndTimeMs) return false;
-    if (perfView === "scalping") return row.mode === "scalping";
-    if (perfView === "intraday") return row.mode === "intraday";
+    if (ts < performanceStartTimeMs || ts > performanceEndTimeMs) return false;
+    if (mode === "scalping") return row.mode === "scalping";
+    if (mode === "intraday") return row.mode === "intraday";
     return true;
   });
 
-  const perfTotalPages = useMemo(() => {
-    if (perfRowsPerPage === "all") return 1;
-    return Math.max(1, Math.ceil(performanceFilteredRows.length / perfRowsPerPage));
-  }, [performanceFilteredRows.length, perfRowsPerPage]);
+  const totalPerformancePages = useMemo(() => {
+    if (performancePageSize === "all") return 1;
+    return Math.max(1, Math.ceil(filteredLogs.length / performancePageSize));
+  }, [filteredLogs.length, performancePageSize]);
 
-  const performanceRows = useMemo(() => {
-    if (perfRowsPerPage === "all") return performanceFilteredRows;
-    const start = (perfPage - 1) * perfRowsPerPage;
-    return performanceFilteredRows.slice(start, start + perfRowsPerPage);
-  }, [performanceFilteredRows, perfRowsPerPage, perfPage]);
-
-  useEffect(() => {
-    setPerfPage(1);
-  }, [perfView, perfRangePreset, perfCustomFrom, perfCustomTo, perfRowsPerPage]);
+  const visibleLogs = useMemo(() => {
+    if (performancePageSize === "all") return filteredLogs;
+    const start = (performancePage - 1) * performancePageSize;
+    return filteredLogs.slice(start, start + performancePageSize);
+  }, [filteredLogs, performancePageSize, performancePage]);
 
   useEffect(() => {
-    if (perfPage > perfTotalPages) setPerfPage(perfTotalPages);
-  }, [perfPage, perfTotalPages]);
+    setPerformancePage(1);
+  }, [mode, rangePreset, customFrom, customTo, performancePageSize]);
 
-  const summarySignalCount = performanceFilteredRows.length;
-  const summaryTotalPips = performanceFilteredRows.reduce((sum, row) => sum + row.net_pips, 0);
-  const summaryTotalTp = performanceFilteredRows.filter((row) => row.outcome === "tp1" || row.outcome === "tp2" || row.outcome === "tp3").length;
-  const summaryTotalBe = performanceFilteredRows.filter((row) => row.outcome === "be").length;
-  const summaryTotalSl = performanceFilteredRows.filter((row) => row.outcome === "sl").length;
+  useEffect(() => {
+    if (performancePage > totalPerformancePages) setPerformancePage(totalPerformancePages);
+  }, [performancePage, totalPerformancePages]);
+
+  const summarySignalCount = filteredLogs.length;
+  const summaryTotalPips = filteredLogs.reduce((sum, row) => sum + row.net_pips, 0);
+  const summaryTotalTp = filteredLogs.filter((row) => row.outcome === "tp1" || row.outcome === "tp2" || row.outcome === "tp3").length;
+  const summaryTotalBe = filteredLogs.filter((row) => row.outcome === "be").length;
+  const summaryTotalSl = filteredLogs.filter((row) => row.outcome === "sl").length;
   const summaryWinRate = summarySignalCount > 0 ? Math.round(((summarySignalCount - summaryTotalSl) / summarySignalCount) * 100) : 0;
 
   const archiveRows = signals.slice(0, 6);
@@ -1678,35 +1677,21 @@ function KapitanTerminalDashboard({
                 <h2 className={`font-heading text-4xl font-black ${isDark ? "text-[#F9FAFB]" : "text-[#0F172A]"}`}>PERFORMANCE LOG</h2>
                 <p className={`font-mono text-sm uppercase tracking-widest ${isDark ? "text-[#D3DEED]" : "text-[#334155]"}`}>Audited Journal Ledger Logs</p>
               </div>
-              <div className="grid grid-cols-2 gap-2 rounded-xl border border-[#1F2937] bg-[#111827] p-1">
-                <button
-                  onClick={() => setPerfView("scalping")}
-                  className={`rounded-lg px-5 py-2 text-sm font-mono font-semibold uppercase tracking-wide transition ${perfView === "scalping" ? "border border-[#F5C542] bg-[#F5C542] text-[#05070D]" : "border border-transparent bg-[#05070D] text-[#E2E8F0]"}`}
-                >
-                  Scalping
-                </button>
-                <button
-                  onClick={() => setPerfView("intraday")}
-                  className={`rounded-lg px-5 py-2 text-sm font-mono font-semibold uppercase tracking-wide transition ${perfView === "intraday" ? "border border-[#F5C542] bg-[#F5C542] text-[#05070D]" : "border border-transparent bg-[#05070D] text-[#E2E8F0]"}`}
-                >
-                  Intraday
-                </button>
-              </div>
             </div>
 
             <div className="flex flex-wrap items-end gap-2 rounded-xl border border-[#1F2937] bg-[#111827] p-3">
-              <button onClick={() => setPerfRangePreset("day")} className={`rounded border px-3 py-1 text-sm font-mono font-semibold ${perfRangePreset === "day" ? "border-[#F5C542] bg-[#F5C542] text-[#05070D]" : "border-[#334155] bg-[#05070D] text-[#E2E8F0]"}`}>Day</button>
-              <button onClick={() => setPerfRangePreset("week")} className={`rounded border px-3 py-1 text-sm font-mono font-semibold ${perfRangePreset === "week" ? "border-[#F5C542] bg-[#F5C542] text-[#05070D]" : "border-[#334155] bg-[#05070D] text-[#E2E8F0]"}`}>Week</button>
-              <button onClick={() => setPerfRangePreset("month")} className={`rounded border px-3 py-1 text-sm font-mono font-semibold ${perfRangePreset === "month" ? "border-[#F5C542] bg-[#F5C542] text-[#05070D]" : "border-[#334155] bg-[#05070D] text-[#E2E8F0]"}`}>Month</button>
-              <button onClick={() => setPerfRangePreset("custom")} className={`rounded border px-3 py-1 text-sm font-mono font-semibold ${perfRangePreset === "custom" ? "border-[#F5C542] bg-[#F5C542] text-[#05070D]" : "border-[#334155] bg-[#05070D] text-[#E2E8F0]"}`}>Custom</button>
-              {perfRangePreset === "custom" && (
+              <button onClick={() => setRangePreset("day")} className={`rounded border px-3 py-1 text-sm font-mono font-semibold ${rangePreset === "day" ? "border-[#F5C542] bg-[#F5C542] text-[#05070D]" : "border-[#334155] bg-[#05070D] text-[#E2E8F0]"}`}>Day</button>
+              <button onClick={() => setRangePreset("week")} className={`rounded border px-3 py-1 text-sm font-mono font-semibold ${rangePreset === "week" ? "border-[#F5C542] bg-[#F5C542] text-[#05070D]" : "border-[#334155] bg-[#05070D] text-[#E2E8F0]"}`}>Week</button>
+              <button onClick={() => setRangePreset("month")} className={`rounded border px-3 py-1 text-sm font-mono font-semibold ${rangePreset === "month" ? "border-[#F5C542] bg-[#F5C542] text-[#05070D]" : "border-[#334155] bg-[#05070D] text-[#E2E8F0]"}`}>Month</button>
+              <button onClick={() => setRangePreset("custom")} className={`rounded border px-3 py-1 text-sm font-mono font-semibold ${rangePreset === "custom" ? "border-[#F5C542] bg-[#F5C542] text-[#05070D]" : "border-[#334155] bg-[#05070D] text-[#E2E8F0]"}`}>Custom</button>
+              {rangePreset === "custom" && (
                 <>
-                  <input type="date" value={perfCustomFrom} onChange={(e) => setPerfCustomFrom(e.target.value)} className="rounded border border-[#334155] bg-[#05070D] px-2 py-1 text-xs text-[#F9FAFB]" />
-                  <input type="date" value={perfCustomTo} onChange={(e) => setPerfCustomTo(e.target.value)} className="rounded border border-[#334155] bg-[#05070D] px-2 py-1 text-xs text-[#F9FAFB]" />
+                  <input type="date" value={customFrom} onChange={(e) => setCustomFrom(e.target.value)} className="rounded border border-[#334155] bg-[#05070D] px-2 py-1 text-xs text-[#F9FAFB]" />
+                  <input type="date" value={customTo} onChange={(e) => setCustomTo(e.target.value)} className="rounded border border-[#334155] bg-[#05070D] px-2 py-1 text-xs text-[#F9FAFB]" />
                 </>
               )}
             </div>
-            {perfCustomRangeInvalid && (
+            {customRangeInvalid && (
               <p className="font-mono text-xs text-[#F5C542]">
                 Please select valid custom date range (From/To).
               </p>
@@ -1715,9 +1700,9 @@ function KapitanTerminalDashboard({
             <div className="rounded-xl border border-[#1F2937] bg-[#111827]/80 p-4">
               <p className="mb-2 flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-[#C9D6E8]"><BarChart3 size={14} />Profit Loss Distribution</p>
               <div className="space-y-2 text-xs">
-                <Dist label="TP1" count={performanceFilteredRows.filter((row) => row.outcome === "tp1").length} total={summarySignalCount} />
-                <Dist label="TP2" count={performanceFilteredRows.filter((row) => row.outcome === "tp2").length} total={summarySignalCount} />
-                <Dist label="TP3" count={performanceFilteredRows.filter((row) => row.outcome === "tp3").length} total={summarySignalCount} />
+                <Dist label="TP1" count={filteredLogs.filter((row) => row.outcome === "tp1").length} total={summarySignalCount} />
+                <Dist label="TP2" count={filteredLogs.filter((row) => row.outcome === "tp2").length} total={summarySignalCount} />
+                <Dist label="TP3" count={filteredLogs.filter((row) => row.outcome === "tp3").length} total={summarySignalCount} />
                 <Dist label="BE" count={summaryTotalBe} total={summarySignalCount} />
                 <Dist label="SL" count={summaryTotalSl} total={summarySignalCount} />
               </div>
@@ -1734,7 +1719,7 @@ function KapitanTerminalDashboard({
                   </tr>
                 </thead>
                 <tbody className="font-mono text-xs sm:text-sm">
-                  {performanceRows.map((row) => (
+                  {visibleLogs.map((row) => (
                     <tr key={row.id} className="border-b border-[#1F2937]/70">
                       <td className="whitespace-nowrap px-2 py-2 text-[#BFDBFE] sm:px-4 sm:py-3">{formatDateTimeCompact(row.created_at)}</td>
                       <td className={`px-2 py-2 sm:px-4 sm:py-3 ${row.type === "buy" ? "text-[#10B981]" : "text-[#EF4444]"}`}>{row.type.toUpperCase()}</td>
@@ -1751,10 +1736,10 @@ function KapitanTerminalDashboard({
               <div className="flex items-center gap-2">
                 <span>Rows:</span>
                 <select
-                  value={String(perfRowsPerPage)}
+                  value={String(performancePageSize)}
                   onChange={(e) => {
                     const raw = e.target.value;
-                    setPerfRowsPerPage(raw === "all" ? "all" : Number(raw));
+                    setPerformancePageSize(raw === "all" ? "all" : Number(raw));
                   }}
                   className="rounded border border-[#1F2937] bg-[#05070D] px-2 py-1 text-[#F9FAFB]"
                 >
@@ -1764,22 +1749,22 @@ function KapitanTerminalDashboard({
                   <option value="all">All</option>
                 </select>
               </div>
-              <p>Showing {performanceRows.length} of {performanceFilteredRows.length} records</p>
+              <p>Showing {visibleLogs.length} of {filteredLogs.length} records</p>
               <div className="flex items-center gap-2">
-                {perfRowsPerPage !== "all" && <span>Page {perfPage} / {perfTotalPages}</span>}
-                {perfRowsPerPage !== "all" && (
+                {performancePageSize !== "all" && <span>Page {performancePage} / {totalPerformancePages}</span>}
+                {performancePageSize !== "all" && (
                   <button
-                    onClick={() => setPerfPage((prev) => Math.max(1, prev - 1))}
-                    disabled={perfPage <= 1}
+                    onClick={() => setPerformancePage((prev) => Math.max(1, prev - 1))}
+                    disabled={performancePage <= 1}
                     className="rounded border border-[#1F2937] bg-[#05070D] px-3 py-1 text-[#F9FAFB] disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     Prev
                   </button>
                 )}
-                {perfRowsPerPage !== "all" && (
+                {performancePageSize !== "all" && (
                   <button
-                    onClick={() => setPerfPage((prev) => Math.min(perfTotalPages, prev + 1))}
-                    disabled={perfPage >= perfTotalPages}
+                    onClick={() => setPerformancePage((prev) => Math.min(totalPerformancePages, prev + 1))}
+                    disabled={performancePage >= totalPerformancePages}
                     className="rounded border border-[#1F2937] bg-[#05070D] px-3 py-1 text-[#F9FAFB] disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     Next
