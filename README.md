@@ -1,6 +1,6 @@
-# SARJAN SIGNAL SYSTEM (Tactical Command Version)
+# KAPITAN SIGNAL (Tactical Command Version)
 
-Trading Disiplin, Arahan Sarjan.
+“COMMAND THE GOLD MARKET”
 
 ## Stack
 - Next.js (App Router + TypeScript)
