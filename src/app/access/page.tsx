@@ -27,6 +27,7 @@ const GOLD_PIPS_MULTIPLIER = 10;
 const PERFORMANCE_DEFAULT_PAGE_SIZE = 10;
 const ACCESS_KEY_STORAGE_KEY = "kapitan-access-key";
 const THEME_STORAGE_KEY = "kapitan-theme-v2";
+const SOUND_ALERTS_STORAGE_KEY = "kapitan-sound-alerts-v1";
 
 function fmt(value: number) {
   return value.toFixed(2);
@@ -155,14 +156,38 @@ export default function Home() {
   const [liveAlerts, setLiveAlerts] = useState<LiveAlert[]>([]);
   const [activeSignalPopup, setActiveSignalPopup] = useState<LiveAlert | null>(null);
   const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>("default");
+  const [soundAlertsEnabled, setSoundAlertsEnabled] = useState(true);
   const notifiedEventKeysRef = useRef<Set<string>>(new Set());
   const initializedAlertSnapshotRef = useRef(false);
   const lastSeenSignalIdRef = useRef<string | null>(null);
   const lastSeenPerfIdRef = useRef<string | null>(null);
 
+  const playAlertSound = () => {
+    if (typeof window === "undefined" || !soundAlertsEnabled) return;
+    try {
+      const AudioContextImpl = window.AudioContext || (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+      if (!AudioContextImpl) return;
+      const context = new AudioContextImpl();
+      const oscillator = context.createOscillator();
+      const gain = context.createGain();
+      oscillator.type = "triangle";
+      oscillator.frequency.value = 940;
+      gain.gain.value = 0.03;
+      oscillator.connect(gain);
+      gain.connect(context.destination);
+      const now = context.currentTime;
+      oscillator.start(now);
+      oscillator.stop(now + 0.15);
+      setTimeout(() => void context.close(), 250);
+    } catch {
+      // ignore sound errors on restricted browsers/devices
+    }
+  };
+
   const pushLiveAlert = (alert: LiveAlert) => {
     setLiveAlerts((prev) => [alert, ...prev].slice(0, 20));
     setActiveSignalPopup(alert);
+    playAlertSound();
     if (typeof window !== "undefined" && notificationPermission === "granted") {
       new Notification(alert.title, { body: alert.message });
     }
@@ -226,6 +251,17 @@ export default function Home() {
       setNotificationPermission(Notification.permission);
     }
   }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const saved = window.localStorage.getItem(SOUND_ALERTS_STORAGE_KEY);
+    if (saved === "off") setSoundAlertsEnabled(false);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem(SOUND_ALERTS_STORAGE_KEY, soundAlertsEnabled ? "on" : "off");
+  }, [soundAlertsEnabled]);
 
   useEffect(() => {
     if (!authorized) {
@@ -742,6 +778,8 @@ export default function Home() {
         logout={logout}
         setTheme={setTheme}
         copyLot={copyLot}
+        soundAlertsEnabled={soundAlertsEnabled}
+        setSoundAlertsEnabled={setSoundAlertsEnabled}
       />
     );
   }
@@ -1248,6 +1286,8 @@ function KapitanTerminalDashboard({
   logout,
   setTheme,
   copyLot,
+  soundAlertsEnabled,
+  setSoundAlertsEnabled,
 }: {
   isDark: boolean;
   accountName: string;
@@ -1270,6 +1310,8 @@ function KapitanTerminalDashboard({
   logout: () => void;
   setTheme: (value: "dark" | "light" | ((prev: "dark" | "light") => "dark" | "light")) => void;
   copyLot: () => Promise<void>;
+  soundAlertsEnabled: boolean;
+  setSoundAlertsEnabled: (next: boolean | ((prev: boolean) => boolean)) => void;
 }) {
   const [rangePreset, setRangePreset] = useState<RangePreset>("week");
   const [customFrom, setCustomFrom] = useState("");
@@ -1839,6 +1881,12 @@ function KapitanTerminalDashboard({
             <div className="flex gap-2">
               <button className="rounded border border-[#1F2937] bg-[#05070D] px-4 py-2 font-subheading text-sm font-bold uppercase tracking-[0.08em] text-[#F9FAFB]">Contact Admin</button>
               <button className="rounded border border-[#1F2937] bg-[#111827] px-4 py-2 font-subheading text-sm font-bold uppercase tracking-[0.08em] text-[#60A5FA]">Telegram Support</button>
+              <button
+                onClick={() => setSoundAlertsEnabled((prev) => !prev)}
+                className="rounded border border-[#1F2937] bg-[#111827] px-4 py-2 font-subheading text-sm font-bold uppercase tracking-[0.08em] text-[#F5C542]"
+              >
+                Sound Alerts: {soundAlertsEnabled ? "ON" : "OFF"}
+              </button>
             </div>
           </section>
 
