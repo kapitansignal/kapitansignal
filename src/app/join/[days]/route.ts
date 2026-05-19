@@ -12,8 +12,12 @@ function readDurationDays(row: Record<string, unknown>) {
   const explicit = Number(row.duration_days);
   if (Number.isFinite(explicit) && explicit > 0) return Math.round(explicit);
 
-  const match = String(row.package_name ?? "").match(/(?:^|\D)(\d{1,4})\s*d(?:ays?)?/i);
-  if (match) return Number(match[1]);
+  const packageName = String(row.package_name ?? "");
+  const taggedMatch = packageName.match(/(?:^|\D)(\d{1,4})\s*(?:d|day|days|hari)\b/i);
+  if (taggedMatch) return Number(taggedMatch[1]);
+
+  const numberMatch = packageName.match(/(?:^|\D)(\d{1,4})(?=\D|$)/);
+  if (numberMatch) return Number(numberMatch[1]);
 
   return 0;
 }
