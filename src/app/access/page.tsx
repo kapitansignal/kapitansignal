@@ -1318,6 +1318,7 @@ function KapitanTerminalDashboard({
   const [customTo, setCustomTo] = useState("");
   const [performancePageSize, setPerformancePageSize] = useState<number | "all">(10);
   const [performancePage, setPerformancePage] = useState(1);
+  const [watchedSignalId, setWatchedSignalId] = useState<string | null>(null);
   const todayMy = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kuala_Lumpur" });
   const signalsToday = signals.filter((item) => new Date(item.created_at).toLocaleDateString("en-CA", { timeZone: "Asia/Kuala_Lumpur" }) === todayMy).length;
   const hasActiveSignal = Boolean(activeSignal);
@@ -1395,6 +1396,45 @@ function KapitanTerminalDashboard({
   const summaryWinRate = summarySignalCount > 0 ? Math.round(((summarySignalCount - summaryTotalSl) / summarySignalCount) * 100) : 0;
 
   const archiveRows = signals.slice(0, 6);
+  const latestOutcome = filteredLogs[0]?.outcome ?? null;
+  const tp1Hit = latestOutcome === "tp1" || latestOutcome === "tp2" || latestOutcome === "tp3";
+  const tp2Hit = latestOutcome === "tp2" || latestOutcome === "tp3";
+  const tp3Hit = latestOutcome === "tp3";
+  const timelineStatus = hasActiveSignal ? "Processing" : "Standby";
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const saved = window.localStorage.getItem("kapitan-watched-signal-id");
+    if (saved) setWatchedSignalId(saved);
+  }, []);
+
+  const copySignalPayload = async () => {
+    if (!activeSignal) return;
+    const lines = [
+      `${activeSignal.type.toUpperCase()} ${activeSignal.pair}`,
+      `Entry: ${fmt(activeSignal.entry_target)}`,
+      `SL: ${fmt(activeSignal.sl)}`,
+      `TP1: ${fmt(activeSignal.tp1)}`,
+      `TP2: ${fmt(activeSignal.tp2)}`,
+      `TP3: ${activeSignal.tp3 === null ? "-" : fmt(activeSignal.tp3)}`,
+      `Mode: ${activeSignal.mode.toUpperCase()}`,
+      `Live: ${fmt(activeSignal.live_price)}`,
+      `Pips: ${pipGain(activeSignal).toFixed(1)}`,
+    ];
+    await navigator.clipboard.writeText(lines.join("\n"));
+  };
+
+  const jumpToRiskEngine = () => {
+    document.getElementById("risk-engine")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const markSignalWatched = () => {
+    if (!activeSignal) return;
+    setWatchedSignalId(activeSignal.id);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("kapitan-watched-signal-id", activeSignal.id);
+    }
+  };
 
   return (
     <main className={`kapitan-dashboard min-h-screen ${isDark ? "bg-[#05070D] text-[#F9FAFB]" : "bg-[#e2e8f0] text-[#0f172a]"}`}>
@@ -1563,6 +1603,12 @@ function KapitanTerminalDashboard({
                       <span className="text-[#C9D6E8]">Risk Ratio:</span>
                       <span className="font-heading font-black text-[#F9FAFB]">1 : 3.2</span>
                     </div>
+                    <div className="flex items-center justify-between rounded border border-[#1F2937] bg-[#05070D] px-3 py-2 text-sm">
+                      <span className="text-[#C9D6E8]">Pips Gain:</span>
+                      <span className={`font-heading font-black ${activeSignal && pipGain(activeSignal) >= 0 ? "text-[#10B981]" : "text-[#EF4444]"}`}>
+                        {activeSignal ? `${pipGain(activeSignal).toFixed(1)} pips` : "-"}
+                      </span>
+                    </div>
                   </div>
 
                   <div className="space-y-2 sm:col-span-7">
@@ -1593,21 +1639,36 @@ function KapitanTerminalDashboard({
                 <div className="space-y-2 border-t border-[#1F2937] pt-4 font-mono text-xs">
                   <div className="flex items-center justify-between text-[11px] uppercase text-[#E2E8F0]">
                     <span>Execution Timeline</span>
-                    <span className="text-[#10B981]">Status: Processing</span>
+                    <span className={hasActiveSignal ? "text-[#10B981]" : "text-[#E2E8F0]"}>Status: {timelineStatus}</span>
                   </div>
                   <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
                     <div className="rounded border border-[#10B981] bg-[#10B981]/15 px-2 py-1 text-center text-[#10B981]">Released</div>
-                    <div className="rounded border border-[#10B981] bg-[#10B981]/15 px-2 py-1 text-center text-[#10B981]">Active</div>
-                    <div className="rounded border border-[#1F2937] bg-[#111827] px-2 py-1 text-center text-[#E2E8F0]">TP1 Pending</div>
-                    <div className="rounded border border-[#1F2937] bg-[#111827] px-2 py-1 text-center text-[#E2E8F0]">TP2 Pending</div>
-                    <div className="rounded border border-[#1F2937] bg-[#111827] px-2 py-1 text-center text-[#E2E8F0]">TP3 Pending</div>
+                    <div className={`rounded border px-2 py-1 text-center ${hasActiveSignal ? "border-[#10B981] bg-[#10B981]/15 text-[#10B981]" : "border-[#1F2937] bg-[#111827] text-[#E2E8F0]"}`}>Active</div>
+                    <div className={`rounded border px-2 py-1 text-center ${tp1Hit ? "border-[#10B981] bg-[#10B981]/15 text-[#10B981]" : "border-[#1F2937] bg-[#111827] text-[#E2E8F0]"}`}>{tp1Hit ? "TP1 Hit" : "TP1 Pending"}</div>
+                    <div className={`rounded border px-2 py-1 text-center ${tp2Hit ? "border-[#10B981] bg-[#10B981]/15 text-[#10B981]" : "border-[#1F2937] bg-[#111827] text-[#E2E8F0]"}`}>{tp2Hit ? "TP2 Hit" : "TP2 Pending"}</div>
+                    <div className={`rounded border px-2 py-1 text-center ${tp3Hit ? "border-[#10B981] bg-[#10B981]/15 text-[#10B981]" : "border-[#1F2937] bg-[#111827] text-[#E2E8F0]"}`}>{tp3Hit ? "TP3 Hit" : "TP3 Pending"}</div>
                   </div>
                 </div>
 
                 <div className="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-3">
-                  <button className="rounded-lg border border-[#1F2937] bg-[#05070D] py-2 font-subheading text-sm font-bold text-[#F9FAFB]">Copy Signal</button>
-                  <button className="rounded-lg border border-[#1F2937] bg-[#05070D] py-2 font-subheading text-sm font-bold text-[#F9FAFB]">Calculate Risk</button>
-                  <button className="rounded-lg border border-[#1F2937] bg-[#05070D] py-2 font-subheading text-sm font-bold text-[#F9FAFB]">Mark Watched</button>
+                  <button
+                    onClick={() => void copySignalPayload()}
+                    className="rounded-lg border border-[#1F2937] bg-[#05070D] py-2 font-subheading text-sm font-bold text-[#F9FAFB]"
+                  >
+                    Copy Signal
+                  </button>
+                  <button
+                    onClick={jumpToRiskEngine}
+                    className="rounded-lg border border-[#1F2937] bg-[#05070D] py-2 font-subheading text-sm font-bold text-[#F9FAFB]"
+                  >
+                    Calculate Risk
+                  </button>
+                  <button
+                    onClick={markSignalWatched}
+                    className="rounded-lg border border-[#1F2937] bg-[#05070D] py-2 font-subheading text-sm font-bold text-[#F9FAFB]"
+                  >
+                    {activeSignal && watchedSignalId === activeSignal.id ? "Watched" : "Mark Watched"}
+                  </button>
                 </div>
               </div>
             </div>
