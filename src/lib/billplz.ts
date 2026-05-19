@@ -26,7 +26,8 @@ export function asPositiveInt(value: string | undefined, fallback: number) {
 export function getBillplzConfig(): BillplzConfig | null {
   const apiKey = process.env.BILLPLZ_API_KEY?.trim() ?? "";
   const collectionId = process.env.BILLPLZ_COLLECTION_ID?.trim() ?? "";
-  const xSignatureKey = process.env.BILLPLZ_X_SIGNATURE_KEY?.trim() ?? "";
+  const xSignatureKey =
+    process.env.BILLPLZ_X_SIGNATURE_KEY?.trim() ?? process.env.BILLPLZ_X_SIGNATURE?.trim() ?? "";
   if (!apiKey || !collectionId || !xSignatureKey) return null;
   return { apiKey, collectionId, xSignatureKey };
 }
