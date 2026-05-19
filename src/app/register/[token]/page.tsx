@@ -65,7 +65,7 @@ export default function RegisterPage({ params }: { params: Promise<{ token: stri
   }, [params]);
 
   useEffect(() => {
-    if (!token || !pkg?.billplz_enabled || result || isConfirmingPayment) return;
+    if (!token || result || isConfirmingPayment) return;
     const qs = new URLSearchParams(window.location.search);
     const paid = qs.get("billplz[paid]");
     const billId = qs.get("billplz[id]");
@@ -107,8 +107,7 @@ export default function RegisterPage({ params }: { params: Promise<{ token: stri
       return;
     }
 
-    const endpoint = pkg?.billplz_enabled ? `/api/register/${token}/billplz` : `/api/register/${token}`;
-    const res = await fetch(endpoint, {
+    const res = await fetch(`/api/register/${token}/billplz`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
@@ -123,18 +122,12 @@ export default function RegisterPage({ params }: { params: Promise<{ token: stri
       setStatus(json.error ?? "Registration failed");
       return;
     }
-    if (pkg?.billplz_enabled) {
-      const billUrl = String(json.url ?? "");
-      if (!billUrl) {
-        setStatus("Payment session created but missing redirect URL.");
-        return;
-      }
-      window.location.href = billUrl;
+    const billUrl = String(json.url ?? "");
+    if (!billUrl) {
+      setStatus("Payment session created but missing redirect URL.");
       return;
     }
-    setResult({ access_key: json.access_key, expired_at: json.expired_at });
-    setStatus("");
-    setShowKeyReminder(true);
+    window.location.href = billUrl;
   };
 
   const copyKey = async () => {
@@ -330,7 +323,7 @@ export default function RegisterPage({ params }: { params: Promise<{ token: stri
                     disabled={!canSubmit}
                     className="w-full rounded-lg bg-gradient-to-r from-[#F5C542] to-[#FFD700] py-3.5 font-heading text-sm font-black uppercase tracking-[0.14em] text-[#05070D] shadow-[0_0_20px_rgba(245,197,66,0.2)] transition-all hover:shadow-[0_0_30px_rgba(245,197,66,0.4)] disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    {pkg?.billplz_enabled ? "Proceed to Payment" : "Continue Registration"}
+                    Proceed to Payment
                   </button>
                 </form>
               ) : null}
