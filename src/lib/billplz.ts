@@ -4,13 +4,13 @@ type BillplzConfig = {
   apiKey: string;
   collectionId: string;
   xSignatureKey: string;
-  amountCents: number;
 };
 
 type CreateBillArgs = {
   name: string;
   email: string;
   mobile: string;
+  amountCents: number;
   description: string;
   callbackUrl: string;
   redirectUrl: string;
@@ -18,7 +18,7 @@ type CreateBillArgs = {
   reference2: string;
 };
 
-function asPositiveInt(value: string | undefined, fallback: number) {
+export function asPositiveInt(value: string | undefined, fallback: number) {
   const parsed = Number(value ?? "");
   return Number.isFinite(parsed) && parsed > 0 ? Math.round(parsed) : fallback;
 }
@@ -27,9 +27,8 @@ export function getBillplzConfig(): BillplzConfig | null {
   const apiKey = process.env.BILLPLZ_API_KEY?.trim() ?? "";
   const collectionId = process.env.BILLPLZ_COLLECTION_ID?.trim() ?? "";
   const xSignatureKey = process.env.BILLPLZ_X_SIGNATURE_KEY?.trim() ?? "";
-  const amountCents = asPositiveInt(process.env.BILLPLZ_AMOUNT_CENTS, 0);
-  if (!apiKey || !collectionId || !xSignatureKey || amountCents <= 0) return null;
-  return { apiKey, collectionId, xSignatureKey, amountCents };
+  if (!apiKey || !collectionId || !xSignatureKey) return null;
+  return { apiKey, collectionId, xSignatureKey };
 }
 
 function withAuthHeaders(apiKey: string) {
@@ -45,7 +44,7 @@ export async function createBillplzBill(config: BillplzConfig, args: CreateBillA
     name: args.name,
     email: args.email,
     mobile: args.mobile,
-    amount: String(config.amountCents),
+    amount: String(args.amountCents),
     description: args.description,
     callback_url: args.callbackUrl,
     redirect_url: args.redirectUrl,
@@ -76,4 +75,3 @@ export async function getBillplzBill(config: BillplzConfig, billId: string) {
   const json = (await response.json()) as Record<string, unknown>;
   return { ok: response.ok, json };
 }
-
