@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { generateAccessKey } from "@/lib/keygen";
 import { resolveBrandId } from "@/lib/brand-id";
+import { getBillplzConfig } from "@/lib/billplz";
 
 type PackageLinkRow = Record<string, unknown> & {
   id: string;
@@ -168,6 +169,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ token: s
     package_name: link.package_name,
     duration_days: readDurationDays(link),
     agent_name: link.agent_name ?? null,
+    billplz_enabled: Boolean(getBillplzConfig()),
   });
 }
 

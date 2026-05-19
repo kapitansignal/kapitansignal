@@ -5,7 +5,7 @@ import Link from "next/link";
 import { CheckCircle2, Mail, Phone, ShieldCheck, User, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 
-type PkgInfo = { package_name: string; duration_days: number };
+type PkgInfo = { package_name: string; duration_days: number; billplz_enabled?: boolean };
 type ResultInfo = { access_key: string; expired_at: string };
 
 export default function RegisterPage({ params }: { params: Promise<{ token: string }> }) {
@@ -18,6 +18,7 @@ export default function RegisterPage({ params }: { params: Promise<{ token: stri
   const [acceptedRisk, setAcceptedRisk] = useState(false);
   const [result, setResult] = useState<ResultInfo | null>(null);
   const [showKeyReminder, setShowKeyReminder] = useState(false);
+  const [isConfirmingPayment, setIsConfirmingPayment] = useState(false);
 
   const validateName = (value: string) => {
     const trimmed = value.trim().replace(/\s+/g, " ");
@@ -53,10 +54,44 @@ export default function RegisterPage({ params }: { params: Promise<{ token: stri
         setStatus(json.error ?? "Invalid link");
         return;
       }
-      setPkg({ package_name: json.package_name, duration_days: json.duration_days });
+      setPkg({
+        package_name: json.package_name,
+        duration_days: json.duration_days,
+        billplz_enabled: Boolean(json.billplz_enabled),
+      });
       setStatus("");
     })();
   }, [params]);
+
+  useEffect(() => {
+    if (!token || !pkg?.billplz_enabled || result || isConfirmingPayment) return;
+    const qs = new URLSearchParams(window.location.search);
+    const paid = qs.get("billplz[paid]");
+    const billId = qs.get("billplz[id]");
+    if (paid !== "true" || !billId) return;
+
+    setIsConfirmingPayment(true);
+    setStatus("Verifying payment and activating your access key...");
+    void (async () => {
+      const res = await fetch(`/api/register/${token}/billplz/confirm`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ bill_id: billId }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setStatus(json.error ?? "Payment verification failed");
+        setIsConfirmingPayment(false);
+        return;
+      }
+      setResult({ access_key: json.access_key, expired_at: json.expired_at });
+      setStatus("");
+      setShowKeyReminder(true);
+      setIsConfirmingPayment(false);
+      const cleanUrl = `${window.location.pathname}`;
+      window.history.replaceState({}, "", cleanUrl);
+    })();
+  }, [token, pkg, result, isConfirmingPayment]);
 
   const submit = async () => {
     const nameError = validateName(name);
@@ -71,7 +106,8 @@ export default function RegisterPage({ params }: { params: Promise<{ token: stri
       return;
     }
 
-    const res = await fetch(`/api/register/${token}`, {
+    const endpoint = pkg?.billplz_enabled ? `/api/register/${token}/billplz` : `/api/register/${token}`;
+    const res = await fetch(endpoint, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
@@ -83,6 +119,15 @@ export default function RegisterPage({ params }: { params: Promise<{ token: stri
     const json = await res.json();
     if (!res.ok) {
       setStatus(json.error ?? "Registration failed");
+      return;
+    }
+    if (pkg?.billplz_enabled) {
+      const billUrl = String(json.url ?? "");
+      if (!billUrl) {
+        setStatus("Payment session created but missing redirect URL.");
+        return;
+      }
+      window.location.href = billUrl;
       return;
     }
     setResult({ access_key: json.access_key, expired_at: json.expired_at });
@@ -272,7 +317,7 @@ export default function RegisterPage({ params }: { params: Promise<{ token: stri
                     disabled={!canSubmit}
                     className="w-full rounded-lg bg-gradient-to-r from-[#F5C542] to-[#FFD700] py-3.5 font-heading text-sm font-black uppercase tracking-[0.14em] text-[#05070D] shadow-[0_0_20px_rgba(245,197,66,0.2)] transition-all hover:shadow-[0_0_30px_rgba(245,197,66,0.4)] disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    Continue Registration
+                    {pkg?.billplz_enabled ? "Proceed to Payment" : "Continue Registration"}
                   </button>
                 </form>
               ) : null}
