@@ -24,6 +24,8 @@ type PerformanceRow = {
   netPips: string;
 };
 
+type PackageTargets = Partial<Record<"7" | "15" | "30", string>>;
+
 const PERFORMANCE_ROWS: PerformanceRow[] = [
   { timestamp: "16/05/26, 04:30", type: "SELL", outcome: "TP1", netPips: "116.5" },
   { timestamp: "16/05/26, 04:00", type: "SELL", outcome: "TP1", netPips: "51.2" },
@@ -105,6 +107,23 @@ function SectionTitle({ overline, title }: { overline: string; title: string }) 
 }
 
 export default function KapitanLandingPage() {
+  const [packageTargets, setPackageTargets] = useState<PackageTargets>({});
+
+  useEffect(() => {
+    void (async () => {
+      try {
+        const res = await fetch("/api/package-links/public", { cache: "no-store" });
+        const json = (await res.json()) as { data?: PackageTargets };
+        if (!res.ok || !json?.data) return;
+        setPackageTargets(json.data);
+      } catch {
+        // Keep static fallback links if request fails.
+      }
+    })();
+  }, []);
+
+  const packageHref = (days: "7" | "15" | "30") => packageTargets[days] ?? `/join/${days}`;
+
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-[#05070D] text-[#F9FAFB] antialiased selection:bg-[#F5C542] selection:text-[#05070D]">
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#111827_1px,transparent_1px),linear-gradient(to_bottom,#111827_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-25" />
@@ -441,7 +460,7 @@ export default function KapitanLandingPage() {
               ))}
             </ul>
             <a
-              href="/join/7"
+              href={packageHref("7")}
               className="block w-full rounded border border-gray-700 bg-[#05070D] py-3 text-center font-heading text-xs font-bold uppercase tracking-wider text-[#F9FAFB] transition-all hover:border-[#F5C542] hover:text-[#F5C542]"
             >
               Get 7 Days
@@ -470,7 +489,7 @@ export default function KapitanLandingPage() {
               ))}
             </ul>
             <a
-              href="/join/30"
+              href={packageHref("30")}
               className="block w-full rounded bg-gradient-to-r from-[#F5C542] to-[#FFD700] py-3.5 text-center font-heading text-xs font-bold uppercase tracking-wider text-[#05070D] shadow-[0_0_20px_rgba(245,197,66,0.3)] transition-all hover:shadow-[0_0_30px_rgba(245,197,66,0.5)]"
             >
               Get 30 Days
@@ -496,7 +515,7 @@ export default function KapitanLandingPage() {
               ))}
             </ul>
             <a
-              href="/join/15"
+              href={packageHref("15")}
               className="block w-full rounded border border-gray-700 bg-[#05070D] py-3 text-center font-heading text-xs font-bold uppercase tracking-wider text-[#F9FAFB] transition-all hover:border-[#F5C542] hover:text-[#F5C542]"
             >
               Get 15 Days
@@ -603,7 +622,7 @@ export default function KapitanLandingPage() {
           </p>
           <div className="pt-4">
             <a
-              href="/join/30"
+              href={packageHref("30")}
               className="inline-block rounded bg-gradient-to-r from-[#F5C542] to-[#FFD700] px-10 py-4 font-heading text-sm font-bold uppercase tracking-widest text-[#05070D] shadow-[0_0_30px_rgba(245,197,66,0.4)] transition-all hover:-translate-y-0.5 hover:shadow-[0_0_40px_rgba(245,197,66,0.6)]"
             >
               Get Access Now
