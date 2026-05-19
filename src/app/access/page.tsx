@@ -1679,6 +1679,29 @@ function KapitanTerminalDashboard({
               </div>
             </div>
 
+            <div className="flex flex-wrap gap-2 rounded-xl border border-[#1F2937] bg-[#111827] p-3">
+              <button
+                onClick={() => setMode("scalping")}
+                className={`rounded border px-3 py-1 text-sm font-mono font-semibold ${
+                  mode === "scalping"
+                    ? "border-[#F5C542] bg-[#F5C542] text-[#05070D]"
+                    : "border-[#334155] bg-[#05070D] text-[#E2E8F0]"
+                }`}
+              >
+                Scalping
+              </button>
+              <button
+                onClick={() => setMode("intraday")}
+                className={`rounded border px-3 py-1 text-sm font-mono font-semibold ${
+                  mode === "intraday"
+                    ? "border-[#F5C542] bg-[#F5C542] text-[#05070D]"
+                    : "border-[#334155] bg-[#05070D] text-[#E2E8F0]"
+                }`}
+              >
+                Intraday
+              </button>
+            </div>
+
             <div className="flex flex-wrap items-end gap-2 rounded-xl border border-[#1F2937] bg-[#111827] p-3">
               <button onClick={() => setRangePreset("day")} className={`rounded border px-3 py-1 text-sm font-mono font-semibold ${rangePreset === "day" ? "border-[#F5C542] bg-[#F5C542] text-[#05070D]" : "border-[#334155] bg-[#05070D] text-[#E2E8F0]"}`}>Day</button>
               <button onClick={() => setRangePreset("week")} className={`rounded border px-3 py-1 text-sm font-mono font-semibold ${rangePreset === "week" ? "border-[#F5C542] bg-[#F5C542] text-[#05070D]" : "border-[#334155] bg-[#05070D] text-[#E2E8F0]"}`}>Week</button>
