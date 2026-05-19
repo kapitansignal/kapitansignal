@@ -622,17 +622,17 @@ h6 {
   50% { opacity: 0.45; filter: brightness(1.2); }
 }
 
-.sarjan-reveal {
+.kapitan-reveal {
   opacity: 0;
   transform: translateY(16px) scale(0.99);
   transition: opacity 220ms ease, transform 220ms ease;
 }
 
-.sarjan-reveal.is-visible {
-  animation: sarjanStaggerIn 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+.kapitan-reveal.is-visible {
+  animation: kapitanStaggerIn 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-@keyframes sarjanStaggerIn {
+@keyframes kapitanStaggerIn {
   0% {
     opacity: 0;
     transform: translateY(16px) scale(0.99);

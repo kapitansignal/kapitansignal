@@ -592,7 +592,7 @@ export default function AdminPage() {
     const a = document.createElement("a");
     const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-");
     a.href = url;
-    a.download = `sarjan-performance-${perfMode}-${perfRange}-${stamp}.csv`;
+    a.download = `kapitan-performance-${perfMode}-${perfRange}-${stamp}.csv`;
     document.body.appendChild(a);
     a.click();
     a.remove();

@@ -49,10 +49,7 @@ function resolveBrandId(request: NextRequest): string {
   const host = (request.headers.get("x-forwarded-host") ?? request.headers.get("host") ?? "").trim().toLowerCase();
   if (!host) return "";
 
-  if (host.includes("kafra")) return "kafra";
-  if (host.includes("sarjan")) return "sarjan";
-  if (host.includes("richjoker")) return "richjoker";
-  if (host.includes("shinobi")) return "shinobi";
+  if (host.includes("kapitan")) return "kapitan";
   return "";
 }
 

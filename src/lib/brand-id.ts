@@ -1,4 +1,4 @@
-﻿const DEFAULT_BRAND_ID = "sarjan";
+const DEFAULT_BRAND_ID = "kapitan";
 
 export function resolveBrandId(req?: Request): string {
   const fromEnv = (process.env.BRAND_ID ?? process.env.NEXT_PUBLIC_BRAND_ID ?? "").trim().toLowerCase();
@@ -8,10 +8,7 @@ export function resolveBrandId(req?: Request): string {
     ? (req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? "").trim().toLowerCase()
     : "";
 
-  if (host.includes("kafra")) return "kafra";
-  if (host.includes("sarjan")) return "sarjan";
-  if (host.includes("richjoker")) return "richjoker";
-  if (host.includes("shinobi")) return "shinobi";
+  if (host.includes("kapitan")) return "kapitan";
 
   return DEFAULT_BRAND_ID;
 }
