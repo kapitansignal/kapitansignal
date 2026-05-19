@@ -50,8 +50,6 @@ const HERO_STATS = [
   { label: "TOTAL SL", value: 2, decimals: 0, valueClass: "text-[#EF4444]" },
 ];
 
-const KAPITAN_TELEGRAM_URL = "https://t.me/kapitansignal";
-
 function CountUpStat({
   value,
   prefix = "",
@@ -443,9 +441,7 @@ export default function KapitanLandingPage() {
               ))}
             </ul>
             <a
-              href={KAPITAN_TELEGRAM_URL}
-              target="_blank"
-              rel="noreferrer"
+              href="/join/7"
               className="block w-full rounded border border-gray-700 bg-[#05070D] py-3 text-center font-heading text-xs font-bold uppercase tracking-wider text-[#F9FAFB] transition-all hover:border-[#F5C542] hover:text-[#F5C542]"
             >
               Get 7 Days
@@ -474,9 +470,7 @@ export default function KapitanLandingPage() {
               ))}
             </ul>
             <a
-              href={KAPITAN_TELEGRAM_URL}
-              target="_blank"
-              rel="noreferrer"
+              href="/join/30"
               className="block w-full rounded bg-gradient-to-r from-[#F5C542] to-[#FFD700] py-3.5 text-center font-heading text-xs font-bold uppercase tracking-wider text-[#05070D] shadow-[0_0_20px_rgba(245,197,66,0.3)] transition-all hover:shadow-[0_0_30px_rgba(245,197,66,0.5)]"
             >
               Get 30 Days
@@ -502,9 +496,7 @@ export default function KapitanLandingPage() {
               ))}
             </ul>
             <a
-              href={KAPITAN_TELEGRAM_URL}
-              target="_blank"
-              rel="noreferrer"
+              href="/join/15"
               className="block w-full rounded border border-gray-700 bg-[#05070D] py-3 text-center font-heading text-xs font-bold uppercase tracking-wider text-[#F9FAFB] transition-all hover:border-[#F5C542] hover:text-[#F5C542]"
             >
               Get 15 Days
@@ -611,9 +603,7 @@ export default function KapitanLandingPage() {
           </p>
           <div className="pt-4">
             <a
-              href={KAPITAN_TELEGRAM_URL}
-              target="_blank"
-              rel="noreferrer"
+              href="/join/30"
               className="inline-block rounded bg-gradient-to-r from-[#F5C542] to-[#FFD700] px-10 py-4 font-heading text-sm font-bold uppercase tracking-widest text-[#05070D] shadow-[0_0_30px_rgba(245,197,66,0.4)] transition-all hover:-translate-y-0.5 hover:shadow-[0_0_40px_rgba(245,197,66,0.6)]"
             >
               Get Access Now
