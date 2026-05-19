@@ -26,6 +26,10 @@ BILLPLZ_X_SIGNATURE_KEY=...
 BILLPLZ_AMOUNT_7_DAYS_CENTS=4900
 BILLPLZ_AMOUNT_15_DAYS_CENTS=9900
 BILLPLZ_AMOUNT_30_DAYS_CENTS=14900
+BILLPLZ_PROMO_CODE=
+BILLPLZ_PROMO_AMOUNT_7_DAYS_CENTS=
+BILLPLZ_PROMO_AMOUNT_15_DAYS_CENTS=
+BILLPLZ_PROMO_AMOUNT_30_DAYS_CENTS=
 ```
 3. In Supabase SQL Editor, run [`supabase/schema.sql`](./supabase/schema.sql).
 4. Start app:
@@ -46,6 +50,7 @@ npm run dev
 - Client fills `name`, `email`, `phone`
 - If Billplz env is configured, user is redirected to Billplz payment first, then access key is generated after successful payment
 - Billplz amount is selected by package duration (`duration_days`): 7 days, 15 days, 30 days (configurable via env)
+- Optional promo code can override package amount when promo code is valid
 - If Billplz env is not configured, system auto-generates a 12-character access key directly and sets expiry based on link duration
 
 ## TradingView Webhook

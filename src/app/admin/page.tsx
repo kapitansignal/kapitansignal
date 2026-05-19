@@ -60,6 +60,14 @@ type WebhookHealth = {
   performance_lag_seconds: number | null;
 };
 
+type PromoSettings = {
+  promo_code: string | null;
+  amount_7_days_cents: number | null;
+  amount_15_days_cents: number | null;
+  amount_30_days_cents: number | null;
+  is_active: boolean;
+};
+
 function formatAdminDate(value: string | null) {
   if (!value) return "-";
   return new Date(value).toLocaleString("en-GB", {
@@ -109,6 +117,14 @@ export default function AdminPage() {
   const [logs, setLogs] = useState<PerfLog[]>([]);
   const [links, setLinks] = useState<PackageLink[]>([]);
   const [health, setHealth] = useState<WebhookHealth | null>(null);
+  const [promoSettings, setPromoSettings] = useState<PromoSettings | null>(null);
+  const [promoDraft, setPromoDraft] = useState({
+    promo_code: "",
+    amount_7_days_cents: "",
+    amount_15_days_cents: "",
+    amount_30_days_cents: "",
+    is_active: true,
+  });
   const [status, setStatus] = useState<string>("");
 
   const [newSub, setNewSub] = useState({
@@ -148,11 +164,12 @@ export default function AdminPage() {
   const loadAll = async () => {
     try {
       setStatus("Syncing admin data...");
-      const [sRes, pRes, lRes, hRes] = await Promise.all([
+      const [sRes, pRes, lRes, hRes, promoRes] = await Promise.all([
         fetch("/api/admin/subscribers", { headers }),
         fetch("/api/admin/performance-logs", { headers }),
         fetch("/api/admin/package-links", { headers }),
         fetch("/api/admin/webhook-health", { headers }),
+        fetch("/api/admin/promo-settings", { headers }),
       ]);
 
       if (sRes.status === 401 || pRes.status === 401 || lRes.status === 401) {
@@ -161,17 +178,33 @@ export default function AdminPage() {
         return;
       }
 
-      const [sJson, pJson, lJson, hJson] = await Promise.all([sRes.json(), pRes.json(), lRes.json(), hRes.json()]);
+      const [sJson, pJson, lJson, hJson, promoJson] = await Promise.all([
+        sRes.json(),
+        pRes.json(),
+        lRes.json(),
+        hRes.json(),
+        promoRes.json(),
+      ]);
       if (!sRes.ok) throw new Error(sJson.error ?? "Failed loading subscribers.");
       if (!pRes.ok) throw new Error(pJson.error ?? "Failed loading performance logs.");
       if (!lRes.ok) throw new Error(lJson.error ?? "Failed loading package links.");
       if (!hRes.ok) throw new Error(hJson.error ?? "Failed loading webhook health.");
+      if (!promoRes.ok) throw new Error(promoJson.error ?? "Failed loading promo settings.");
       if (!hJson?.ok) throw new Error(hJson?.error ?? "Failed loading webhook health.");
 
       setSubs(sJson.data ?? []);
       setLogs(pJson.data ?? []);
       setLinks(lJson.data ?? []);
       setHealth((hJson.data ?? null) as WebhookHealth | null);
+      const promoData = (promoJson.data ?? null) as PromoSettings | null;
+      setPromoSettings(promoData);
+      setPromoDraft({
+        promo_code: promoData?.promo_code ?? "",
+        amount_7_days_cents: promoData?.amount_7_days_cents ? String(promoData.amount_7_days_cents) : "",
+        amount_15_days_cents: promoData?.amount_15_days_cents ? String(promoData.amount_15_days_cents) : "",
+        amount_30_days_cents: promoData?.amount_30_days_cents ? String(promoData.amount_30_days_cents) : "",
+        is_active: promoData?.is_active ?? true,
+      });
       setAuthorized(true);
       setStatus("Admin data synced.");
     } catch (error) {
@@ -600,6 +633,27 @@ export default function AdminPage() {
     setStatus(`Exported ${rows.length} performance rows.`);
   };
 
+  const savePromoSettings = async () => {
+    const res = await fetch("/api/admin/promo-settings", {
+      method: "PATCH",
+      headers: { ...headers, "content-type": "application/json" },
+      body: JSON.stringify({
+        promo_code: promoDraft.promo_code,
+        amount_7_days_cents: promoDraft.amount_7_days_cents,
+        amount_15_days_cents: promoDraft.amount_15_days_cents,
+        amount_30_days_cents: promoDraft.amount_30_days_cents,
+        is_active: promoDraft.is_active,
+      }),
+    });
+    const json = await res.json();
+    if (!res.ok) {
+      setStatus(json.error ?? "Failed saving promo settings.");
+      return;
+    }
+    setStatus("Promo settings saved.");
+    await loadAll();
+  };
+
   const logoutAdmin = () => {
     setAuthorized(false);
     setAdminKey("");
@@ -959,6 +1013,54 @@ export default function AdminPage() {
           </section>
         ) : (
           <section className="space-y-4">
+            <div className="rounded-xl border border-slate-700 bg-slate-900/70 p-5">
+              <p className="mb-3 text-lg font-semibold tracking-tight">Promo Code Settings (Billplz)</p>
+              <div className="grid gap-2 sm:grid-cols-5">
+                <input
+                  placeholder="Promo code"
+                  value={promoDraft.promo_code}
+                  onChange={(e) => setPromoDraft((s) => ({ ...s, promo_code: e.target.value }))}
+                  className="rounded-lg border border-slate-600 bg-slate-950 px-3 py-2"
+                />
+                <input
+                  placeholder="7D cents (eg 3900)"
+                  value={promoDraft.amount_7_days_cents}
+                  onChange={(e) => setPromoDraft((s) => ({ ...s, amount_7_days_cents: e.target.value }))}
+                  className="rounded-lg border border-slate-600 bg-slate-950 px-3 py-2"
+                />
+                <input
+                  placeholder="15D cents (eg 7900)"
+                  value={promoDraft.amount_15_days_cents}
+                  onChange={(e) => setPromoDraft((s) => ({ ...s, amount_15_days_cents: e.target.value }))}
+                  className="rounded-lg border border-slate-600 bg-slate-950 px-3 py-2"
+                />
+                <input
+                  placeholder="30D cents (eg 11900)"
+                  value={promoDraft.amount_30_days_cents}
+                  onChange={(e) => setPromoDraft((s) => ({ ...s, amount_30_days_cents: e.target.value }))}
+                  className="rounded-lg border border-slate-600 bg-slate-950 px-3 py-2"
+                />
+                <button onClick={() => void savePromoSettings()} className="rounded-lg bg-violet-600 px-3 py-2 font-semibold hover:bg-violet-500">
+                  Save Promo
+                </button>
+              </div>
+              <label className="mt-3 inline-flex items-center gap-2 text-sm text-slate-300">
+                <input
+                  type="checkbox"
+                  checked={promoDraft.is_active}
+                  onChange={(e) => setPromoDraft((s) => ({ ...s, is_active: e.target.checked }))}
+                />
+                Promo active
+              </label>
+              {promoSettings ? (
+                <p className="mt-2 text-xs text-slate-400">
+                  Current: code {promoSettings.promo_code ? `"${promoSettings.promo_code}"` : "-"} | 7D{" "}
+                  {promoSettings.amount_7_days_cents ?? "-"} | 15D {promoSettings.amount_15_days_cents ?? "-"} | 30D{" "}
+                  {promoSettings.amount_30_days_cents ?? "-"} | active {promoSettings.is_active ? "yes" : "no"}
+                </p>
+              ) : null}
+            </div>
+
             <div className="rounded-xl border border-slate-700 bg-slate-900/70 p-5">
               <p className="mb-3 text-lg font-semibold tracking-tight">Create Package Link</p>
               <p className="mb-3 text-sm text-slate-400">One-click presets</p>

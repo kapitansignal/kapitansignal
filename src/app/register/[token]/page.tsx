@@ -15,6 +15,7 @@ export default function RegisterPage({ params }: { params: Promise<{ token: stri
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [promoCode, setPromoCode] = useState("");
   const [acceptedRisk, setAcceptedRisk] = useState(false);
   const [result, setResult] = useState<ResultInfo | null>(null);
   const [showKeyReminder, setShowKeyReminder] = useState(false);
@@ -114,6 +115,7 @@ export default function RegisterPage({ params }: { params: Promise<{ token: stri
         name: name.trim().replace(/\s+/g, " "),
         email: email.trim().toLowerCase(),
         phone: phone.trim(),
+        promo_code: promoCode.trim(),
       }),
     });
     const json = await res.json();
@@ -298,6 +300,17 @@ export default function RegisterPage({ params }: { params: Promise<{ token: stri
                         required
                       />
                     </span>
+                  </label>
+
+                  <label className="block space-y-1.5">
+                    <span className="text-xs uppercase tracking-[0.14em] text-[#9CA3AF]">Promo Code (Optional)</span>
+                    <input
+                      type="text"
+                      className="w-full rounded border border-[#1F2937] bg-[#05070D] px-3 py-3 text-sm uppercase tracking-wide text-[#F9FAFB] placeholder:text-gray-600 focus:border-[#F5C542] focus:outline-none"
+                      placeholder="Masukkan promo code"
+                      value={promoCode}
+                      onChange={(e) => setPromoCode(e.target.value)}
+                    />
                   </label>
 
                   <label className="flex cursor-pointer items-start gap-3 pt-1">
