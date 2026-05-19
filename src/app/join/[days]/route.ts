@@ -8,6 +8,16 @@ function parseDays(raw: string) {
   return Math.round(days);
 }
 
+function readDurationDays(row: Record<string, unknown>) {
+  const explicit = Number(row.duration_days);
+  if (Number.isFinite(explicit) && explicit > 0) return Math.round(explicit);
+
+  const match = String(row.package_name ?? "").match(/(?:^|\D)(\d{1,4})\s*d(?:ays?)?/i);
+  if (match) return Number(match[1]);
+
+  return 0;
+}
+
 export async function GET(req: Request, { params }: { params: Promise<{ days: string }> }) {
   const admin = getSupabaseAdmin();
   if (!admin) {
@@ -23,18 +33,21 @@ export async function GET(req: Request, { params }: { params: Promise<{ days: st
   const brandId = resolveBrandId(req);
   const { data, error } = await admin
     .from("package_links")
-    .select("token, created_at")
+    .select("*")
     .eq("brand_id", brandId)
-    .eq("duration_days", days)
     .eq("is_active", true)
     .order("created_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
+    .limit(100);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
-  if (!data?.token) {
+  const links = Array.isArray(data) ? data : [];
+  const matched = links.find((row) => readDurationDays((row as Record<string, unknown>)) === days) as
+    | { token?: string }
+    | undefined;
+
+  if (!matched?.token) {
     return NextResponse.json(
       { error: `No active ${days}-day package link found. Please create one in Admin > Package Links.` },
       { status: 404 },
@@ -42,6 +55,5 @@ export async function GET(req: Request, { params }: { params: Promise<{ days: st
   }
 
   const url = new URL(req.url);
-  return NextResponse.redirect(`${url.origin}/register/${data.token}`);
+  return NextResponse.redirect(`${url.origin}/register/${matched.token}`);
 }
-
