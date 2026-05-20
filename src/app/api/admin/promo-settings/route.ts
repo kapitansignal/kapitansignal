@@ -38,6 +38,8 @@ export async function PATCH(req: Request) {
 
   const body = (await req.json()) as {
     promo_code?: string | null;
+    trial_promo_code?: string | null;
+    trial_requires_promo?: boolean;
     amount_7_days_cents?: number | string | null;
     amount_15_days_cents?: number | string | null;
     amount_30_days_cents?: number | string | null;
@@ -47,6 +49,8 @@ export async function PATCH(req: Request) {
   const payload = {
     brand_id: brandId,
     promo_code: (body.promo_code ?? "").trim() || null,
+    trial_promo_code: (body.trial_promo_code ?? "").trim() || null,
+    trial_requires_promo: Boolean(body.trial_requires_promo ?? false),
     amount_7_days_cents: toInt(body.amount_7_days_cents),
     amount_15_days_cents: toInt(body.amount_15_days_cents),
     amount_30_days_cents: toInt(body.amount_30_days_cents),

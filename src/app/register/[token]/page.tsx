@@ -122,6 +122,12 @@ export default function RegisterPage({ params }: { params: Promise<{ token: stri
       setStatus(json.error ?? "Registration failed");
       return;
     }
+    if (json.direct_registration && json.access_key && json.expired_at) {
+      setResult({ access_key: String(json.access_key), expired_at: String(json.expired_at) });
+      setStatus("");
+      setShowKeyReminder(true);
+      return;
+    }
     const billUrl = String(json.url ?? "");
     if (!billUrl) {
       setStatus("Payment session created but missing redirect URL.");

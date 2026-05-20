@@ -39,6 +39,16 @@ function mapPromoAmountByDurationDaysFromDb(
   return asPositiveInt(String(settings.amount_30_days_cents ?? ""), 0);
 }
 
+function parseBoolean(value: unknown, fallback = false) {
+  if (typeof value === "boolean") return value;
+  if (typeof value === "string") {
+    const normalized = value.trim().toLowerCase();
+    if (["1", "true", "yes", "on"].includes(normalized)) return true;
+    if (["0", "false", "no", "off"].includes(normalized)) return false;
+  }
+  return fallback;
+}
+
 export async function POST(req: Request, { params }: { params: Promise<{ token: string }> }) {
   const config = getBillplzConfig();
   if (!config) {
@@ -87,6 +97,44 @@ export async function POST(req: Request, { params }: { params: Promise<{ token: 
 
   const expectedPromoCodeFromDb = String(dbPromoSettings?.promo_code ?? "").trim();
   const expectedPromoCode = expectedPromoCodeFromDb || (process.env.BILLPLZ_PROMO_CODE ?? "").trim();
+  const trialPromoCode =
+    String(dbPromoSettings?.trial_promo_code ?? "").trim() || (process.env.BILLPLZ_TRIAL_PROMO_CODE ?? "").trim();
+  const trialRequiresPromo = parseBoolean(
+    dbPromoSettings?.trial_requires_promo ?? process.env.BILLPLZ_TRIAL_REQUIRES_PROMO,
+    false,
+  );
+
+  if (durationDays <= 3) {
+    if (trialRequiresPromo) {
+      if (!promoCodeInput) {
+        return NextResponse.json({ error: "Promo code is required for Trial 3D." }, { status: 400 });
+      }
+      if (!trialPromoCode || promoCodeInput.toUpperCase() !== trialPromoCode.toUpperCase()) {
+        return NextResponse.json({ error: "Invalid trial promo code." }, { status: 400 });
+      }
+    }
+
+    const registerRes = await fetch(`${url.origin}/api/register/${token}`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ name, email, phone }),
+    });
+    const registerJson = (await registerRes.json()) as Record<string, unknown>;
+    if (!registerRes.ok) {
+      return NextResponse.json(
+        { error: String(registerJson.error ?? "Failed to complete trial registration.") },
+        { status: registerRes.status },
+      );
+    }
+
+    return NextResponse.json({
+      ok: true,
+      direct_registration: true,
+      access_key: registerJson.access_key,
+      expired_at: registerJson.expired_at,
+    });
+  }
+
   let amountCents = baseAmountCents;
   if (promoCodeInput) {
     if (!expectedPromoCode || promoCodeInput.toUpperCase() !== expectedPromoCode.toUpperCase()) {

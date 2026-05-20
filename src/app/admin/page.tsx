@@ -62,6 +62,8 @@ type WebhookHealth = {
 
 type PromoSettings = {
   promo_code: string | null;
+  trial_promo_code: string | null;
+  trial_requires_promo: boolean;
   amount_7_days_cents: number | null;
   amount_15_days_cents: number | null;
   amount_30_days_cents: number | null;
@@ -120,6 +122,8 @@ export default function AdminPage() {
   const [promoSettings, setPromoSettings] = useState<PromoSettings | null>(null);
   const [promoDraft, setPromoDraft] = useState({
     promo_code: "",
+    trial_promo_code: "",
+    trial_requires_promo: false,
     amount_7_days_cents: "",
     amount_15_days_cents: "",
     amount_30_days_cents: "",
@@ -200,6 +204,8 @@ export default function AdminPage() {
       setPromoSettings(promoData);
       setPromoDraft({
         promo_code: promoData?.promo_code ?? "",
+        trial_promo_code: promoData?.trial_promo_code ?? "",
+        trial_requires_promo: promoData?.trial_requires_promo ?? false,
         amount_7_days_cents: promoData?.amount_7_days_cents ? String(promoData.amount_7_days_cents) : "",
         amount_15_days_cents: promoData?.amount_15_days_cents ? String(promoData.amount_15_days_cents) : "",
         amount_30_days_cents: promoData?.amount_30_days_cents ? String(promoData.amount_30_days_cents) : "",
@@ -639,6 +645,8 @@ export default function AdminPage() {
       headers: { ...headers, "content-type": "application/json" },
       body: JSON.stringify({
         promo_code: promoDraft.promo_code,
+        trial_promo_code: promoDraft.trial_promo_code,
+        trial_requires_promo: promoDraft.trial_requires_promo,
         amount_7_days_cents: promoDraft.amount_7_days_cents,
         amount_15_days_cents: promoDraft.amount_15_days_cents,
         amount_30_days_cents: promoDraft.amount_30_days_cents,
@@ -1015,7 +1023,7 @@ export default function AdminPage() {
           <section className="space-y-4">
             <div className="rounded-xl border border-slate-700 bg-slate-900/70 p-5">
               <p className="mb-3 text-lg font-semibold tracking-tight">Promo Code Settings (Billplz)</p>
-              <div className="grid gap-2 sm:grid-cols-5">
+              <div className="grid gap-2 sm:grid-cols-6">
                 <input
                   placeholder="Promo code"
                   value={promoDraft.promo_code}
@@ -1044,6 +1052,22 @@ export default function AdminPage() {
                   Save Promo
                 </button>
               </div>
+              <div className="mt-2 grid gap-2 sm:grid-cols-6">
+                <input
+                  placeholder="Trial promo code (3D)"
+                  value={promoDraft.trial_promo_code}
+                  onChange={(e) => setPromoDraft((s) => ({ ...s, trial_promo_code: e.target.value }))}
+                  className="sm:col-span-3 rounded-lg border border-slate-600 bg-slate-950 px-3 py-2"
+                />
+                <label className="sm:col-span-3 inline-flex items-center gap-2 rounded-lg border border-slate-600 bg-slate-950 px-3 py-2 text-sm text-slate-300">
+                  <input
+                    type="checkbox"
+                    checked={promoDraft.trial_requires_promo}
+                    onChange={(e) => setPromoDraft((s) => ({ ...s, trial_requires_promo: e.target.checked }))}
+                  />
+                  Trial Requires Promo
+                </label>
+              </div>
               <label className="mt-3 inline-flex items-center gap-2 text-sm text-slate-300">
                 <input
                   type="checkbox"
@@ -1056,7 +1080,9 @@ export default function AdminPage() {
                 <p className="mt-2 text-xs text-slate-400">
                   Current: code {promoSettings.promo_code ? `"${promoSettings.promo_code}"` : "-"} | 7D{" "}
                   {promoSettings.amount_7_days_cents ?? "-"} | 15D {promoSettings.amount_15_days_cents ?? "-"} | 30D{" "}
-                  {promoSettings.amount_30_days_cents ?? "-"} | active {promoSettings.is_active ? "yes" : "no"}
+                  {promoSettings.amount_30_days_cents ?? "-"} | trial code{" "}
+                  {promoSettings.trial_promo_code ? `"${promoSettings.trial_promo_code}"` : "-"} | trial requires promo{" "}
+                  {promoSettings.trial_requires_promo ? "yes" : "no"} | active {promoSettings.is_active ? "yes" : "no"}
                 </p>
               ) : null}
             </div>
