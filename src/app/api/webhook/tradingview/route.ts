@@ -53,6 +53,59 @@ function resolveBrandId(request: NextRequest): string {
   return "";
 }
 
+const BRAND_DEFAULT_DISTANCE_MULTIPLIER: Partial<Record<string, number>> = {
+  richjoker: 0.5,
+  shinobi: 0.5,
+};
+
+function asObject(value: unknown): Record<string, unknown> {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+  return value as Record<string, unknown>;
+}
+
+function getDefaultBrandPriceDistanceMultiplier(brandId: string) {
+  const fallback = BRAND_DEFAULT_DISTANCE_MULTIPLIER[brandId] ?? 1;
+  const envKey = `HQ_BRAND_${brandId.toUpperCase()}_PRICE_DISTANCE_MULTIPLIER`;
+  const envRaw = process.env[envKey];
+  if (!envRaw || envRaw.trim().length === 0) return fallback;
+  const parsed = Number(envRaw);
+  if (!Number.isFinite(parsed) || parsed <= 0) return fallback;
+  return parsed;
+}
+
+function readStoredSignalPriceDistanceMultiplier(settings: unknown) {
+  const bag = asObject(settings);
+  const snake = asNumber(bag.signal_price_distance_multiplier);
+  const camel = asNumber(bag.signalPriceDistanceMultiplier);
+  const value = snake ?? camel;
+  if (value === null || value <= 0) return null;
+  return value;
+}
+
+function scaleLevelFromEntry(entry: number, level: number, multiplier: number) {
+  const scaled = entry + (level - entry) * multiplier;
+  return Number(scaled.toFixed(5));
+}
+
+function scaleSignalLevelsForBrand(args: {
+  entryTarget: number;
+  sl: number;
+  tp1: number;
+  tp2: number;
+  tp3: number | null;
+  multiplier: number;
+}) {
+  if (Math.abs(args.multiplier - 1) < 0.000001) {
+    return { sl: args.sl, tp1: args.tp1, tp2: args.tp2, tp3: args.tp3 };
+  }
+  return {
+    sl: scaleLevelFromEntry(args.entryTarget, args.sl, args.multiplier),
+    tp1: scaleLevelFromEntry(args.entryTarget, args.tp1, args.multiplier),
+    tp2: scaleLevelFromEntry(args.entryTarget, args.tp2, args.multiplier),
+    tp3: args.tp3 === null ? null : scaleLevelFromEntry(args.entryTarget, args.tp3, args.multiplier),
+  };
+}
+
 export async function POST(req: NextRequest) {
   const expectedSecret = process.env.TRADINGVIEW_WEBHOOK_SECRET;
   if (!expectedSecret) {
@@ -111,6 +164,20 @@ export async function POST(req: NextRequest) {
   const brandId = resolveBrandId(req);
   if (!brandId) {
     return NextResponse.json({ error: "Server missing BRAND_ID / NEXT_PUBLIC_BRAND_ID" }, { status: 500 });
+  }
+  const defaultSignalPriceDistanceMultiplier = getDefaultBrandPriceDistanceMultiplier(brandId);
+  let signalPriceDistanceMultiplier = defaultSignalPriceDistanceMultiplier;
+  const { data: scalingRule, error: scalingRuleError } = await admin
+    .from("brand_publish_rules")
+    .select("settings")
+    .eq("brand_id", brandId)
+    .maybeSingle();
+
+  if (scalingRuleError) {
+    console.warn("[webhook/tradingview] Failed loading brand signal scaling:", scalingRuleError.message);
+  } else {
+    const storedMultiplier = readStoredSignalPriceDistanceMultiplier(scalingRule?.settings);
+    if (storedMultiplier !== null) signalPriceDistanceMultiplier = storedMultiplier;
   }
 
   if (event === "price_update") {
@@ -284,6 +351,20 @@ export async function POST(req: NextRequest) {
       { status: 400 },
     );
   }
+  const scaledSignalLevels = event === "signal"
+    ? scaleSignalLevelsForBrand({
+      entryTarget,
+      sl,
+      tp1,
+      tp2,
+      tp3,
+      multiplier: signalPriceDistanceMultiplier,
+    })
+    : null;
+  const signalSl = scaledSignalLevels?.sl ?? sl;
+  const signalTp1 = scaledSignalLevels?.tp1 ?? tp1;
+  const signalTp2 = scaledSignalLevels?.tp2 ?? tp2;
+  const signalTp3 = scaledSignalLevels?.tp3 ?? tp3;
 
   if (event === "signal") {
     const cooldownFromIso = new Date(Date.now() - Math.max(10, SIGNAL_DUPLICATE_COOLDOWN_SECONDS) * 1000).toISOString();
@@ -368,10 +449,10 @@ export async function POST(req: NextRequest) {
       action: type,
       entry: entryTarget,
       live_price: livePrice,
-      stop_loss: sl,
-      take_profit_1: tp1,
-      take_profit_2: tp2,
-      take_profit_3: tp3,
+      stop_loss: signalSl,
+      take_profit_1: signalTp1,
+      take_profit_2: signalTp2,
+      take_profit_3: signalTp3,
       max_floating_pips: 0,
       status,
       updated_at: new Date().toISOString(),
